@@ -1,0 +1,245 @@
+/* ==========================================================================
+   Welcome — the road gives way to a room with one photograph in it.
+   ========================================================================== */
+
+.welcome {
+  background: var(--ink);
+  padding-block: clamp(4.5rem, 11vw, 9.5rem);
+  overflow: hidden;
+}
+
+/* a barely-there warm pool of light behind the photograph */
+.welcome::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  right: -6%;
+  width: min(62vw, 720px);
+  aspect-ratio: 1;
+  background: radial-gradient(
+    circle,
+    rgba(188, 144, 87, 0.08),
+    rgba(188, 144, 87, 0) 66%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.welcome__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  gap: clamp(1.25rem, 3.4vw, 3.75rem);
+  align-items: center;
+}
+
+/* ---------- copy ---------- */
+.welcome__title {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4.6vw, 3.25rem);
+  line-height: 1.16;
+  letter-spacing: -0.012em;
+  color: var(--cream);
+  text-wrap: balance;
+}
+
+.welcome__lines {
+  margin-top: clamp(1.75rem, 3.4vw, 2.75rem);
+  font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
+  line-height: 1.78;
+  color: var(--cream-dim);
+}
+
+.welcome__closing {
+  margin-top: clamp(1.25rem, 2.4vw, 1.9rem);
+  font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
+  line-height: 1.78;
+  color: var(--cream-dim);
+}
+
+.welcome__cta { margin-top: clamp(1.75rem, 3.4vw, 2.75rem); }
+
+/* ==========================================================================
+   The collage
+   ========================================================================== */
+
+.collage {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.collage__stage {
+  position: relative;
+  width: 100%;
+  max-width: 25rem;
+  margin-right: auto;
+}
+
+/* ---------- the photograph ---------- */
+.collage__photo {
+  position: relative;
+  z-index: 2;
+  padding: 7.2%;
+  background:
+    linear-gradient(148deg, rgba(64, 52, 38, 0.16), rgba(255, 250, 240, 0.12) 62%),
+    url('/images/frame-texture.webp') center / cover,
+    #DCD4C6;
+  transform: rotate(-2.5deg);
+  box-shadow:
+    0 34px 60px -22px rgba(0, 0, 0, 0.82),
+    0 8px 22px rgba(0, 0, 0, 0.42),
+    inset 0 0 26px rgba(74, 50, 26, 0.26);
+  transition:
+    transform 720ms var(--ease),
+    box-shadow 720ms var(--ease);
+}
+
+.collage__photo img {
+  width: 100%;
+  height: auto;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.4);
+}
+
+/* aged staining around the paper edge */
+.collage__aged {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 100% at 12% 6%, rgba(92, 64, 34, 0.24), transparent 46%),
+    radial-gradient(120% 100% at 92% 96%, rgba(72, 48, 24, 0.26), transparent 48%);
+  mix-blend-mode: multiply;
+}
+
+/* ---------- the note tucked behind it ---------- */
+.collage__note {
+  position: absolute;
+  z-index: 1;
+  top: 23%;
+  right: -42%;
+  width: 46%;
+  padding: 9% 9% 10%;
+  background:
+    url('/images/paper-texture.webp') center / cover,
+    #DFCFB6;
+  color: #3B3025;
+  transform: rotate(4.5deg);
+  box-shadow:
+    0 22px 40px -18px rgba(0, 0, 0, 0.72),
+    inset 0 0 22px rgba(84, 58, 30, 0.22);
+  transition: transform 720ms var(--ease);
+}
+
+.collage__note-text {
+  font-size: clamp(0.75rem, 1.5vw, 1.0625rem);
+  line-height: 1.42;
+}
+.collage__note-sign {
+  margin-top: 0.5em;
+  text-align: right;
+  font-size: clamp(0.75rem, 1.5vw, 1.0625rem);
+}
+
+/* ---------- the leaf ---------- */
+.collage__leaf {
+  position: absolute;
+  z-index: 3;
+  left: -19%;
+  bottom: -5%;
+  width: 42%;
+  height: auto;
+  transform: rotate(-3deg);
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+  transition: transform 820ms var(--ease);
+}
+
+/* ---------- the handwritten annotation ---------- */
+.collage__annotation {
+  position: relative;
+  margin: clamp(1rem, 2.4vw, 1.75rem) 14% 0 auto;
+  max-width: 11rem;
+  color: var(--gold);
+  text-align: center;
+  transition: opacity 720ms var(--ease), transform 720ms var(--ease);
+}
+.collage__annotation .hand {
+  display: block;
+  font-size: clamp(0.9375rem, 1.9vw, 1.25rem);
+  letter-spacing: 0.03em;
+}
+.collage__underline {
+  display: block;
+  width: 78%;
+  height: 8px;
+  margin: 0.35rem auto 0;
+  opacity: 0.72;
+}
+
+/* ---------- hover: the whole thing lifts a little ---------- */
+@media (hover: hover) and (min-width: 901px) {
+  .collage__annotation {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  .collage:hover .collage__annotation {
+    opacity: 1;
+    transform: none;
+  }
+  .collage:hover .collage__photo {
+    transform: rotate(-3deg) translate3d(0, -4px, 0);
+    box-shadow:
+      0 44px 76px -22px rgba(0, 0, 0, 0.88),
+      0 10px 26px rgba(0, 0, 0, 0.48),
+      inset 0 0 26px rgba(74, 50, 26, 0.26);
+  }
+  .collage:hover .collage__note { transform: rotate(5.2deg) translate3d(3px, -2px, 0); }
+  .collage:hover .collage__leaf { transform: rotate(-4deg) translate3d(-3px, 2px, 0); }
+}
+
+/* ==========================================================================
+   Breakpoints
+   ========================================================================== */
+
+/* between 900 and 1200 the note needs the photograph to give up some width */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .collage__stage { max-width: 20rem; }
+  .collage__note { right: -40%; }
+}
+
+/* the note has no room on a phone — the mobile composition drops it */
+@media (max-width: 900px) {
+  .collage__note { display: none; }
+  .collage__stage {
+    max-width: 22rem;
+    margin-right: 0;
+    margin-left: auto;
+  }
+  .welcome__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.82fr); }
+}
+
+@media (max-width: 480px) {
+  .welcome__grid {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.8fr);
+    gap: 0.85rem;
+    align-items: start;
+  }
+  .welcome__aside { margin-top: 1.25rem; }
+  .collage__leaf { left: -21%; width: 46%; }
+  .collage__annotation { max-width: 8.5rem; margin-right: 0; }
+}
+
+/* below this the two columns stop being readable — stack them */
+@media (max-width: 370px) {
+  .welcome__grid { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+  .collage__stage { max-width: 15rem; margin-left: 0; }
+  .collage__annotation { margin-inline: 0 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collage__annotation { opacity: 1; transform: none; }
+}

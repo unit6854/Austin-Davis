@@ -1,0 +1,56 @@
+/* ==========================================================================
+   The central idea — one quiet full-width statement.
+   ========================================================================== */
+
+.quote {
+  background: var(--ink);
+  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(3rem, 7vw, 5.5rem);
+  border-top: 1px solid rgba(237, 229, 214, 0.055);
+}
+
+.quote__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.75rem, 2.4vw, 2rem);
+}
+
+.quote__mark {
+  flex: none;
+  margin-top: clamp(-0.4rem, -0.6vw, -0.2rem);
+  font-family: var(--serif);
+  font-size: clamp(3.25rem, 8vw, 6.5rem);
+  line-height: 0.8;
+  color: var(--gold);
+  opacity: 0.82;
+  user-select: none;
+}
+
+.quote__body { flex: 1 1 auto; min-width: 0; }
+
+.quote__text {
+  max-width: 22ch;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4.2vw, 3rem);
+  line-height: 1.26;
+  letter-spacing: -0.008em;
+  color: var(--cream);
+}
+
+.quote__attribution {
+  margin-top: clamp(0.5rem, 1.4vw, 0.75rem);
+  padding-right: clamp(0rem, 6vw, 5rem);
+  text-align: right;
+}
+
+.quote__attribution .signature {
+  font-size: clamp(1.75rem, 4.6vw, 3.25rem);
+  /* Sacramento sits high on its line — nudge it back down */
+  display: inline-block;
+  transform: translateY(-0.08em);
+}
+
+@media (min-width: 901px) {
+  .quote__text { max-width: 24ch; }
+  .quote__inner { padding-left: clamp(0rem, 6vw, 6rem); }
+}

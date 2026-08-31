@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12110D" />
+
+    <title>Austin Davis — Stories about remembering how to live.</title>
+    <meta name="description" content="Reflections on life, family, time, and the things we don't understand until much later. Writing by Austin Davis." />
+    <meta name="author" content="Austin Davis" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Austin Davis — Stories about remembering how to live." />
+    <meta property="og:description" content="Reflections on life, family, time, and the things we don't understand until much later." />
+    <meta property="og:image" content="/images/hero-1280.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@400;500;600&family=Sacramento&display=swap"
+    />
+
+    <link
+      rel="preload"
+      as="image"
+      href="/images/hero-1280.webp"
+      imagesrcset="/images/hero-880.webp 880w, /images/hero-1280.webp 1280w, /images/hero-1600.webp 1600w, /images/hero.webp 1684w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Static form so Netlify's build-time crawler can detect it. Hidden from users. -->
+    <form name="newsletter" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+      <input type="text" name="bot-field" />
+    </form>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

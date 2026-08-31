@@ -1,0 +1,182 @@
+/* ==========================================================================
+   Interior pages — quiet rooms off the main road.
+   ========================================================================== */
+
+.page {
+  position: relative;
+  background: var(--ink);
+  padding-block: clamp(8rem, 18vh, 13rem) clamp(4.5rem, 10vw, 8rem);
+  min-height: 74svh;
+}
+
+.page__inner { max-width: 46rem; margin-inline: auto; }
+
+.page__title {
+  margin-top: clamp(1.25rem, 2.6vw, 2rem);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.125rem, 6vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.014em;
+  color: var(--cream);
+  text-wrap: balance;
+}
+
+.page__intro {
+  margin-top: clamp(1.25rem, 2.4vw, 1.75rem);
+  max-width: 34rem;
+  font-size: clamp(1rem, 1.6vw, 1.1875rem);
+  line-height: 1.74;
+  color: var(--cream-dim);
+}
+
+.page__rule { margin-top: clamp(2.5rem, 5vw, 4rem); }
+
+.page__empty {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.0625rem;
+  color: var(--cream-faint);
+}
+
+/* ---------- an entry in a list ---------- */
+.page__list { margin-top: clamp(2rem, 4vw, 3rem); }
+
+.entry {
+  display: block;
+  padding-bottom: clamp(1.75rem, 3.4vw, 2.5rem);
+  border-bottom: 1px solid rgba(237, 229, 214, 0.08);
+}
+
+.entry__eyebrow {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.entry__title {
+  margin-top: 0.75rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.625rem, 4vw, 2.5rem);
+  line-height: 1.14;
+  color: var(--cream);
+  transition: transform 620ms var(--ease);
+}
+
+.entry__description {
+  margin-top: 0.6rem;
+  max-width: 32rem;
+  color: var(--cream-dim);
+}
+
+.entry__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9em;
+  margin-top: 1.35rem;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.entry__more .arrow { transition: transform 460ms var(--ease); }
+
+@media (hover: hover) {
+  .entry:hover .entry__title { transform: translateX(8px); }
+  .entry:hover .arrow { transform: translateX(6px); }
+}
+
+/* ==========================================================================
+   A single story
+   ========================================================================== */
+
+.story-page__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.story-page__title {
+  margin-top: clamp(1.25rem, 2.6vw, 2rem);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 6.4vw, 4.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.016em;
+  color: var(--cream);
+  text-wrap: balance;
+}
+
+.story-page__standfirst {
+  margin-top: clamp(1.1rem, 2.2vw, 1.6rem);
+  max-width: 32rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.0625rem, 1.8vw, 1.3125rem);
+  line-height: 1.62;
+  color: var(--cream-dim);
+}
+
+.story-page__body {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  max-width: 34rem;
+  font-size: clamp(1.0625rem, 1.7vw, 1.25rem);
+  line-height: 1.86;
+  color: rgba(237, 229, 214, 0.88);
+}
+.story-page__body p + p { margin-top: 1.4em; }
+.story-page__body p:first-child::first-letter {
+  float: left;
+  margin: 0.06em 0.1em 0 0;
+  font-size: 3.4em;
+  line-height: 0.86;
+  color: var(--gold);
+}
+
+.story-page__continuation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  text-align: center;
+}
+.story-page__ornament {
+  color: var(--gold);
+  opacity: 0.7;
+}
+.story-page__continuation p {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--cream-faint);
+}
+
+.story-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9em;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+  transition: color 420ms var(--ease);
+}
+.story-page__back .arrow { transition: transform 460ms var(--ease); }
+.story-page__back:hover { color: var(--cream); }
+.story-page__back:hover .arrow { transform: translateX(-6px); }

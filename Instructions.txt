@@ -1,0 +1,746 @@
+# Austin Davis — Immersive Writer / Storyteller Website
+
+Build a premium, cinematic personal website for **Austin Davis**, a writer, poet, storyteller, musician, and emerging speaker.
+
+The website is not a generic writer portfolio and should not feel like a motivational-coach website.
+
+The purpose is to introduce Austin's writing and eventually build an audience around a larger message:
+
+> **We spend so much of our lives learning how to survive, achieve, produce, and move forward that sometimes we forget to actually live.**
+
+Austin is exploring what it means to live a meaningful, present, human life.
+
+The site should feel like entering a story.
+
+It should be **quiet, immersive, emotional, sophisticated, cinematic, literary, and extremely polished.**
+
+Do NOT make it feel corporate, trendy, SaaS-like, overly animated, or like a template.
+
+---
+
+# DESIGN DIRECTION
+
+Use the supplied hero image as the primary visual foundation.
+
+The hero represents a rural Alabama road where Austin's family lived and spent time together.
+
+The road is metaphorical:
+
+**The visitor is beginning a journey through Austin's memories, stories, questions, and ideas.**
+
+The site should feel like the visitor is slowly walking down that road.
+
+Think:
+
+* cinematic documentary
+* literary journal
+* independent film
+* old photographs
+* handwritten memories
+* Southern landscape
+* warm nostalgia
+* quiet sophistication
+* modern editorial design
+
+Avoid:
+
+* generic motivational imagery
+* excessive animations
+* gradients everywhere
+* glassmorphism
+* glowing UI
+* tech aesthetics
+* oversized buttons
+* stock-template layouts
+* excessive rounded cards
+
+The site should feel timeless.
+
+---
+
+# TYPOGRAPHY
+
+Use exactly these fonts:
+
+### Primary display serif
+
+**Cormorant Garamond**
+
+Use for:
+
+* hero headline
+* story titles
+* major quotes
+* emotional statements
+* section headings
+
+Use font weights 400 and 500 primarily.
+
+### Italic display
+
+**Cormorant Garamond Italic**
+
+Use selectively for emotional emphasis.
+
+Example:
+
+"remembering how to live."
+
+### UI / navigation / metadata
+
+**Inter**
+
+Use for:
+
+* navigation
+* buttons
+* labels
+* metadata
+* newsletter form
+* small descriptions
+
+Use weights 400, 500, and 600.
+
+### Handwritten accent
+
+Use **Brittany Signature** or a similar restrained handwritten font ONLY for occasional signature-style elements.
+
+Do not use the handwritten font for normal body text.
+
+Typography should be elegant and restrained.
+
+---
+
+# COLOR SYSTEM
+
+Base colors:
+
+* Deep charcoal: #11100E
+* Almost black: #090908
+* Warm cream: #EDE5D6
+* Paper: #D9CEBA
+* Muted warm gold: #B69A6A
+* Soft gray-beige: #AFA79A
+
+Do not use bright white.
+
+Do not use pure black except where necessary.
+
+The site should feel warm rather than cold.
+
+---
+
+# HERO
+
+Use the supplied Alabama road image as a full viewport hero.
+
+Minimum:
+
+100vh.
+
+Desktop:
+
+min-height: 100svh.
+
+Mobile:
+
+min-height: 100svh.
+
+Image should cover the entire viewport.
+
+Apply a subtle dark cinematic overlay so typography remains readable.
+
+Do NOT heavily darken the image.
+
+The road must remain visible.
+
+### Navigation
+
+Transparent over the hero.
+
+Left:
+
+**AUSTIN DAVIS**
+
+Center/right:
+
+Stories
+Poems
+Journal
+About
+Letters
+
+Right:
+
+**Join the Journey**
+
+The navigation should be extremely minimal.
+
+Desktop navigation should fade in after the hero image loads.
+
+Mobile should use a simple elegant menu icon.
+
+No hamburger box.
+
+---
+
+# HERO COPY
+
+Center the following:
+
+Small eyebrow:
+
+WRITER · POET · STORYTELLER
+
+Main headline:
+
+**Stories about**
+
+then italic:
+
+**remembering how to live.**
+
+Supporting text:
+
+**Reflections on life, family, time, and the things we don't understand until much later.**
+
+Below:
+
+**BEGIN THE JOURNEY**
+
+with a thin downward arrow.
+
+The hero should feel almost silent.
+
+Do not animate the text aggressively.
+
+---
+
+# HERO ANIMATION
+
+On initial load:
+
+1. Image fades from black over approximately 1.5 seconds.
+2. Navigation fades upward into position.
+3. Eyebrow fades in.
+4. Main headline fades upward.
+5. Supporting copy follows.
+6. Scroll indicator appears last.
+
+Use staggered animation.
+
+Total entrance sequence approximately 2 seconds.
+
+Use:
+
+cubic-bezier(0.22, 1, 0.36, 1)
+
+Animations should feel cinematic rather than snappy.
+
+---
+
+# SCROLL EXPERIENCE
+
+This is extremely important.
+
+The website should feel like the visitor is moving through a memory.
+
+Do NOT use excessive scroll-jacking.
+
+Never prevent normal browser scrolling.
+
+Use subtle scroll-linked animation.
+
+As the user scrolls away from the hero:
+
+* hero image slowly scales from 1.0 to approximately 1.08
+* image subtly darkens
+* foreground content moves slightly slower than the scroll
+* hero text fades naturally
+* road remains visually present as long as possible
+
+Use CSS transforms and IntersectionObserver where possible.
+
+Avoid heavy JavaScript scroll calculations.
+
+Performance is extremely important.
+
+---
+
+# SECTION 2 — WELCOME
+
+Transition from the road into a deep charcoal section.
+
+Heading:
+
+**I write about the things that shaped me.**
+
+Supporting copy:
+
+The people.
+
+The moments.
+
+The places.
+
+The lessons I didn't understand until I was older.
+
+Then:
+
+**If you're here, maybe you have your own story too.**
+
+On the right, show an old-photo-style image representing Pop sitting outside.
+
+Use a subtle paper/photo treatment.
+
+Do not make it look like a scrapbook.
+
+It should feel like an elegant archival photograph.
+
+Add a tiny handwritten-style annotation:
+
+**The things we understand later.**
+
+---
+
+# INTERACTION
+
+The photograph should have a very subtle hover effect.
+
+On hover:
+
+* image moves upward 4px
+* shadow increases slightly
+* paper rotates approximately 0.5 degrees
+* handwritten annotation subtly appears
+
+Keep it extremely subtle.
+
+---
+
+# SECTION 3 — THE FIRST STORY
+
+Introduce the first published story.
+
+Small label:
+
+**FIRST STORY**
+
+Large title:
+
+**The Things I Didn't Understand**
+
+Description:
+
+**A letter to my grandfather, and the lessons I was too young to recognize.**
+
+Button:
+
+**READ THE STORY →**
+
+This should not look like a blog card.
+
+It should feel like a literary feature.
+
+Use a large editorial composition with generous whitespace.
+
+Potentially show a small excerpt:
+
+> My grandfather, Pop, used to sit outside all the time.
+
+Then:
+
+> Watching.
+>
+> Listening.
+
+Keep the typography large and spacious.
+
+---
+
+# SECTION 4 — THE CENTRAL IDEA
+
+Create a very quiet full-width section.
+
+Dark background.
+
+Large centered quote:
+
+**"Sometimes the most important lessons are the ones we don't understand until much later."**
+
+Below:
+
+**— Austin Davis**
+
+Use the handwritten font very subtly for the signature.
+
+The quote should fade in as it enters the viewport.
+
+No dramatic animation.
+
+---
+
+# SECTION 5 — THE JOURNEY
+
+Introduce the broader body of work.
+
+Three editorial links:
+
+### STORIES
+
+The people and moments that shaped me.
+
+### POEMS
+
+Words I've carried with me for years.
+
+### JOURNAL
+
+Questions I'm still trying to answer.
+
+These should not be traditional cards.
+
+Use large typography, thin rules, subtle hover transitions, and lots of negative space.
+
+On hover:
+
+* title shifts approximately 8px
+* arrow moves
+* a background image or texture subtly reveals itself
+* transition 500–700ms
+
+---
+
+# IMPORTANT MESSAGE
+
+The website should communicate this philosophy without turning it into a manifesto:
+
+Austin is not presenting himself as someone who has figured life out.
+
+He is exploring it.
+
+The underlying message:
+
+We are constantly told to become more.
+
+More successful.
+
+More productive.
+
+More accomplished.
+
+But somewhere along the way, many of us forget to simply be.
+
+Austin writes about family, childhood, ambition, time, freedom, loss, memory, love, music, and the question:
+
+**What does it actually mean to live?**
+
+The site should invite the visitor to explore that question with him.
+
+Never preach.
+
+Never tell visitors that they are "asleep" or that Austin has "the answers."
+
+The tone should be humble:
+
+**"I'm trying to understand this too."**
+
+---
+
+# NEWSLETTER
+
+Call it:
+
+**JOIN THE JOURNEY**
+
+Supporting text:
+
+**Stories, letters, and reflections — sent occasionally.**
+
+Input:
+
+Your email address
+
+Button:
+
+SUBSCRIBE
+
+The signup section should feel like the end of a journey.
+
+Use warm paper/cream background.
+
+Add a subtle torn-paper transition from the dark section into the cream section.
+
+The torn edge should be implemented with CSS/SVG, NOT a giant raster image.
+
+---
+
+# FOOTER
+
+Minimal.
+
+AUSTIN DAVIS
+
+Writer · Poet · Storyteller
+
+Links:
+
+Stories
+Poems
+Journal
+About
+Letters
+
+Social icons only where accounts actually exist.
+
+Do not invent social URLs.
+
+Small copyright line.
+
+---
+
+# PAGE TRANSITIONS
+
+When navigating between pages, use subtle fade transitions.
+
+Do not use flashy page transitions.
+
+A short 400–600ms opacity/transform transition is enough.
+
+The site should feel like turning a page.
+
+---
+
+# BUTTON DESIGN
+
+Buttons should be minimal.
+
+No giant filled CTA buttons.
+
+Primary style:
+
+uppercase Inter
+
+letter-spacing: 0.15em
+
+font-size: 11–13px
+
+thin 1px border
+
+generous horizontal padding
+
+transparent background
+
+On hover:
+
+* background becomes warm cream
+* text becomes dark
+* transition approximately 400ms
+
+Arrow moves approximately 6px.
+
+---
+
+# MICRO-INTERACTIONS
+
+Use micro-interactions everywhere, but keep them restrained.
+
+Examples:
+
+* navigation underline slowly expands on hover
+* arrows move slightly
+* images subtly scale
+* text reveals upward when entering viewport
+* rules draw themselves across the page
+* photographs move 2–4px relative to surrounding content
+* handwritten elements appear slowly
+
+Nothing should bounce.
+
+Nothing should flash.
+
+Nothing should feel like a Web3 website.
+
+---
+
+# MOBILE
+
+Mobile is extremely important.
+
+Do NOT simply shrink the desktop design.
+
+Recompose it.
+
+Hero:
+
+* retain road image
+* place typography lower/center
+* maintain excellent contrast
+* reduce headline size appropriately
+
+Use:
+
+clamp() for typography.
+
+Suggested hero title:
+
+Desktop:
+clamp(3.5rem, 7vw, 7rem)
+
+Mobile:
+clamp(2.8rem, 12vw, 4.5rem)
+
+Body:
+
+18px desktop
+
+17px mobile
+
+Navigation must remain extremely clean.
+
+No overcrowding.
+
+---
+
+# PERFORMANCE
+
+The site must feel exceptionally smooth.
+
+Target:
+
+60fps interactions.
+
+Avoid:
+
+* large JS animation libraries unless absolutely necessary
+* scroll event listeners firing continuously
+* excessive DOM elements
+* huge unoptimized images
+* autoplay video
+* unnecessary dependencies
+
+Use:
+
+* CSS transforms
+* opacity
+* IntersectionObserver
+* requestAnimationFrame only when necessary
+* lazy loading
+* responsive image sizes
+* WebP/AVIF where appropriate
+
+Respect:
+
+prefers-reduced-motion.
+
+When reduced motion is enabled, disable parallax and complex entrance animations.
+
+---
+
+# TECH STACK
+
+Use the existing repository:
+
+https://github.com/unit6854/Austin-Davis.git
+
+Build the site cleanly so it can be deployed to Netlify.
+
+Use the existing project structure if one exists rather than unnecessarily rebuilding the project.
+
+If React/Vite is already present, continue using it.
+
+If not, use a lightweight modern setup appropriate for Netlify.
+
+Do not introduce unnecessary frameworks.
+
+Keep components modular:
+
+Hero
+Navigation
+StoryFeature
+QuoteSection
+JourneyLinks
+Newsletter
+Footer
+
+Create a clean reusable typography and spacing system.
+
+---
+
+# CONTENT ARCHITECTURE
+
+The eventual website should support:
+
+/stories
+/poems
+/journal
+/about
+/letters
+
+The homepage should only tease these sections.
+
+Do not fill the website with placeholder motivational content.
+
+Use Austin's actual writing wherever possible.
+
+For now, the first story is:
+
+**The Things I Didn't Understand**
+
+Do not fabricate additional stories.
+
+---
+
+# MOST IMPORTANT DESIGN PRINCIPLE
+
+The site should make someone feel:
+
+**"I don't know what this is yet, but I want to keep going."**
+
+The road is the metaphor.
+
+The visitor begins at the road.
+
+They discover the memories.
+
+They discover the writing.
+
+They discover the questions.
+
+Eventually, they discover the larger philosophy.
+
+Do not explain everything on the homepage.
+
+Leave room for mystery.
+
+The website should feel like the beginning of a book.
+
+Not the conclusion.
+
+---
+
+# FINAL QUALITY BAR
+
+Before considering the implementation finished, ask:
+
+Does this look like a $10,000–$20,000 custom editorial website?
+
+Does it feel like Austin Davis has a unique voice?
+
+Does the website feel emotional without being cheesy?
+
+Does it feel premium without being pretentious?
+
+Does it feel personal without being cluttered?
+
+Does the road actually feel like the beginning of a journey?
+
+Would someone who knows nothing about Austin want to scroll?
+
+Would someone who reads one story want to read another?
+
+If the answer is no, refine it before stopping.
+
+Do not settle for "technically complete."
+
+The goal is **memorable.**

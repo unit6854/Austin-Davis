@@ -1,0 +1,146 @@
+/* ==========================================================================
+   The journey — three ways further in. Rules and space, not cards.
+   ========================================================================== */
+
+.journey {
+  position: relative;
+  background: var(--ink);
+  padding-block: clamp(1rem, 3vw, 2rem) clamp(3rem, 7vw, 5.5rem);
+}
+
+.journey__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.journey__item + .journey__item {
+  border-left: 1px solid rgba(182, 154, 106, 0.2);
+}
+
+.journey__link {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.6rem, 1.8vw, 1.5rem);
+  height: 100%;
+  padding: clamp(1.25rem, 2.6vw, 2.25rem) clamp(0.75rem, 2.2vw, 2rem);
+  isolation: isolate;
+}
+.journey__item:first-child .journey__link { padding-left: 0; }
+
+/* the texture that surfaces underneath on hover */
+.journey__glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(90% 120% at 30% 0%, rgba(188, 144, 87, 0.13), transparent 68%),
+    var(--noise);
+  background-size: auto, 180px 180px;
+  opacity: 0;
+  transition: opacity 640ms var(--ease);
+}
+
+.journey__icon {
+  flex: none;
+  width: clamp(28px, 4.6vw, 46px);
+  height: auto;
+  color: var(--gold);
+  opacity: 0.9;
+  transition: transform 640ms var(--ease), opacity 640ms var(--ease);
+}
+
+.journey__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: transform 640ms var(--ease);
+}
+
+.journey__label {
+  font-family: var(--sans);
+  font-size: clamp(0.6875rem, 1.3vw, 0.8125rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.journey__description {
+  margin-top: clamp(0.55rem, 1.2vw, 0.9rem);
+  font-size: clamp(0.875rem, 1.35vw, 1.125rem);
+  line-height: 1.5;
+  color: var(--cream-dim);
+}
+
+.journey__more {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: clamp(0.9rem, 2vw, 1.5rem);
+  color: var(--cream);
+}
+.journey__more .arrow { transition: transform 640ms var(--ease); }
+
+.journey__more-rule {
+  display: block;
+  flex: 1 1 auto;
+  max-width: 5.5rem;
+  height: 1px;
+  background: var(--gold-hair);
+  transform-origin: left;
+  transform: scaleX(0.72);
+  transition: transform 720ms var(--ease), background-color 720ms var(--ease);
+}
+
+/* ---------- hover ---------- */
+@media (hover: hover) {
+  .journey__link:hover .journey__glow,
+  .journey__link:focus-visible .journey__glow { opacity: 1; }
+
+  .journey__link:hover .journey__text,
+  .journey__link:focus-visible .journey__text { transform: translateX(8px); }
+
+  .journey__link:hover .journey__icon,
+  .journey__link:focus-visible .journey__icon {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+
+  .journey__link:hover .arrow,
+  .journey__link:focus-visible .arrow { transform: translateX(6px); }
+
+  .journey__link:hover .journey__more-rule,
+  .journey__link:focus-visible .journey__more-rule {
+    transform: scaleX(1);
+    background: var(--gold);
+  }
+}
+
+/* ---------- phones keep the three columns, tightened ---------- */
+@media (max-width: 700px) {
+  .journey__link {
+    gap: 0.55rem;
+    padding: 1.1rem 0.55rem;
+  }
+  .journey__icon { width: 26px; }
+  .journey__label { font-size: 0.625rem; letter-spacing: 0.15em; }
+  .journey__description { font-size: 0.8125rem; line-height: 1.45; }
+  .journey__more { margin-top: 0.75rem; }
+  .journey__more-rule { max-width: 3rem; }
+}
+
+/* ---------- and only stack when they truly cannot fit ---------- */
+@media (max-width: 340px) {
+  .journey__list { grid-template-columns: minmax(0, 1fr); }
+  .journey__item + .journey__item {
+    border-left: 0;
+    border-top: 1px solid rgba(182, 154, 106, 0.2);
+  }
+  .journey__link { padding-inline: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey__glow { transition: none; }
+}

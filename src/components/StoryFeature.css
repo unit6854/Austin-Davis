@@ -1,0 +1,124 @@
+/* ==========================================================================
+   First story — a literary feature laid on a sheet of paper.
+   ========================================================================== */
+
+.story {
+  background: var(--ink);
+  padding-block: clamp(1rem, 3vw, 3rem) clamp(4rem, 9vw, 7rem);
+}
+
+.story__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding: clamp(1.75rem, 4.4vw, 4.25rem) clamp(1.5rem, 4vw, 4rem);
+  background:
+    url('/images/paper-texture.webp') center / cover,
+    var(--paper);
+  border: 1px solid rgba(27, 23, 18, 0.18);
+  color: var(--paper-ink);
+  box-shadow:
+    0 34px 70px -34px rgba(0, 0, 0, 0.9),
+    inset 0 0 90px rgba(78, 54, 28, 0.2);
+  overflow: hidden;
+}
+
+.story__body { position: relative; z-index: 1; }
+
+.story__eyebrow { color: #9A7440; }
+
+.story__title {
+  margin-top: clamp(1rem, 2.2vw, 1.6rem);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.875rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.014em;
+  color: #17130E;
+  text-wrap: balance;
+}
+
+.story__description {
+  margin-top: clamp(0.9rem, 1.8vw, 1.35rem);
+  max-width: 26ch;
+  font-size: clamp(0.9375rem, 1.5vw, 1.1875rem);
+  line-height: 1.62;
+  color: var(--paper-ink-dim);
+}
+
+/* the opening lines, kept quiet — desktop only, where there is room */
+.story__excerpt {
+  display: none;
+  margin-top: clamp(1.5rem, 2.6vw, 2.1rem);
+  padding-top: clamp(1.25rem, 2.2vw, 1.8rem);
+  border-top: 1px solid rgba(27, 23, 18, 0.18);
+  max-width: 34ch;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.125rem;
+  line-height: 1.66;
+  color: rgba(27, 23, 18, 0.62);
+}
+.story__excerpt p + p { margin-top: 0.15em; }
+
+.story__cta { margin-top: clamp(1.5rem, 3vw, 2.5rem); }
+
+/* ---------- the sprig ---------- */
+.story__sprig {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: auto;
+  justify-self: end;
+  color: rgba(58, 44, 30, 0.5);
+  opacity: 0;
+  transform: translate3d(0, 14px, 0) rotate(-3deg);
+  transition:
+    opacity 1600ms var(--ease) 260ms,
+    transform 1600ms var(--ease) 260ms;
+}
+.story__card.is-visible .story__sprig {
+  opacity: 1;
+  transform: rotate(-3deg);
+}
+
+@media (min-width: 1024px) {
+  .story__excerpt { display: block; }
+  .story__card { grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr); }
+  .story__description { max-width: 30ch; }
+}
+
+/* On a phone the sprig lies behind the type instead of stealing a column,
+   so the title still breaks the way it does in the wider composition. */
+@media (max-width: 700px) {
+  .story__card { display: block; }
+
+  .story__body { max-width: 74%; }
+
+  .story__sprig {
+    position: absolute;
+    right: -3%;
+    top: 8%;
+    width: 44%;
+    opacity: 0;
+    color: rgba(58, 44, 30, 0.42);
+  }
+  .story__card.is-visible .story__sprig { opacity: 1; }
+
+  .story__cta {
+    padding-inline: 1.35em;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 420px) {
+  .story__body { max-width: 78%; }
+  .story__sprig { width: 40%; top: 10%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story__sprig { opacity: 1; transform: rotate(-3deg); }
+}

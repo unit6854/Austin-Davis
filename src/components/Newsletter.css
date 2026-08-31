@@ -1,0 +1,112 @@
+/* ==========================================================================
+   Join the Journey — the dark tears open onto paper.
+   ========================================================================== */
+
+.newsletter {
+  position: relative;
+  z-index: 1;
+  background:
+    url('/images/paper-texture.webp') center / cover,
+    var(--paper);
+  color: var(--paper-ink);
+  padding-block: clamp(2.75rem, 6vw, 4.5rem) clamp(2.75rem, 6vw, 4.5rem);
+  text-align: center;
+}
+
+/* the torn edge sits entirely above the section, over the dark */
+.newsletter__tear {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1px;
+  height: clamp(20px, 4.6vw, 66px);
+  transform: translateY(-100%);
+  background: url('/images/torn-up.webp') center bottom / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.newsletter__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.newsletter__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.875rem, 5.6vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+  color: #17130E;
+}
+
+.newsletter__supporting {
+  margin-top: clamp(0.5rem, 1.4vw, 0.9rem);
+  font-size: clamp(0.9375rem, 1.6vw, 1.1875rem);
+  color: var(--paper-ink-dim);
+  text-wrap: balance;
+}
+
+.newsletter__form-slot {
+  width: 100%;
+  max-width: 34rem;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.newsletter__form {
+  display: flex;
+  width: 100%;
+}
+
+.newsletter__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 1.05em 1.25em;
+  border: 1px solid rgba(27, 23, 18, 0.28);
+  border-right: 0;
+  background: rgba(255, 252, 244, 0.24);
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--paper-ink);
+  transition: border-color 420ms var(--ease), background-color 420ms var(--ease);
+}
+.newsletter__input::placeholder { color: rgba(27, 23, 18, 0.46); }
+.newsletter__input:focus {
+  outline: none;
+  border-color: rgba(27, 23, 18, 0.6);
+  background: rgba(255, 252, 244, 0.5);
+}
+
+.newsletter__button {
+  flex: none;
+  padding: 1.05em 1.9em;
+  background: #17130E;
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  transition: background-color 420ms var(--ease), color 420ms var(--ease);
+}
+.newsletter__button:hover:not(:disabled) { background: #362B1E; }
+.newsletter__button:disabled { opacity: 0.6; cursor: default; }
+
+.newsletter__message {
+  min-height: 1.6em;
+  margin-top: 1rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: rgba(27, 23, 18, 0.68);
+  opacity: 0;
+  transition: opacity 620ms var(--ease);
+}
+.newsletter__message.is-shown { opacity: 1; }
+
+/* ---------- phones: the button drops below the field ---------- */
+@media (max-width: 460px) {
+  .newsletter__form { flex-direction: column; gap: 0.6rem; }
+  .newsletter__input { border-right: 1px solid rgba(27, 23, 18, 0.28); }
+  .newsletter__button { padding-block: 1.15em; }
+}

@@ -1,0 +1,212 @@
+/* ==========================================================================
+   Navigation — transparent over the road, barely there everywhere else.
+   ========================================================================== */
+
+.nav__sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transition: background-color 620ms var(--ease), border-color 620ms var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+.nav--stuck {
+  background: rgba(12, 11, 9, 0.94);
+  border-bottom-color: var(--cream-hair);
+}
+.nav--open { background: transparent; border-bottom-color: transparent; }
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 2.4vw, 1.9rem) var(--shell);
+}
+
+/* ---------- wordmark ---------- */
+.nav__wordmark {
+  margin-right: auto;
+  font-family: var(--sans);
+  font-size: clamp(0.75rem, 1.2vw, 0.8125rem);
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--cream);
+  white-space: nowrap;
+  transition: color 420ms var(--ease), opacity 420ms var(--ease);
+}
+.nav__wordmark:hover { color: var(--gold); }
+
+/* ---------- desktop links ---------- */
+.nav__links {
+  display: none;
+  align-items: center;
+  gap: clamp(1.5rem, 2.6vw, 2.75rem);
+}
+
+.nav__link {
+  position: relative;
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  color: rgba(237, 229, 214, 0.86);
+  transition: color 420ms var(--ease);
+}
+.nav__link span { position: relative; display: inline-block; }
+.nav__link span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 560ms var(--ease);
+}
+.nav__link:hover { color: var(--cream); }
+.nav__link:hover span::after,
+.nav__link:focus-visible span::after { transform: scaleX(1); }
+
+/* ---------- desktop CTA ---------- */
+.nav__cta {
+  display: none;
+  padding: 0.7em 1.5em;
+  border: 1px solid rgba(237, 229, 214, 0.34);
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--cream);
+  white-space: nowrap;
+  transition:
+    background-color 420ms var(--ease),
+    color 420ms var(--ease),
+    border-color 420ms var(--ease);
+}
+.nav__cta:hover,
+.nav__cta:focus-visible {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--ink);
+}
+
+/* ---------- mobile toggle: three thin lines, no box ---------- */
+.nav__toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 30px;
+  height: 22px;
+  padding: 0;
+  z-index: 120;
+}
+.nav__toggle-line {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--cream);
+  transition: transform 480ms var(--ease), opacity 320ms var(--ease);
+}
+.nav--open .nav__toggle-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav--open .nav__toggle-line:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
+.nav--open .nav__toggle-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---------- entrance: the navigation settles in after the road appears ---- */
+.nav__inner > * { opacity: 0; }
+.is-entered .nav__wordmark { animation: navRise 900ms var(--ease) 420ms both; }
+.is-entered .nav__links    { animation: navRise 900ms var(--ease) 520ms both; }
+.is-entered .nav__cta      { animation: navRise 900ms var(--ease) 600ms both; }
+.is-entered .nav__toggle   { animation: navRise 900ms var(--ease) 520ms both; }
+
+@keyframes navRise {
+  from { opacity: 0; transform: translate3d(0, -10px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ==========================================================================
+   Mobile menu
+   ========================================================================== */
+
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 6vh, 3.5rem);
+  padding: 6rem var(--shell) 4rem;
+  background: rgba(9, 9, 8, 0.985);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 520ms var(--ease), visibility 520ms;
+}
+.menu[hidden] { display: none; }
+
+.menu--open { opacity: 1; visibility: visible; }
+
+.menu__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.1rem, 3.4vh, 1.9rem);
+}
+
+.menu__link {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 9vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--cream);
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 620ms var(--ease), transform 620ms var(--ease);
+}
+.menu--open .menu__link { opacity: 1; transform: none; }
+
+.menu__cta {
+  padding: 1.05em 2.1em;
+  border: 1px solid rgba(237, 229, 214, 0.3);
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 620ms var(--ease), transform 620ms var(--ease);
+}
+.menu--open .menu__cta { opacity: 1; transform: none; }
+
+/* ==========================================================================
+   Breakpoint
+   ========================================================================== */
+
+@media (min-width: 901px) {
+  .nav__links,
+  .nav__cta { display: flex; }
+  .nav__toggle { display: none; }
+  .menu { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__inner > * { opacity: 1; animation: none; }
+  .menu__link,
+  .menu__cta { opacity: 1; transform: none; }
+}
