@@ -66,21 +66,80 @@ posts to it. Submissions appear under **Forms** in the Netlify dashboard.
 To pipe them to Mailchimp/ConvertKit/Buttondown, add a Netlify form
 notification or an outgoing webhook.
 
+## The seasonal background
+
+The hero is not one photograph but a slow environmental cycle — the same
+camera left in place while the year goes past. `src/components/
+SeasonalBackground.jsx` owns it, and every timing lives in the `CYCLE`
+constant at the top of that file.
+
+| Order | Scene | Source file | Holds for | Fades in over |
+| --- | --- | --- | --- | --- |
+| 1 | Summer, sunrise | `Seasons/Hero.png` | 38 s | 10 s |
+| 2 | Summer, night | `Seasons/Night hero.png` | 32 s | 17 s (dusk) |
+| 3 | Autumn | `Seasons/Autumn Hero.png` | 38 s | 17 s (dawn) |
+| 4 | Winter | `Seasons/Winter Hero.png` | 38 s | 11 s |
+
+**There is no spring photograph yet.** Add `Spring Hero.png` to `Seasons/`,
+convert it the same way, add an entry to `SEASONS` and a frame at the top of
+`CYCLE`, and the full Spring → Summer → Autumn → Winter loop closes with no
+other change.
+
+Day and night share one timeline rather than running as a second cycle,
+because only the summer scene has a night photograph. The fades into and out
+of night are ~1.6× longer than a season change, so dusk and dawn read as the
+light going rather than a picture being swapped.
+
+**How the crossfade works.** Two `<img>` layers are created once and reused
+forever. The back layer holds what you are looking at; the front layer fades
+the next scene in *over the top of it*. Because the layer underneath stays
+fully opaque throughout, there is never a frame where both are partly
+transparent — so no flash, no black frame, no wash. When the fade completes
+the two layers swap roles: the now-visible front becomes the back, and the
+old back (invisible beneath it) has its opacity reset and its next source
+set. Nothing is added to or removed from the DOM.
+
+Only `opacity` animates, on `cubic-bezier(0.45, 0.02, 0.25, 1)` — slow to
+start, a little acceleration, a long settle. The scroll parallax lives on a
+wrapper (`.hero__parallax`), so the layers themselves never transform.
+
+**Performance.** The first frame is preloaded from `index.html` with
+`fetchpriority="high"`. The scene *after next* is warmed with an `Image()`
+during each hold, so a fade never waits on the network, and a fade will not
+begin until the incoming frame has actually decoded. There is no React state
+and no `requestAnimationFrame` loop — the whole thing is timers plus CSS
+transitions. The cycle pauses on `visibilitychange` when the tab is hidden.
+
+**Reduced motion.** `prefers-reduced-motion: reduce` stops the cycle
+entirely: the summer frame is shown and nothing else is even downloaded.
+
+**Winter turns the type over.** Winter is a bright scene, so cream copy would
+wash out on the snow. `SeasonalBackground` sets `data-scene-light` on
+`<html>`, and the hero's colour tokens flip to ink with a light halo plus a
+soft mist behind the copy — transitioning on exactly the same duration and
+curve as the image underneath. Measured contrast at rest, every scene,
+desktop and mobile: 6.1:1 to 15.1:1.
+
 ## Images
 
 Generated from the supplied source art with ImageMagick:
 
 | File | From | Notes |
 | --- | --- | --- |
-| `hero.webp` | `Hero.png` | WebP quality **100**, 1684w |
-| `hero-1600/1280/880.webp` | `Hero.png` | quality 90 — visually identical, ~⅓ the bytes |
+| `seasons/{summer,summer-night,autumn,winter}-1684.webp` | `Seasons/*.png` | quality **95** — 2% RMSE from quality 100 at a third of the bytes |
+| `seasons/…-1280.webp` / `…-880.webp` | `Seasons/*.png` | quality 92 / 90 for narrower viewports |
+| `hero.webp` | `Hero.png` | the original quality-100 conversion, kept as the archive copy |
 | `pop.webp` | `Mock.png` | de-rotated, regrained archival photograph |
 | `leaf.webp` | `Mock.png` | cut out on the HSV saturation channel |
 | `torn-down/up.webp` | `Paper.png` | torn edge under the hero and above the newsletter |
 | `paper-texture.webp`, `frame-texture.webp` | `Paper.png` | four-way mirrored, seamless |
 
-The browser picks a hero variant from `srcset`; only displays wider than
-1600px download the full-quality file.
+The source PNGs in `Seasons/` are never modified. `Night hero.png` is one
+pixel wider than the others and is cropped to 1684 on the way out so all four
+frames align exactly.
+
+The browser picks one width per scene from `srcset`. A phone loads about
+650 KB across the whole four-scene cycle, and only as each scene is reached.
 
 ## Motion
 

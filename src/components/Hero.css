@@ -4,6 +4,17 @@
 
 .hero {
   --p: 0;                       /* scroll progress through the hero, 0 → 1 */
+
+  /* The copy over the road recolours with the season. Winter is a bright
+     scene, so cream type would wash out on the snow; these flip to ink and
+     a light halo, on exactly the same curve and duration as the crossfade
+     underneath (--scene-fade is set by SeasonalBackground). */
+  --hero-fg: var(--cream);
+  --hero-fg-dim: rgba(237, 229, 214, 0.82);
+  --hero-halo-strong: 0 2px 30px rgba(9, 9, 8, 0.55);
+  --hero-halo: 0 1px 16px rgba(9, 9, 8, 0.65);
+  --hero-veil-extra: 0;
+
   position: relative;
   isolation: isolate;
   min-height: 100vh;
@@ -35,12 +46,12 @@
   animation: heroBreathe 30s var(--ease-soft) 1600ms infinite alternate;
 }
 
-.hero__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 58%;
-  /* scales gently and lags the scroll, so the road stays present */
+/* scales gently and lags the scroll, so the road stays present. The transform
+   lives on this wrapper rather than on the image layers, so the seasonal
+   crossfade underneath only ever animates opacity. */
+.hero__parallax {
+  position: absolute;
+  inset: 0;
   transform:
     scale(calc(1 + var(--p) * 0.08))
     translate3d(0, calc(var(--p) * 5vh), 0);
@@ -67,6 +78,46 @@
   inset: 0;
   background: var(--ink-900);
   opacity: calc(var(--p) * 0.5);
+}
+
+/* ==========================================================================
+   Winter is a bright scene. The copy turns to ink over it, with a light halo
+   instead of a dark one, and the veil gives up a little of its weight so the
+   snow keeps its brightness. Both cross over on the same curve as the image.
+   ========================================================================== */
+
+html[data-scene-light="true"] .hero {
+  --hero-fg: #1B160F;
+  --hero-fg-dim: rgba(27, 22, 15, 0.9);
+  --hero-halo-strong: 0 1px 34px rgba(255, 253, 247, 0.72);
+  --hero-halo: 0 1px 18px rgba(255, 253, 247, 0.8);
+  --hero-veil-extra: 1;
+}
+
+/* A soft light wash behind the copy so the ink always has something to sit on,
+   whatever the snow is doing underneath. It reads as mist over the field. */
+.hero__veil::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      54% 34% at 50% 46%,
+      rgba(252, 250, 245, 0.9),
+      rgba(252, 250, 245, 0) 76%
+    ),
+    radial-gradient(
+      84% 58% at 50% 48%,
+      rgba(250, 247, 240, 0.6),
+      rgba(250, 247, 240, 0) 78%
+    ),
+    radial-gradient(
+      42% 16% at 50% 88%,
+      rgba(250, 247, 240, 0.7),
+      rgba(250, 247, 240, 0) 76%
+    );
+  opacity: var(--hero-veil-extra, 0);
+  transition: opacity var(--scene-fade, 10s) var(--ease-soft);
 }
 
 .hero__vignette {
@@ -108,16 +159,22 @@
 }
 
 .hero__eyebrow {
-  color: var(--cream);
+  color: var(--hero-fg);
   opacity: 0.86;
   margin-bottom: clamp(1.5rem, 3.2vw, 2.25rem);
-  text-shadow: 0 1px 14px rgba(9, 9, 8, 0.6);
+  text-shadow: var(--hero-halo);
+  transition:
+    color var(--scene-fade, 10s) var(--ease-soft),
+    text-shadow var(--scene-fade, 10s) var(--ease-soft);
 }
 
 .hero__title {
   font-size: clamp(2.125rem, 7.8vw, 6.125rem);
-  color: var(--cream);
-  text-shadow: 0 2px 30px rgba(9, 9, 8, 0.52);
+  color: var(--hero-fg);
+  text-shadow: var(--hero-halo-strong);
+  transition:
+    color var(--scene-fade, 10s) var(--ease-soft),
+    text-shadow var(--scene-fade, 10s) var(--ease-soft);
 }
 .hero__line {
   display: block;
@@ -132,9 +189,12 @@
   max-width: 33rem;
   font-size: clamp(1rem, 1.4vw, 1.1875rem);
   line-height: 1.62;
-  color: rgba(237, 229, 214, 0.82);
-  text-shadow: 0 1px 18px rgba(9, 9, 8, 0.62);
+  color: var(--hero-fg-dim);
+  text-shadow: var(--hero-halo);
   text-wrap: balance;
+  transition:
+    color var(--scene-fade, 10s) var(--ease-soft),
+    text-shadow var(--scene-fade, 10s) var(--ease-soft);
 }
 
 /* ---------- scroll cue ---------- */
@@ -152,7 +212,8 @@
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
-  color: var(--cream);
+  color: var(--hero-fg);
+  transition: color var(--scene-fade, 10s) var(--ease-soft);
 }
 .hero__cue-label {
   font-family: var(--sans);
@@ -161,8 +222,10 @@
   letter-spacing: 0.28em;
   text-transform: uppercase;
   opacity: 0.78;
-  text-shadow: 0 1px 14px rgba(9, 9, 8, 0.7);
-  transition: opacity 420ms var(--ease);
+  text-shadow: var(--hero-halo);
+  transition:
+    opacity 420ms var(--ease),
+    text-shadow var(--scene-fade, 10s) var(--ease-soft);
 }
 .hero__cue-arrow {
   opacity: 0.62;

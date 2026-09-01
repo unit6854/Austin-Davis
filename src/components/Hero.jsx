@@ -1,38 +1,22 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { HERO } from '../content/site.js';
 import { prefersReducedMotion } from '../lib/reveal.js';
 import { markEntered } from '../lib/entrance.js';
+import SeasonalBackground from './SeasonalBackground.jsx';
 import './Hero.css';
 
 export default function Hero() {
   const heroRef = useRef(null);
-  const imgRef = useRef(null);
 
   /* --- entrance: hold the sequence until the road is actually painted --- */
+  const markReady = useCallback(() => {
+    window.setTimeout(markEntered, 60);
+  }, []);
+
   useEffect(() => {
-    const img = imgRef.current;
-    let timer;
-
-    const start = () => {
-      timer = window.setTimeout(markEntered, 60);
-    };
-
-    if (img?.complete) {
-      start();
-    } else {
-      img?.addEventListener('load', start, { once: true });
-      img?.addEventListener('error', start, { once: true });
-    }
-
     // Never let a slow network hold the page hostage.
     const safety = window.setTimeout(markEntered, 2200);
-
-    return () => {
-      window.clearTimeout(timer);
-      window.clearTimeout(safety);
-      img?.removeEventListener('load', start);
-      img?.removeEventListener('error', start);
-    };
+    return () => window.clearTimeout(safety);
   }, []);
 
   /* --- scroll-linked parallax, only while the hero is on screen --- */
@@ -83,18 +67,9 @@ export default function Hero() {
     <section className="hero" ref={heroRef} aria-label="Introduction">
       <div className="hero__media">
         <div className="hero__frame">
-          <img
-            ref={imgRef}
-            className="hero__image"
-            src="/images/hero-1280.webp"
-            srcSet="/images/hero-880.webp 880w, /images/hero-1280.webp 1280w, /images/hero-1600.webp 1600w, /images/hero.webp 1684w"
-            sizes="100vw"
-            width="1684"
-            height="934"
-            alt="A dirt road at sunrise running past a cotton field and a farmhouse in rural Alabama."
-            fetchPriority="high"
-            decoding="async"
-          />
+          <div className="hero__parallax">
+            <SeasonalBackground onReady={markReady} />
+          </div>
         </div>
         <div className="hero__veil" aria-hidden="true" />
         <div className="hero__light" aria-hidden="true" />

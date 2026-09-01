@@ -1,0 +1,245 @@
+import { useEffect, useRef } from 'react';
+import './SeasonalBackground.css';
+
+/* ==========================================================================
+   Seasonal background — one camera, left in place while the year goes past.
+
+   Everything you would want to tune lives in the block below.
+   ========================================================================== */
+
+/**
+ * The cycle, in order. `hold` is how long a frame sits fully visible;
+ * `fade` is how long the crossfade INTO that frame takes.
+ *
+ * Day and night are folded into this one timeline because only the summer
+ * scene has a night photograph — see SEASONS below. The fades in and out of
+ * night are deliberately much longer than a season change, so dusk and dawn
+ * feel like the light going rather than a picture being swapped.
+ */
+const CYCLE = [
+  { season: 'summer', hold: 38000, fade: 10000 },
+  { season: 'summer-night', hold: 32000, fade: 17000 }, // dusk
+  { season: 'autumn', hold: 38000, fade: 17000 }, // dawn
+  { season: 'winter', hold: 38000, fade: 11000 },
+];
+
+/** Slow in, a little acceleration, a long settle. */
+const EASE = 'cubic-bezier(0.45, 0.02, 0.25, 1)';
+
+/**
+ * The scenes themselves.
+ *
+ * NOTE — there is no spring photograph in /Seasons yet. Drop a
+ * `Spring Hero.png` in beside the others, run the same convert step, add the
+ * entry here and a `{ season: 'spring', … }` frame at the top of CYCLE and
+ * the full Spring → Summer → Autumn → Winter loop closes with no other
+ * change. Until then the cycle runs the three seasons that exist, in order.
+ */
+const SEASONS = {
+  summer: { file: 'summer', light: false, alt: 'The road in summer, at sunrise, past an open cotton field.' },
+  'summer-night': { file: 'summer-night', light: false, alt: 'The same road at night under a full moon, the farmhouse windows lit.' },
+  autumn: { file: 'autumn', light: false, alt: 'The same road in autumn, the trees turned red and the road covered in leaves.' },
+  winter: { file: 'winter', light: true, alt: 'The same road in winter, snow over the field, the road and the bare trees.' },
+};
+
+const WIDTHS = [880, 1280, 1684];
+
+const srcsetFor = (file) =>
+  WIDTHS.map((w) => `/images/seasons/${file}-${w}.webp ${w}w`).join(', ');
+
+const srcFor = (file) => `/images/seasons/${file}-1280.webp`;
+
+export const FIRST_SEASON = SEASONS[CYCLE[0].season];
+export { srcsetFor, srcFor };
+
+/* ========================================================================== */
+
+export default function SeasonalBackground({ onReady }) {
+  /* Two layers, created once and reused for the whole life of the page. The
+     back layer holds what you are looking at; the front layer fades the next
+     scene in over the top of it, so there is never a moment when the two are
+     both semi-transparent and the ground shows through. */
+  const layerA = useRef(null);
+  const layerB = useRef(null);
+  const readyRef = useRef(onReady);
+  readyRef.current = onReady;
+
+  useEffect(() => {
+    const back = { el: layerA.current, index: 0 };
+    const front = { el: layerB.current, index: -1 };
+    if (!back.el || !front.el) return undefined;
+
+    const root = document.documentElement;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let timer = null;
+    let preloader = null;
+    let stopped = false;
+
+    const applySceneAttributes = (season) => {
+      root.dataset.scene = season;
+      root.dataset.sceneLight = String(SEASONS[season].light);
+    };
+
+    /* --- first frame ------------------------------------------------------ */
+    const first = CYCLE[0].season;
+    applySceneAttributes(first);
+    root.style.setProperty('--scene-fade', `${CYCLE[1]?.fade ?? 10000}ms`);
+
+    const announceReady = () => readyRef.current?.();
+    if (back.el.complete) announceReady();
+    else back.el.addEventListener('load', announceReady, { once: true });
+
+    /* --- warm the image after next, so a fade never waits on the network --- */
+    const preload = (index) => {
+      const { file } = SEASONS[CYCLE[index % CYCLE.length].season];
+      preloader = new Image();
+      preloader.sizes = '100vw';
+      preloader.srcset = srcsetFor(file);
+      preloader.src = srcFor(file);
+    };
+
+    /* --- the cycle -------------------------------------------------------- */
+    const scheduleHold = () => {
+      if (stopped) return;
+      const { hold } = CYCLE[back.index];
+      timer = window.setTimeout(beginTransition, hold);
+    };
+
+    function beginTransition() {
+      if (stopped) return;
+
+      const nextIndex = (back.index + 1) % CYCLE.length;
+      const { season, fade } = CYCLE[nextIndex];
+      const { file } = SEASONS[season];
+
+      front.index = nextIndex;
+      front.el.sizes = '100vw';
+      front.el.srcset = srcsetFor(file);
+      front.el.src = srcFor(file);
+
+      const start = () => {
+        if (stopped) return;
+
+        /* the copy over the top changes colour on exactly the same curve */
+        root.style.setProperty('--scene-fade', `${fade}ms`);
+        applySceneAttributes(season);
+
+        front.el.style.willChange = 'opacity';
+        front.el.style.transition = `opacity ${fade}ms ${EASE}`;
+        /* two frames, so the browser has the start value before it animates */
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if (!stopped) front.el.style.opacity = '1';
+          });
+        });
+
+        timer = window.setTimeout(finishTransition, fade + 60);
+      };
+
+      /* wait until the incoming frame is actually decoded — never fade to a
+         blank layer */
+      if (front.el.complete) {
+        (front.el.decode?.() ?? Promise.resolve()).then(start, start);
+      } else {
+        front.el.addEventListener(
+          'load',
+          () => (front.el.decode?.() ?? Promise.resolve()).then(start, start),
+          { once: true },
+        );
+        front.el.addEventListener('error', start, { once: true });
+      }
+    }
+
+    function finishTransition() {
+      if (stopped) return;
+
+      /* The front layer is now fully opaque, so the layer underneath is
+         invisible: it can be reset without anything showing. Swap the roles
+         rather than moving images between elements. */
+      const wasBack = back.el;
+      back.el = front.el;
+      back.index = front.index;
+
+      front.el = wasBack;
+      front.el.style.transition = 'none';
+      front.el.style.opacity = '0';
+      front.el.style.willChange = 'auto';
+
+      back.el.style.zIndex = '1';
+      front.el.style.zIndex = '2';
+
+      preload(back.index + 1);
+      scheduleHold();
+    }
+
+    /* --- pause when nobody is looking ------------------------------------- */
+    const onVisibility = () => {
+      if (document.hidden) {
+        window.clearTimeout(timer);
+      } else if (!stopped && !reduced.matches) {
+        scheduleHold();
+      }
+    };
+
+    const startCycling = () => {
+      if (reduced.matches) return;
+      preload(1);
+      scheduleHold();
+      document.addEventListener('visibilitychange', onVisibility);
+    };
+
+    const stopCycling = () => {
+      window.clearTimeout(timer);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+
+    const onMotionChange = () => {
+      stopCycling();
+      if (!reduced.matches) startCycling();
+    };
+
+    startCycling();
+    reduced.addEventListener('change', onMotionChange);
+
+    return () => {
+      stopped = true;
+      stopCycling();
+      reduced.removeEventListener('change', onMotionChange);
+      if (preloader) preloader.src = '';
+      delete root.dataset.scene;
+      delete root.dataset.sceneLight;
+      root.style.removeProperty('--scene-fade');
+    };
+  }, []);
+
+  const first = SEASONS[CYCLE[0].season];
+
+  return (
+    <div className="seasons">
+      <img
+        ref={layerA}
+        className="seasons__layer"
+        style={{ opacity: 1, zIndex: 1 }}
+        src={srcFor(first.file)}
+        srcSet={srcsetFor(first.file)}
+        sizes="100vw"
+        width="1684"
+        height="934"
+        alt={first.alt}
+        fetchPriority="high"
+        decoding="async"
+      />
+      <img
+        ref={layerB}
+        className="seasons__layer"
+        style={{ opacity: 0, zIndex: 2 }}
+        alt=""
+        aria-hidden="true"
+        width="1684"
+        height="934"
+        decoding="async"
+      />
+    </div>
+  );
+}

@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Seasonal background — two stacked, reused image layers.
+   Only `opacity` ever animates, so the whole crossfade stays on the compositor.
+   ========================================================================== */
+
+.seasons {
+  position: absolute;
+  inset: 0;
+  /* the frames are the same scene, so a solid ground behind them means no
+     flash of white or black can ever appear between layers */
+  background: var(--ink-900);
+}
+
+.seasons__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* the road runs to the vanishing point here; on a tall phone viewport this
+     keeps the road, the house, the treeline and the horizon all in frame */
+  object-position: 50% 58%;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* An empty second layer has no src until the first transition; make sure the
+   broken-image glyph can never show. */
+.seasons__layer:not([src]) { visibility: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .seasons__layer { transition: none !important; }
+}
