@@ -75,15 +75,16 @@ constant at the top of that file.
 
 | Order | Scene | Source file | Holds for | Fades in over |
 | --- | --- | --- | --- | --- |
-| 1 | Summer, sunrise | `Seasons/Hero.png` | 38 s | 10 s |
+| 1 | Summer, sunrise | `Seasons/Hero.png` | 38 s | 11 s |
 | 2 | Summer, night | `Seasons/Night hero.png` | 32 s | 17 s (dusk) |
 | 3 | Autumn | `Seasons/Autumn Hero.png` | 38 s | 17 s (dawn) |
 | 4 | Winter | `Seasons/Winter Hero.png` | 38 s | 11 s |
+| 5 | Spring | `Seasons/Spring Hero.png` | 38 s | 12 s (the thaw) |
 
-**There is no spring photograph yet.** Add `Spring Hero.png` to `Seasons/`,
-convert it the same way, add an entry to `SEASONS` and a frame at the top of
-`CYCLE`, and the full Spring → Summer → Autumn → Winter loop closes with no
-other change.
+Then round again to summer — **4 minutes 12 seconds** for a full year. The
+cycle starts on summer so the first thing a visitor sees is the golden-hour
+frame the site was designed around; read as a loop the order is exactly
+Spring → Summer → Autumn → Winter → Spring.
 
 Day and night share one timeline rather than running as a second cycle,
 because only the summer scene has a night photograph. The fades into and out
@@ -113,12 +114,13 @@ transitions. The cycle pauses on `visibilitychange` when the tab is hidden.
 **Reduced motion.** `prefers-reduced-motion: reduce` stops the cycle
 entirely: the summer frame is shown and nothing else is even downloaded.
 
-**Winter turns the type over.** Winter is a bright scene, so cream copy would
-wash out on the snow. `SeasonalBackground` sets `data-scene-light` on
-`<html>`, and the hero's colour tokens flip to ink with a light halo plus a
-soft mist behind the copy — transitioning on exactly the same duration and
-curve as the image underneath. Measured contrast at rest, every scene,
-desktop and mobile: 6.1:1 to 15.1:1.
+**Bright scenes turn the type over.** Winter and spring are bright enough
+that cream copy would wash out on them. Those scenes carry `light: true`;
+`SeasonalBackground` sets `data-scene-light` on `<html>`, and the hero's
+colour tokens flip to ink with a light halo plus a soft mist behind the copy
+— transitioning on exactly the same duration and curve as the image
+underneath. Measured contrast at rest, every scene, desktop and mobile:
+**5.9:1 to 15.1:1**.
 
 ## Images
 
@@ -126,7 +128,7 @@ Generated from the supplied source art with ImageMagick:
 
 | File | From | Notes |
 | --- | --- | --- |
-| `seasons/{summer,summer-night,autumn,winter}-1684.webp` | `Seasons/*.png` | quality **95** — 2% RMSE from quality 100 at a third of the bytes |
+| `seasons/{spring,summer,summer-night,autumn,winter}-1684.webp` | `Seasons/*.png` | quality **95** — 2% RMSE from quality 100 at a third of the bytes |
 | `seasons/…-1280.webp` / `…-880.webp` | `Seasons/*.png` | quality 92 / 90 for narrower viewports |
 | `hero.webp` | `Hero.png` | the original quality-100 conversion, kept as the archive copy |
 | `pop.webp` | `Mock.png` | de-rotated, regrained archival photograph |
@@ -135,11 +137,11 @@ Generated from the supplied source art with ImageMagick:
 | `paper-texture.webp`, `frame-texture.webp` | `Paper.png` | four-way mirrored, seamless |
 
 The source PNGs in `Seasons/` are never modified. `Night hero.png` is one
-pixel wider than the others and is cropped to 1684 on the way out so all four
+pixel wider than the others and is cropped to 1684 on the way out so all five
 frames align exactly.
 
 The browser picks one width per scene from `srcset`. A phone loads about
-650 KB across the whole four-scene cycle, and only as each scene is reached.
+860 KB across the whole five-scene cycle, and only as each scene is reached.
 
 ## Motion
 

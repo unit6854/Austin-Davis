@@ -17,10 +17,11 @@ import './SeasonalBackground.css';
  * feel like the light going rather than a picture being swapped.
  */
 const CYCLE = [
-  { season: 'summer', hold: 38000, fade: 10000 },
+  { season: 'summer', hold: 38000, fade: 11000 },
   { season: 'summer-night', hold: 32000, fade: 17000 }, // dusk
   { season: 'autumn', hold: 38000, fade: 17000 }, // dawn
   { season: 'winter', hold: 38000, fade: 11000 },
+  { season: 'spring', hold: 38000, fade: 12000 }, // the thaw, then round again
 ];
 
 /** Slow in, a little acceleration, a long settle. */
@@ -29,17 +30,17 @@ const EASE = 'cubic-bezier(0.45, 0.02, 0.25, 1)';
 /**
  * The scenes themselves.
  *
- * NOTE — there is no spring photograph in /Seasons yet. Drop a
- * `Spring Hero.png` in beside the others, run the same convert step, add the
- * entry here and a `{ season: 'spring', … }` frame at the top of CYCLE and
- * the full Spring → Summer → Autumn → Winter loop closes with no other
- * change. Until then the cycle runs the three seasons that exist, in order.
+ * `light` marks a scene bright enough that cream type would wash out on it;
+ * the hero's copy crosses to ink over those. To add a scene: convert the
+ * source to `public/images/seasons/<file>-{880,1280,1684}.webp`, add it here,
+ * and put a frame in CYCLE where it belongs in the year.
  */
 const SEASONS = {
   summer: { file: 'summer', light: false, alt: 'The road in summer, at sunrise, past an open cotton field.' },
   'summer-night': { file: 'summer-night', light: false, alt: 'The same road at night under a full moon, the farmhouse windows lit.' },
   autumn: { file: 'autumn', light: false, alt: 'The same road in autumn, the trees turned red and the road covered in leaves.' },
   winter: { file: 'winter', light: true, alt: 'The same road in winter, snow over the field, the road and the bare trees.' },
+  spring: { file: 'spring', light: true, alt: 'The same road in spring, the trees in new leaf and wildflowers along the verge.' },
 };
 
 const WIDTHS = [880, 1280, 1684];
