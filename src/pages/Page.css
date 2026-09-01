@@ -130,42 +130,41 @@
   color: var(--cream-dim);
 }
 
-.story-page__body {
-  margin-top: clamp(2.75rem, 5.5vw, 4.5rem);
-  max-width: 36rem;
-  font-size: clamp(1.0625rem, 1.7vw, 1.25rem);
-  line-height: 1.78;
-  color: rgba(237, 229, 214, 0.88);
+/* the sheet sits below the title block, on the dark ground */
+.story-page__paper {
+  margin-top: clamp(2.75rem, 6vw, 4.75rem);
+  max-width: 58rem;
 }
+
+.story-page__body { max-width: 34rem; }
 
 /* Each stanza keeps the author's own line breaks; the space between them
    does the work that paragraph indents would do in prose. */
 .story-page__stanza + .story-page__stanza {
-  margin-top: clamp(2.25rem, 4.4vw, 3.25rem);
+  margin-top: clamp(1.5rem, 3.2vw, 2.4rem);
 }
 
-/* The opening stanza is set a shade larger and brighter — a drop cap would
-   indent the second line and break the author's line breaks. */
-.story-page__stanza:first-child {
-  font-size: 1.075em;
-  color: var(--cream);
-}
+/* The opening stanza is set a shade larger — a drop cap would indent the
+   second line and break the author's line breaks. */
+.story-page__stanza:first-child { font-size: 1.06em; }
 
 .story-page__end {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  gap: 1.1rem;
+  margin-top: clamp(2.75rem, 5.5vw, 4rem);
   text-align: center;
 }
 .story-page__ornament {
-  color: var(--gold);
-  opacity: 0.7;
+  color: rgba(122, 96, 58, 0.62);
 }
 .story-page__sign {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: clamp(2rem, 4.4vw, 2.75rem);
+  color: #3A2F22;
 }
+
+.story-page__back { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
 
 .story-page__back {
   display: inline-flex;

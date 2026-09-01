@@ -1,7 +1,8 @@
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
 import Dateline from '../components/Dateline.jsx';
+import Sheet from '../components/Sheet.jsx';
 import NotFound from './NotFound.jsx';
 import { FIRST_STORY } from '../content/site.js';
 import './Page.css';
@@ -37,45 +38,51 @@ export default function Story() {
           <Dateline iso={story.date} />
         </Reveal>
 
-        {/* Austin's writing — not selectable, not copyable. See lib/protect.js */}
-        <div className="writing story-page__body">
-          {story.stanzas.map((stanza, index) => (
-            <Reveal
-              as="p"
-              key={stanza[0]}
-              className="story-page__stanza"
-              delay={index === 0 ? 340 : 0}
+      </div>
+
+      <div className="shell story-page__paper">
+        <Sheet seed={story.slug}>
+          {/* Austin's writing — not selectable, not copyable. See lib/protect.js */}
+          <div className="writing hand-writing story-page__body">
+            {story.stanzas.map((stanza, index) => (
+              <Reveal
+                as="p"
+                key={stanza[0]}
+                className="story-page__stanza"
+                delay={index === 0 ? 340 : 0}
+              >
+                {stanza.map((line, i) => (
+                  <span className="line" key={line + i}>
+                    {line}
+                  </span>
+                ))}
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal className="story-page__end">
+            <svg
+              className="story-page__ornament"
+              width="46"
+              height="10"
+              viewBox="0 0 46 10"
+              fill="none"
+              aria-hidden="true"
             >
-              {stanza.map((line, i) => (
-                <Fragment key={line + i}>
-                  {line}
-                  {i < stanza.length - 1 ? <br /> : null}
-                </Fragment>
-              ))}
-            </Reveal>
-          ))}
-        </div>
+              <path
+                d="M0 5h17M29 5h17"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+              />
+              <circle cx="23" cy="5" r="2.2" stroke="currentColor" strokeWidth="1" />
+            </svg>
+            <p className="signature story-page__sign">Austin Davis</p>
+          </Reveal>
+        </Sheet>
+      </div>
 
-        <Reveal className="story-page__end">
-          <svg
-            className="story-page__ornament"
-            width="46"
-            height="10"
-            viewBox="0 0 46 10"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M0 5h17M29 5h17"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-            />
-            <circle cx="23" cy="5" r="2.2" stroke="currentColor" strokeWidth="1" />
-          </svg>
-          <p className="signature story-page__sign">Austin Davis</p>
-        </Reveal>
-
+      <div className="shell page__inner">
         <Link to="/stories" className="story-page__back">
           <svg
             className="arrow"

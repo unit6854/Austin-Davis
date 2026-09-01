@@ -1,0 +1,149 @@
+/* ==========================================================================
+   Sheet — a page of paper for a piece of writing.
+
+   Height comes from the content, so the sheet is exactly as long as the
+   writing on it. Width settles on the longest line up to a readable measure,
+   so a short poem gets a small page.
+
+   The paper is built entirely from gradients and two tiles of generated
+   noise: nothing to download, and it stays sharp at any size or height.
+   ========================================================================== */
+
+.sheet {
+  --paper-sheet: #F4F0E7;      /* soft ivory — warm, but a long way from yellow */
+  --ink: #201C17;
+  --ink-soft: rgba(32, 28, 23, 0.7);
+
+  position: relative;
+  isolation: isolate;
+  width: fit-content;
+  min-width: min(100%, 20rem);
+  max-width: min(100%, 46rem);
+  margin-inline: auto;
+  padding:
+    clamp(2.25rem, 5.5vw, 4.25rem)
+    clamp(1.5rem, 4.6vw, 3.75rem)
+    clamp(2.5rem, 6vw, 4.5rem);
+  color: var(--ink);
+  transform: rotate(var(--tilt, 0deg));
+}
+
+/* ---------- the paper itself ---------- */
+.sheet__surface {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+
+  /* cut corners, but soft — paper is never quite square */
+  border-radius: 2px 3px 2px 4px / 3px 2px 4px 2px;
+
+  background-color: var(--paper-sheet);
+  background-image:
+    var(--stains, none),
+    linear-gradient(166deg, #F8F5EE 0%, var(--paper-sheet) 44%, #EDE7DA 100%);
+  background-blend-mode: multiply;
+
+  /* aged edges, and the sheet lifting off the dark ground */
+  box-shadow:
+    inset 0 0 3rem rgba(122, 96, 60, 0.13),
+    inset 0 0 0 1px rgba(122, 96, 60, 0.09),
+    0 2px 3px rgba(0, 0, 0, 0.4),
+    0 24px 46px -16px rgba(0, 0, 0, 0.7),
+    0 64px 90px -44px rgba(0, 0, 0, 0.6);
+}
+
+.sheet__surface > span {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* the slow cloudiness of an old sheet, tinted warm */
+.sheet__mottle {
+  background-color: rgba(146, 114, 70, 0.5);
+  -webkit-mask-image: var(--paper-mottle);
+  mask-image: var(--paper-mottle);
+  -webkit-mask-size: 640px 640px;
+  mask-size: 640px 640px;
+  -webkit-mask-position: var(--mottle-shift, 0 0);
+  mask-position: var(--mottle-shift, 0 0);
+  mix-blend-mode: multiply;
+  opacity: 0.26;
+}
+
+/* the laid lines of the sheet — horizontal, very faint */
+.sheet__weave {
+  background-image: var(--paper-weave);
+  background-size: 300px 300px;
+  mix-blend-mode: soft-light;
+  opacity: 0.30;
+}
+
+/* fine fibre over everything, so no area is ever flat */
+.sheet__fibre {
+  background-image: var(--paper-fibre);
+  background-size: 240px 240px;
+  background-position: var(--fibre-shift, 0 0);
+  mix-blend-mode: soft-light;
+  opacity: 0.52;
+}
+
+/* worn corners — each sheet wears differently */
+.sheet__wear {
+  background:
+    radial-gradient(8rem 8rem at 0 0, rgba(120, 94, 56, var(--wear-tl, 0.08)), transparent 70%),
+    radial-gradient(7rem 7rem at 100% 0, rgba(120, 94, 56, var(--wear-tr, 0.07)), transparent 70%),
+    radial-gradient(8rem 8rem at 0 100%, rgba(120, 94, 56, var(--wear-bl, 0.09)), transparent 70%),
+    radial-gradient(7rem 7rem at 100% 100%, rgba(120, 94, 56, var(--wear-br, 0.07)), transparent 70%);
+  mix-blend-mode: multiply;
+}
+
+/* ---------- what is written on it ---------- */
+.sheet__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   The hand — Caveat, semi-joined, set large enough to read at length
+   ========================================================================== */
+
+.hand-writing {
+  font-family: var(--handwriting);
+  font-weight: 500;
+  font-size: clamp(1.375rem, 2.4vw, 1.6875rem);
+  line-height: 1.66;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  /* the barest ink spread into the fibre — not enough to soften the edges */
+  text-shadow: 0 0 0.35px rgba(32, 28, 23, 0.36);
+}
+
+/* Each line the author wrote is its own block, so a line long enough to wrap
+   hangs under itself instead of being mistaken for a new line. */
+.hand-writing .line {
+  display: block;
+  padding-left: 1.4em;
+  text-indent: -1.4em;
+}
+
+@media (max-width: 620px) {
+  .sheet {
+    min-width: 0;
+    width: auto;
+    padding-inline: clamp(1.25rem, 5.5vw, 2rem);
+  }
+  .hand-writing {
+    font-size: clamp(1.25rem, 5.6vw, 1.5rem);
+    line-height: 1.6;
+  }
+  .hand-writing .line {
+    padding-left: 1.1em;
+    text-indent: -1.1em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet { transform: none; }
+}
