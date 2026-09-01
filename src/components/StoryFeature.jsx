@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import Reveal from './Reveal.jsx';
 import Sprig from './Sprig.jsx';
-import { FIRST_STORY } from '../content/site.js';
+import { FIRST_STORY, formatDate } from '../content/site.js';
 import './StoryFeature.css';
+
+const WHEN = formatDate(FIRST_STORY.date);
 
 export default function StoryFeature() {
   return (
@@ -10,7 +12,13 @@ export default function StoryFeature() {
       <div className="shell">
         <Reveal className="story__card">
           <div className="story__body">
-            <p className="eyebrow story__eyebrow">{FIRST_STORY.eyebrow}</p>
+            <p className="eyebrow story__eyebrow">
+              {FIRST_STORY.eyebrow}
+              <span className="story__dot" aria-hidden="true">·</span>
+              <time dateTime={FIRST_STORY.date}>
+                {WHEN.month} {WHEN.year}
+              </time>
+            </p>
 
             <h2 id="first-story-title" className="story__title">
               {FIRST_STORY.title}
@@ -18,7 +26,7 @@ export default function StoryFeature() {
 
             <p className="story__description">{FIRST_STORY.description}</p>
 
-            <blockquote className="story__excerpt">
+            <blockquote className="writing story__excerpt">
               {FIRST_STORY.excerpt.map((line) => (
                 <p key={line}>{line}</p>
               ))}

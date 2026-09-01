@@ -27,7 +27,14 @@
 
 .story__body { position: relative; z-index: 1; }
 
-.story__eyebrow { color: #9A7440; }
+.story__eyebrow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.7em;
+  color: #9A7440;
+}
+.story__dot { opacity: 0.5; }
 
 .story__title {
   margin-top: clamp(1rem, 2.2vw, 1.6rem);

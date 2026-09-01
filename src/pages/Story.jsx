@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
+import Dateline from '../components/Dateline.jsx';
 import NotFound from './NotFound.jsx';
 import { FIRST_STORY } from '../content/site.js';
 import './Page.css';
@@ -32,15 +33,30 @@ export default function Story() {
           {story.description}
         </Reveal>
 
-        <Reveal className="rule-draw page__rule" delay={240} />
-
-        <Reveal className="story-page__body" delay={300}>
-          {story.excerpt.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
+        <Reveal delay={250}>
+          <Dateline iso={story.date} />
         </Reveal>
 
-        <Reveal className="story-page__continuation" delay={380}>
+        {/* Austin's writing — not selectable, not copyable. See lib/protect.js */}
+        <div className="writing story-page__body">
+          {story.stanzas.map((stanza, index) => (
+            <Reveal
+              as="p"
+              key={stanza[0]}
+              className="story-page__stanza"
+              delay={index === 0 ? 340 : 0}
+            >
+              {stanza.map((line, i) => (
+                <Fragment key={line + i}>
+                  {line}
+                  {i < stanza.length - 1 ? <br /> : null}
+                </Fragment>
+              ))}
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal className="story-page__end">
           <svg
             className="story-page__ornament"
             width="46"
@@ -57,7 +73,7 @@ export default function Story() {
             />
             <circle cx="23" cy="5" r="2.2" stroke="currentColor" strokeWidth="1" />
           </svg>
-          <p>{story.continuation}</p>
+          <p className="signature story-page__sign">Austin Davis</p>
         </Reveal>
 
         <Link to="/stories" className="story-page__back">

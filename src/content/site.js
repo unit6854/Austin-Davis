@@ -45,15 +45,17 @@ export const WELCOME = {
     'An archival photograph of Pop sitting in a rocking chair on the porch, looking out at the yard.',
 };
 
+import { STANZAS } from './writing/the-things-i-didnt-understand.js';
+
 /**
- * The first published story.
- * `body` is intentionally short — add Austin's real text here as it is ready.
- * Nothing on this site should be invented on his behalf.
+ * The first published story. The full text lives in ./writing/ — one file per
+ * piece, transcribed verbatim, so the words stay separate from the layout.
  */
 export const FIRST_STORY = {
   eyebrow: 'First story',
   title: 'The Things I Didn’t Understand',
   slug: 'the-things-i-didnt-understand',
+  date: '2026-08-30',
   description:
     'A letter to my grandfather, and the lessons I was too young to recognize.',
   excerpt: [
@@ -61,10 +63,22 @@ export const FIRST_STORY = {
     'Watching.',
     'Listening.',
   ],
-  /* Shown at the end of the story page until the full text is added above. */
-  continuation: 'The rest of this letter is still being written.',
+  stanzas: STANZAS,
   cta: 'Read the story',
 };
+
+/** 30 August 2026 → { day: '30', month: 'August', year: '2026' } */
+export function formatDate(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d));
+  return {
+    day: String(d),
+    month: date.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' }),
+    monthShort: date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }),
+    year: String(y),
+    iso,
+  };
+}
 
 export const QUOTE = {
   text: 'We don’t always understand the most important lessons until much later.',

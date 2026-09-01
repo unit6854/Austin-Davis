@@ -12,6 +12,8 @@ import Story from './pages/Story.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 import { markEntered } from './lib/entrance.js';
+import { initMomentumScroll } from './lib/momentum.js';
+import { initTextProtection } from './lib/protect.js';
 import { PAGES } from './content/site.js';
 
 export default function App() {
@@ -21,6 +23,9 @@ export default function App() {
   useEffect(() => {
     if (location.pathname !== '/') markEntered();
   }, [location.pathname]);
+
+  useEffect(() => initMomentumScroll(), []);
+  useEffect(() => initTextProtection(), []);
 
   return (
     <>

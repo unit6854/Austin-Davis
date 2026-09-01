@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
-import { FIRST_STORY } from '../content/site.js';
+import { FIRST_STORY, formatDate } from '../content/site.js';
 import './Page.css';
+
+const WHEN = formatDate(FIRST_STORY.date);
 
 export default function SectionPage({
   eyebrow,
@@ -38,7 +40,13 @@ export default function SectionPage({
               to={`/stories/${FIRST_STORY.slug}`}
               className="entry"
             >
-              <p className="entry__eyebrow">{FIRST_STORY.eyebrow}</p>
+              <p className="entry__eyebrow">
+                {FIRST_STORY.eyebrow}
+                <span aria-hidden="true"> · </span>
+                <time dateTime={FIRST_STORY.date}>
+                  {WHEN.month} {WHEN.year}
+                </time>
+              </p>
               <h2 className="entry__title">{FIRST_STORY.title}</h2>
               <p className="entry__description">{FIRST_STORY.description}</p>
               <span className="entry__more">

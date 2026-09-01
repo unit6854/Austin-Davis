@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Dateline — when a piece was written.
+   ========================================================================== */
+
+.dateline {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 1.75rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.dateline__time {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  flex: none;
+}
+
+.dateline__day {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5.4vw, 3.5rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+}
+
+.dateline__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32em;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.dateline__month { color: var(--cream); }
+.dateline__year { color: var(--cream-faint); }
+
+.dateline__rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--gold-hair),
+    rgba(182, 154, 106, 0.06) 78%,
+    transparent
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1600ms var(--ease) 220ms;
+}
+[data-reveal].is-visible .dateline__rule { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dateline__rule { transform: scaleX(1); }
+}
