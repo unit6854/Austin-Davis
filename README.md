@@ -94,11 +94,11 @@ constant at the top of that file.
 
 | Order | Scene | Source file | Holds for | Fades in over |
 | --- | --- | --- | --- | --- |
-| 1 | Summer, sunrise | `Seasons/Hero.png` | 5 s | 4 s |
-| 2 | Summer, night | `Seasons/Night hero.png` | 5 s | 5 s (dusk) |
-| 3 | Autumn | `Seasons/Autumn Hero.png` | 5 s | 5 s (dawn) |
-| 4 | Winter | `Seasons/Winter Hero.png` | 5 s | 4 s |
-| 5 | Spring | `Seasons/Spring Hero.png` | 5 s | 4 s (the thaw) |
+| 1 | Summer, sunrise | `images/Seasons/Hero.png` | 5 s | 4 s |
+| 2 | Summer, night | `images/Seasons/Night hero.png` | 5 s | 5 s (dusk) |
+| 3 | Autumn | `images/Seasons/Autumn Hero.png` | 5 s | 5 s (dawn) |
+| 4 | Winter | `images/Seasons/Winter Hero.png` | 5 s | 4 s |
+| 5 | Spring | `images/Seasons/Spring Hero.png` | 5 s | 4 s (the thaw) |
 
 Then round again to summer — **47 seconds** for a full year. The
 cycle starts on summer so the first thing a visitor sees is the golden-hour
@@ -147,15 +147,18 @@ Generated from the supplied source art with ImageMagick:
 
 | File | From | Notes |
 | --- | --- | --- |
-| `seasons/{spring,summer,summer-night,autumn,winter}-1684.webp` | `Seasons/*.png` | quality **95** — 2% RMSE from quality 100 at a third of the bytes |
-| `seasons/…-1280.webp` / `…-880.webp` | `Seasons/*.png` | quality 92 / 90 for narrower viewports |
-| `hero.webp` | `Hero.png` | the original quality-100 conversion, kept as the archive copy |
-| `pop.webp` | `Mock.png` | de-rotated, regrained archival photograph |
-| `leaf.webp` | `Mock.png` | cut out on the HSV saturation channel |
-| `torn-down/up.webp` | `Paper.png` | torn edge under the hero and above the newsletter |
-| `paper-texture.webp`, `frame-texture.webp` | `Paper.png` | four-way mirrored, seamless |
+| `seasons/{spring,summer,summer-night,autumn,winter}-1684.webp` | `images/Seasons/*.png` | quality **95** — 2% RMSE from quality 100 at a third of the bytes |
+| `seasons/…-1280.webp` / `…-880.webp` | `images/Seasons/*.png` | quality 92 / 90 for narrower viewports |
+| `hero.webp` | `images/Hero.png` | the original quality-100 conversion, kept as the archive copy |
+| `pop.webp` | `images/Mock.png` | de-rotated, regrained archival photograph |
+| `leaf.webp` | `images/Mock.png` | cut out on the HSV saturation channel |
+| `torn-down.webp` | `images/Paper.png` | torn edge under the hero on phones |
+| `paper-edge.webp` | `images/Paper edge 2.png` | quality **100**, flipped — the torn edge above the newsletter paper |
+| `paper-full.webp` | `images/Full paper.png` | quality **100** — the whole sheet, behind the large paper areas |
+| `paper-texture.webp`, `frame-texture.webp` | `images/Paper.png` | four-way mirrored, seamless |
 
-The source PNGs in `Seasons/` are never modified. `Night hero.png` is one
+Every raw source image lives in `images/`; the PNGs in `images/Seasons/` are
+never modified. `Night hero.png` is one
 pixel wider than the others and is cropped to 1684 on the way out so all five
 frames align exactly.
 

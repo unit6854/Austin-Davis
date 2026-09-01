@@ -6,14 +6,15 @@
   position: relative;
   z-index: 1;
   background:
-    url('/images/paper-texture.webp') center / cover,
+    url('/images/paper-full.webp') center / cover,
     var(--paper);
   color: var(--paper-ink);
   padding-block: clamp(2.75rem, 6vw, 4.5rem) clamp(2.75rem, 6vw, 4.5rem);
   text-align: center;
 }
 
-/* the torn edge sits entirely above the section, over the dark */
+/* the torn edge sits entirely above the section, over the dark. The source
+   art tears downward, so the file is flipped on the way out of ImageMagick. */
 .newsletter__tear {
   position: absolute;
   left: 0;
@@ -21,7 +22,7 @@
   top: 1px;
   height: clamp(20px, 4.6vw, 66px);
   transform: translateY(-100%);
-  background: url('/images/torn-up.webp') center bottom / 100% 100% no-repeat;
+  background: url('/images/paper-edge.webp') center bottom / 100% 100% no-repeat;
   pointer-events: none;
 }
 

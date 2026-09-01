@@ -15,7 +15,7 @@
   gap: clamp(1rem, 3vw, 3rem);
   padding: clamp(1.75rem, 4.4vw, 4.25rem) clamp(1.5rem, 4vw, 4rem);
   background:
-    url('/images/paper-texture.webp') center / cover,
+    url('/images/paper-full.webp') center / cover,
     var(--paper);
   border: 1px solid rgba(27, 23, 18, 0.18);
   color: var(--paper-ink);
