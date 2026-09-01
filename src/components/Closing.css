@@ -1,0 +1,47 @@
+/* ==========================================================================
+   The closing sheet — one piece of paper under the newsletter and the
+   footer, torn open at the top and torn off at the bottom.
+
+   The paper is painted by ::before rather than on the element itself, so it
+   can stop before the bottom tear's ragged part. If it ran the full height it
+   would show through that transparency and the page would never actually end.
+
+   It does not stop at the tear's top edge, though. Butted together, the flat
+   cream of the torn strip read as a hard line against the sheet's creases and
+   blotches — the two tones measure the same (227,210,189 against 228,210,182),
+   so it was the texture, not the colour. The strip's top 28% now carries a
+   baked alpha ramp, and the paper runs on underneath it, so one dissolves
+   into the other instead of meeting.
+   ========================================================================== */
+
+.closing {
+  --tear: clamp(22px, 4.4vw, 62px);
+  position: relative;
+  z-index: 1;
+  padding-bottom: var(--tear);
+}
+
+.closing::before,
+.closing::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.closing::before {
+  top: 0;
+  bottom: calc(var(--tear) * 0.72);
+  background:
+    url('/images/paper-full.webp') center / cover,
+    var(--paper);
+}
+
+.closing::after {
+  bottom: 0;
+  height: var(--tear);
+  background: url('/images/paper-edge-down.webp') center top / 100% 100% no-repeat;
+}
+
+.closing > * { position: relative; z-index: 1; }
