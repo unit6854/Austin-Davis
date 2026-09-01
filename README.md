@@ -45,6 +45,25 @@ public/images/         hero, photograph, leaf, paper textures, torn edges
   and the icon appears in the footer. `instagram`, `youtube` and `email` icons
   are already drawn.
 
+## Fonts
+
+Self-hosted from `public/fonts/`, not fetched from Google — no third-party
+request stands between the visitor and the first paint, and the two faces the
+hero needs are preloaded from the document head. Only the weights actually
+used are shipped: Cormorant Garamond 400/500 and 400 italic, Inter
+400/500/600, Caveat 500, Sacramento 400. About 368 KB, cached for a year.
+
+`src/styles/fonts.css` also declares **metric-matched fallbacks**. Cormorant's
+x-height is 0.391em against Georgia's 0.484em, so before this the headline
+rendered about a quarter too large and then snapped smaller once the real
+face arrived. The fallback faces rescale the local system font to the real
+one's measured metrics, so the text occupies identical space before and after
+the swap. Measured on a throttled load: the headline holds one size
+throughout and **CLS is 0.000**.
+
+The numbers came from measuring the actual font files in the browser. If you
+change a family, re-measure rather than guessing.
+
 ## The writing is protected
 
 Anything inside a `.writing` element cannot be selected, copied, cut, dragged
@@ -75,20 +94,20 @@ constant at the top of that file.
 
 | Order | Scene | Source file | Holds for | Fades in over |
 | --- | --- | --- | --- | --- |
-| 1 | Summer, sunrise | `Seasons/Hero.png` | 38 s | 11 s |
-| 2 | Summer, night | `Seasons/Night hero.png` | 32 s | 17 s (dusk) |
-| 3 | Autumn | `Seasons/Autumn Hero.png` | 38 s | 17 s (dawn) |
-| 4 | Winter | `Seasons/Winter Hero.png` | 38 s | 11 s |
-| 5 | Spring | `Seasons/Spring Hero.png` | 38 s | 12 s (the thaw) |
+| 1 | Summer, sunrise | `Seasons/Hero.png` | 5 s | 4 s |
+| 2 | Summer, night | `Seasons/Night hero.png` | 5 s | 5 s (dusk) |
+| 3 | Autumn | `Seasons/Autumn Hero.png` | 5 s | 5 s (dawn) |
+| 4 | Winter | `Seasons/Winter Hero.png` | 5 s | 4 s |
+| 5 | Spring | `Seasons/Spring Hero.png` | 5 s | 4 s (the thaw) |
 
-Then round again to summer — **4 minutes 12 seconds** for a full year. The
+Then round again to summer — **47 seconds** for a full year. The
 cycle starts on summer so the first thing a visitor sees is the golden-hour
 frame the site was designed around; read as a loop the order is exactly
 Spring → Summer → Autumn → Winter → Spring.
 
 Day and night share one timeline rather than running as a second cycle,
 because only the summer scene has a night photograph. The fades into and out
-of night are ~1.6× longer than a season change, so dusk and dawn read as the
+of night are a little longer than a season change, so dusk and dawn read as the
 light going rather than a picture being swapped.
 
 **How the crossfade works.** Two `<img>` layers are created once and reused

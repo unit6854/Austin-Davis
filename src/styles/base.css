@@ -27,12 +27,14 @@
   --gold-hair: rgba(182, 154, 106, 0.34);
 
   /* --- type --- */
-  --serif: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  --hand: "Caveat", "Bradley Hand", cursive;
+  /* Each stack puts a metric-matched fallback second (see fonts.css), so the
+     page does not resize when the real face finishes loading. */
+  --serif: "Cormorant Garamond", "Cormorant Garamond Fallback", Georgia, serif;
+  --sans: "Inter", "Inter Fallback", Arial, sans-serif;
+  --hand: "Caveat", "Caveat Fallback", cursive;
   --script: "Sacramento", "Brittany Signature", "Snell Roundhand", cursive;
   /* the hand Austin's writing is set in — semi-joined, and readable at length */
-  --handwriting: "Caveat", "Kalam", "Segoe Script", "Bradley Hand", cursive;
+  --handwriting: "Caveat", "Caveat Fallback", "Segoe Script", cursive;
 
   /* --- motion --- */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -169,6 +171,7 @@ button { cursor: pointer; }
 }
 
 .hand {
+  font-weight: 500;
   font-family: var(--hand);
   line-height: 1.34;
 }

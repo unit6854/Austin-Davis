@@ -17,11 +17,11 @@ import './SeasonalBackground.css';
  * feel like the light going rather than a picture being swapped.
  */
 const CYCLE = [
-  { season: 'summer', hold: 38000, fade: 11000 },
-  { season: 'summer-night', hold: 32000, fade: 17000 }, // dusk
-  { season: 'autumn', hold: 38000, fade: 17000 }, // dawn
-  { season: 'winter', hold: 38000, fade: 11000 },
-  { season: 'spring', hold: 38000, fade: 12000 }, // the thaw, then round again
+  { season: 'summer', hold: 5000, fade: 4000 },
+  { season: 'summer-night', hold: 5000, fade: 5000 }, // dusk, a touch slower
+  { season: 'autumn', hold: 5000, fade: 5000 }, // dawn
+  { season: 'winter', hold: 5000, fade: 4000 },
+  { season: 'spring', hold: 5000, fade: 4000 }, // the thaw, then round again
 ];
 
 /** Slow in, a little acceleration, a long settle. */
@@ -101,14 +101,23 @@ export default function SeasonalBackground({ onReady }) {
     };
 
     /* --- the cycle -------------------------------------------------------- */
-    const scheduleHold = () => {
+    /* A hold that is interrupted by the tab going away resumes where it left
+       off. Restarting it from the top would mean someone who keeps switching
+       tabs never sees the season change at all. */
+    let holdStartedAt = 0;
+    let holdRemaining = 0;
+    let midTransition = false;
+
+    const scheduleHold = (ms) => {
       if (stopped) return;
-      const { hold } = CYCLE[back.index];
-      timer = window.setTimeout(beginTransition, hold);
+      holdRemaining = ms ?? CYCLE[back.index].hold;
+      holdStartedAt = Date.now();
+      timer = window.setTimeout(beginTransition, holdRemaining);
     };
 
     function beginTransition() {
       if (stopped) return;
+      midTransition = true;
 
       const nextIndex = (back.index + 1) % CYCLE.length;
       const { season, fade } = CYCLE[nextIndex];
@@ -153,7 +162,8 @@ export default function SeasonalBackground({ onReady }) {
     }
 
     function finishTransition() {
-      if (stopped) return;
+      if (stopped || !midTransition) return;
+      midTransition = false;
 
       /* The front layer is now fully opaque, so the layer underneath is
          invisible: it can be reset without anything showing. Swap the roles
@@ -175,12 +185,25 @@ export default function SeasonalBackground({ onReady }) {
     }
 
     /* --- pause when nobody is looking ------------------------------------- */
+    let paused = false;
+
     const onVisibility = () => {
+      if (stopped || reduced.matches) return;
+
       if (document.hidden) {
+        /* Only a hold is paused. A crossfade already in flight is left alone:
+           CSS transitions run on wall-clock time regardless, and cutting one
+           short would strand the two layers mid-swap. */
+        if (midTransition || paused) return;
         window.clearTimeout(timer);
-      } else if (!stopped && !reduced.matches) {
-        scheduleHold();
+        holdRemaining = Math.max(600, holdRemaining - (Date.now() - holdStartedAt));
+        paused = true;
+        return;
       }
+
+      if (!paused) return;   // nothing was paused, so nothing to resume
+      paused = false;
+      scheduleHold(holdRemaining);
     };
 
     const startCycling = () => {
