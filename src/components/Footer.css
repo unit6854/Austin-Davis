@@ -23,6 +23,13 @@
   font-size: 0.9375rem;
   color: var(--cream-faint);
 }
+.footer__name {
+  font-family: var(--script);
+  font-size: 1.35em;
+  line-height: 1;
+  word-spacing: 0.16em;
+  color: var(--cream-dim);
+}
 .footer__tagline { display: none; }
 
 .footer__links {

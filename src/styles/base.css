@@ -32,7 +32,7 @@
   --serif: "Cormorant Garamond", "Cormorant Garamond Fallback", Georgia, serif;
   --sans: "Inter", "Inter Fallback", Arial, sans-serif;
   --hand: "Caveat", "Caveat Fallback", cursive;
-  --script: "Sacramento", "Brittany Signature", "Snell Roundhand", cursive;
+  --script: "Ephesis", "Ephesis Fallback", "Snell Roundhand", cursive;
   /* the hand Austin's writing is set in — semi-joined, and readable at length */
   --handwriting: "Caveat", "Caveat Fallback", "Segoe Script", cursive;
 
@@ -168,6 +168,9 @@ button { cursor: pointer; }
   font-family: var(--script);
   color: var(--gold);
   line-height: 1;
+  /* the script sets its own word space very tight — open it so the two
+     names read as two names */
+  word-spacing: 0.16em;
 }
 
 .hand {

@@ -45,7 +45,7 @@
 
 .quote__attribution .signature {
   font-size: clamp(1.75rem, 4.6vw, 3.25rem);
-  /* Sacramento sits high on its line — nudge it back down */
+  /* the script sits high on its line — nudge it back down */
   display: inline-block;
   transform: translateY(-0.08em);
 }

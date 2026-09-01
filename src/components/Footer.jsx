@@ -31,7 +31,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="shell footer__inner">
         <p className="footer__copyright">
-          © {year} {FOOTER.name}
+          © {year} <span className="footer__name">{FOOTER.name}</span>
           <span className="footer__tagline"> · {FOOTER.tagline}</span>
         </p>
 
