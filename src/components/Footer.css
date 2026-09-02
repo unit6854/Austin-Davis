@@ -1,36 +1,53 @@
 /* ==========================================================================
-   Footer — a single quiet line, set on the closing sheet of paper rather
-   than on a dark bar of its own. Everything centres: the sheet tears off
-   just below, so there is no full-width line left to sit the copy against.
+   Footer — a single quiet line under everything. The paper above it ends
+   here: the sheet tears away across the top of the footer, and the dark
+   shows through the ragged edge.
    ========================================================================== */
 
 .footer {
+  --tear: clamp(30px, 6.4vw, 92px);
   position: relative;
   z-index: 2;
-  padding-block: clamp(1rem, 2.2vw, 1.6rem) clamp(0.5rem, 1.2vw, 0.9rem);
+  background: var(--ink-900);
+  padding-block: calc(clamp(1.1rem, 2.2vw, 1.6rem) + var(--tear) * 0.72)
+    clamp(1.1rem, 2.2vw, 1.6rem);
+}
+
+/* The strip is paper at the top, torn away at the bottom. Its top 28% is
+   alpha-ramped, so it hangs that far up into the newsletter’s paper and
+   dissolves into it — butted flush, the flat cream read as a hard line
+   against the sheet’s creases even though the two tones measure the same.
+   The rest sits over the footer, where the tear opens onto the dark. */
+.footer__tear {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--tear) * -0.28);
+  height: var(--tear);
+  background: url("/images/paper-edge-down.webp") center top / 100% 100% no-repeat;
+  pointer-events: none;
 }
 
 .footer__inner {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: clamp(0.55rem, 1.6vw, 0.9rem);
+  justify-content: space-between;
+  gap: clamp(0.75rem, 3vw, 2.5rem);
+  flex-wrap: wrap;
 }
 
 .footer__copyright {
   flex: none;
   font-family: var(--serif);
   font-size: 0.9375rem;
-  color: var(--paper-ink-dim);
+  color: var(--cream-faint);
 }
 .footer__name {
   font-family: var(--script);
   font-size: 1.35em;
   line-height: 1;
   word-spacing: 0.16em;
-  color: var(--paper-ink);
+  color: var(--cream-dim);
 }
 .footer__tagline { display: none; }
 
@@ -46,7 +63,7 @@
   position: relative;
   font-family: var(--serif);
   font-size: 0.9375rem;
-  color: var(--paper-ink-dim);
+  color: rgba(237, 229, 214, 0.72);
   transition: color 420ms var(--ease);
 }
 .footer__link::after {
@@ -61,7 +78,7 @@
   transform-origin: left;
   transition: transform 520ms var(--ease);
 }
-.footer__link:hover { color: var(--paper-ink); }
+.footer__link:hover { color: var(--cream); }
 .footer__link:hover::after,
 .footer__link:focus-visible::after { transform: scaleX(1); }
 
@@ -72,7 +89,7 @@
 }
 .footer__social-link {
   display: block;
-  color: var(--paper-ink-dim);
+  color: var(--cream-faint);
   transition: color 420ms var(--ease);
 }
 .footer__social-link:hover { color: var(--gold); }
@@ -83,4 +100,12 @@
   .footer__tagline { display: inline; }
 }
 
-.footer__spacer { display: none; }
+@media (max-width: 640px) {
+  .footer__inner {
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+  }
+  .footer__spacer { display: none; }
+}

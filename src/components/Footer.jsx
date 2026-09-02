@@ -29,6 +29,8 @@ export default function Footer() {
 
   return (
     <footer className="footer">
+      <span className="footer__tear" aria-hidden="true" />
+
       <div className="shell footer__inner">
         <p className="footer__copyright">
           © {year} <span className="footer__name">{FOOTER.name}</span>

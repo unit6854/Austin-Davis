@@ -5,7 +5,6 @@ import Navigation from './components/Navigation.jsx';
 import Newsletter from './components/Newsletter.jsx';
 import Footer from './components/Footer.jsx';
 import PageTransition from './components/PageTransition.jsx';
-import './components/Closing.css';
 
 import Home from './pages/Home.jsx';
 import SectionPage from './pages/SectionPage.jsx';
@@ -53,11 +52,8 @@ export default function App() {
         </PageTransition>
       </main>
 
-      {/* One sheet of paper closes every page, and tears off at the bottom. */}
-      <div className="closing">
-        <Newsletter />
-        <Footer />
-      </div>
+      <Newsletter />
+      <Footer />
     </>
   );
 }
