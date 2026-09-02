@@ -14,6 +14,13 @@
   align-items: center;
   gap: clamp(1rem, 3vw, 3rem);
   padding: clamp(2.75rem, 6vw, 5.5rem) clamp(2.5rem, 7vw, 6.5rem);
+  /* The copy sits 60px further in from the left than the sheet’s own margin.
+     It eases back to nothing by 1024px, where the grid has already narrowed
+     to 1fr / 0.72fr and the longest line is all but touching the drawing —
+     the full 60px there would put the two 33px into each other. */
+  padding-left: calc(
+    clamp(2.5rem, 7vw, 6.5rem) + clamp(0px, (100vw - 64rem) * 0.24, 60px)
+  );
   /* The whole sheet, fitted — not cropped. Nothing may sit behind it: a
      --paper colour and a rectangular border both used to fill the worn,
      ragged edges the art is transparent through, which squared the sheet
@@ -154,7 +161,10 @@
 /* On a phone the plant lies behind the type instead of stealing a column,
    so the title still breaks the way it does in the wider composition. */
 @media (max-width: 700px) {
-  .story__card { display: block; }
+  .story__card {
+    display: block;
+    padding-left: clamp(2.5rem, 7vw, 6.5rem);
+  }
 
   .story__body { max-width: 74%; }
 
