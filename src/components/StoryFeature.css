@@ -105,6 +105,7 @@
   width: 100%;
   height: auto;
   justify-self: end;
+  margin-right: 75px;
   /* Ink on paper rather than a picture laid on top of it — multiply lets the
      sheet’s creases read straight through the engraving. */
   mix-blend-mode: multiply;
@@ -162,6 +163,7 @@
     right: -3%;
     top: 8%;
     width: 44%;
+    margin-right: 0;
     opacity: 0;
   }
   .story__card.is-visible .story__plant { opacity: 0.6; }
