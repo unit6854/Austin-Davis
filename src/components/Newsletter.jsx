@@ -40,18 +40,14 @@ export default function Newsletter() {
 
   return (
     <section id="newsletter" className="newsletter">
-      <div className="newsletter__tear" aria-hidden="true" />
-
       <div className="shell newsletter__inner">
-        <Reveal as="h2" className="newsletter__title">
-          {NEWSLETTER.title}
-        </Reveal>
+        <Reveal className="newsletter__plate">
+          <h2 className="newsletter__title">
+            <span>{NEWSLETTER.title}</span>
+          </h2>
 
-        <Reveal as="p" className="newsletter__supporting" delay={100}>
-          {NEWSLETTER.supporting}
-        </Reveal>
+          <p className="newsletter__supporting">{NEWSLETTER.supporting}</p>
 
-        <Reveal delay={190} className="newsletter__form-slot">
           <form
             className="newsletter__form"
             name={FORM_NAME}
@@ -98,16 +94,16 @@ export default function Newsletter() {
               {status === 'sending' ? 'Sending' : NEWSLETTER.button}
             </button>
           </form>
-        </Reveal>
 
-        <p
-          className={`newsletter__message${status === 'done' || status === 'error' ? ' is-shown' : ''}`}
-          role="status"
-          aria-live="polite"
-        >
-          {status === 'done' ? NEWSLETTER.success : null}
-          {status === 'error' ? NEWSLETTER.error : null}
-        </p>
+          <p
+            className={`newsletter__message${status === 'done' || status === 'error' ? ' is-shown' : ''}`}
+            role="status"
+            aria-live="polite"
+          >
+            {status === 'done' ? NEWSLETTER.success : null}
+            {status === 'error' ? NEWSLETTER.error : null}
+          </p>
+        </Reveal>
       </div>
     </section>
   );

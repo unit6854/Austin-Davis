@@ -1,29 +1,21 @@
 /* ==========================================================================
-   Join the Journey — the dark tears open onto paper.
+   Join the Journey — an engraved plate on the dark.
+
+   No paper here. The section is the same ink as everything above it, and the
+   invitation sits inside a single gold hairline whose top rule is broken by
+   the title, the way a legend breaks a rule on an engraved plate. The
+   rules are the title's own ::before / ::after, so they always meet the
+   frame exactly, at any width, without a fixed gap to keep in sync.
    ========================================================================== */
 
 .newsletter {
+  --plate-pad: clamp(1.6rem, 4vw, 3.25rem);
   position: relative;
   z-index: 1;
-  background:
-    url('/images/paper-full.webp') center / cover,
-    var(--paper);
-  color: var(--paper-ink);
-  padding-block: clamp(2.75rem, 6vw, 4.5rem) clamp(2.75rem, 6vw, 4.5rem);
+  background: var(--ink);
+  color: var(--cream);
+  padding-block: clamp(4rem, 9vw, 7.5rem);
   text-align: center;
-}
-
-/* the torn edge sits entirely above the section, over the dark. The source
-   art tears downward, so the file is flipped on the way out of ImageMagick. */
-.newsletter__tear {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 1px;
-  height: clamp(20px, 4.6vw, 66px);
-  transform: translateY(-100%);
-  background: url('/images/paper-edge-up.webp') center bottom / 100% 100% no-repeat;
-  pointer-events: none;
 }
 
 .newsletter__inner {
@@ -32,65 +24,94 @@
   align-items: center;
 }
 
+.newsletter__plate {
+  width: 100%;
+  max-width: 40rem;
+  padding: 0 var(--plate-pad) clamp(2rem, 4.4vw, 3.25rem);
+  border: 1px solid var(--gold-hair);
+  border-top: 0;
+}
+
+/* The title row straddles the frame's top edge: the two hairlines run out to
+   meet the side borders, and the whole row is lifted half its own height so
+   the rule passes through the middle of the type. */
 .newsletter__title {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.9rem, 2.4vw, 1.6rem);
+  margin-inline: calc(var(--plate-pad) * -1);
+  transform: translateY(-50%);
+  margin-bottom: calc(var(--plate-pad) - 0.5em);
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(1.875rem, 5.6vw, 3.25rem);
-  line-height: 1.1;
+  font-size: clamp(1.625rem, 4.2vw, 2.625rem);
+  line-height: 1;
   letter-spacing: -0.012em;
-  color: #17130E;
+  color: var(--cream);
+  white-space: nowrap;
+}
+
+.newsletter__title::before,
+.newsletter__title::after {
+  content: "";
+  flex: 1 1 0;
+  min-width: 0;
+  height: 1px;
+  background: var(--gold-hair);
 }
 
 .newsletter__supporting {
-  margin-top: clamp(0.5rem, 1.4vw, 0.9rem);
-  font-size: clamp(0.9375rem, 1.6vw, 1.1875rem);
-  color: var(--paper-ink-dim);
+  font-size: clamp(0.9375rem, 1.6vw, 1.125rem);
+  color: var(--cream-dim);
   text-wrap: balance;
-}
-
-.newsletter__form-slot {
-  width: 100%;
-  max-width: 34rem;
-  margin-top: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .newsletter__form {
   display: flex;
   width: 100%;
+  max-width: 30rem;
+  margin: clamp(1.5rem, 3vw, 2.25rem) auto 0;
 }
 
 .newsletter__input {
   flex: 1 1 auto;
   min-width: 0;
   padding: 1.05em 1.25em;
-  border: 1px solid rgba(27, 23, 18, 0.28);
+  border: 1px solid var(--cream-hair);
   border-right: 0;
-  background: rgba(255, 252, 244, 0.24);
+  background: rgba(237, 229, 214, 0.04);
   font-family: var(--serif);
   font-size: 1rem;
-  color: var(--paper-ink);
+  color: var(--cream);
   transition: border-color 420ms var(--ease), background-color 420ms var(--ease);
 }
-.newsletter__input::placeholder { color: rgba(27, 23, 18, 0.46); }
+.newsletter__input::placeholder { color: var(--cream-faint); }
 .newsletter__input:focus {
   outline: none;
-  border-color: rgba(27, 23, 18, 0.6);
-  background: rgba(255, 252, 244, 0.5);
+  border-color: var(--gold-hair);
+  background: rgba(237, 229, 214, 0.07);
 }
 
 .newsletter__button {
   flex: none;
   padding: 1.05em 1.9em;
-  background: #17130E;
-  color: var(--paper);
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--ink);
   font-family: var(--sans);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.19em;
   text-transform: uppercase;
-  transition: background-color 420ms var(--ease), color 420ms var(--ease);
+  transition:
+    background-color 420ms var(--ease),
+    color 420ms var(--ease),
+    border-color 420ms var(--ease);
 }
-.newsletter__button:hover:not(:disabled) { background: #362B1E; }
+.newsletter__button:hover:not(:disabled) {
+  background: transparent;
+  color: var(--gold);
+}
 .newsletter__button:disabled { opacity: 0.6; cursor: default; }
 
 .newsletter__message {
@@ -99,15 +120,22 @@
   font-family: var(--serif);
   font-style: italic;
   font-size: 1rem;
-  color: rgba(27, 23, 18, 0.68);
+  color: var(--cream-faint);
   opacity: 0;
   transition: opacity 620ms var(--ease);
 }
 .newsletter__message.is-shown { opacity: 1; }
 
-/* ---------- phones: the button drops below the field ---------- */
+/* ---------- phones: the title wraps to two lines, the button drops ---------- */
+@media (max-width: 560px) {
+  .newsletter__title {
+    white-space: normal;
+    gap: clamp(0.6rem, 3vw, 1rem);
+  }
+}
+
 @media (max-width: 460px) {
   .newsletter__form { flex-direction: column; gap: 0.6rem; }
-  .newsletter__input { border-right: 1px solid rgba(27, 23, 18, 0.28); }
+  .newsletter__input { border-right: 1px solid var(--cream-hair); }
   .newsletter__button { padding-block: 1.15em; }
 }

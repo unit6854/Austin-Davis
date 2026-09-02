@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import Reveal from './Reveal.jsx';
-import Sprig from './Sprig.jsx';
 import { FIRST_STORY, formatDate } from '../content/site.js';
 import './StoryFeature.css';
 
@@ -56,7 +55,16 @@ export default function StoryFeature() {
             </Link>
           </div>
 
-          <Sprig className="story__sprig" />
+          <img
+            className="story__plant"
+            src="/images/tomato.webp"
+            width="940"
+            height="1234"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+          />
         </Reveal>
       </div>
     </section>

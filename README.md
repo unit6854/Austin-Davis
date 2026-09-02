@@ -156,6 +156,7 @@ Generated from the supplied source art with ImageMagick:
 | `paper-edge-up.webp` | `images/Paper edge 2.png` | quality **100**, flipped — the tear above the newsletter, and the footer scrap’s ragged top |
 
 | `paper-full.webp` | `images/Full paper.png` | quality **100** — the whole sheet, behind the newsletter and the first-story card |
+| `tomato.webp` | `images/Tomato.png` | quality 95 at 940px — twice the widest size it renders at |
 | `paper-texture.webp`, `frame-texture.webp` | `images/Paper.png` | four-way mirrored, seamless |
 
 Every raw source image lives in `images/`; the PNGs in `images/Seasons/` are
