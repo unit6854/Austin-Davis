@@ -153,8 +153,8 @@ Generated from the supplied source art with ImageMagick:
 | `pop.webp` | `images/Mock.png` | de-rotated, regrained archival photograph |
 | `leaf.webp` | `images/Mock.png` | cut out on the HSV saturation channel |
 | `torn-down.webp` | `images/Paper.png` | torn edge under the hero on phones |
-| `paper-edge-up.webp` | `images/Paper edge 2.png` | quality **100**, flipped — the tear that opens onto the closing sheet |
-| `paper-edge-down.webp` | `images/Paper edge 2.png` | quality **100** — the tear across the top of the footer, its top 28% alpha-ramped so it dissolves into the sheet |
+| `paper-edge-up.webp` | `images/Paper edge 2.png` | quality **100**, flipped — the tear above the newsletter, and the footer scrap’s ragged top |
+
 | `paper-full.webp` | `images/Full paper.png` | quality **100** — the whole sheet, behind the newsletter and the first-story card |
 | `paper-texture.webp`, `frame-texture.webp` | `images/Paper.png` | four-way mirrored, seamless |
 

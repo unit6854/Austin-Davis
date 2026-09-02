@@ -1,31 +1,25 @@
 /* ==========================================================================
-   Footer — a single quiet line under everything. The paper above it ends
-   here: the sheet tears away across the top of the footer, and the dark
-   shows through the ragged edge.
+   Footer — a single quiet line under everything, set on a torn scrap of
+   paper. The scrap is ragged along its top edge, so whatever sits above it
+   shows through the tear.
    ========================================================================== */
 
 .footer {
-  --tear: clamp(30px, 6.4vw, 92px);
+  --edge: clamp(40px, 7.2vw, 108px);
   position: relative;
   z-index: 2;
-  background: var(--ink-900);
-  padding-block: calc(clamp(1.1rem, 2.2vw, 1.6rem) + var(--tear) * 0.72)
+  color: var(--paper-ink);
+  /* The scrap: the torn strip across the top, and flat paper below it. The
+     colour is the strip's own solid rows measured off the file
+     (rgb(227,210,190)), so the two meet without a seam. It has to be a
+     gradient layer rather than background-color — a colour would fill the
+     ragged transparency at the top and there would be no tear at all. */
+  background:
+    url("/images/paper-edge-up.webp") center top / 100% var(--edge) no-repeat,
+    linear-gradient(#E3D2BE, #E3D2BE) center bottom / 100%
+      calc(100% - var(--edge) * 0.75) no-repeat;
+  padding-block: calc(clamp(1.1rem, 2.2vw, 1.6rem) + var(--edge) * 0.8)
     clamp(1.1rem, 2.2vw, 1.6rem);
-}
-
-/* The strip is paper at the top, torn away at the bottom. Its top 28% is
-   alpha-ramped, so it hangs that far up into the newsletter’s paper and
-   dissolves into it — butted flush, the flat cream read as a hard line
-   against the sheet’s creases even though the two tones measure the same.
-   The rest sits over the footer, where the tear opens onto the dark. */
-.footer__tear {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(var(--tear) * -0.28);
-  height: var(--tear);
-  background: url("/images/paper-edge-down.webp") center top / 100% 100% no-repeat;
-  pointer-events: none;
 }
 
 .footer__inner {
@@ -40,14 +34,14 @@
   flex: none;
   font-family: var(--serif);
   font-size: 0.9375rem;
-  color: var(--cream-faint);
+  color: var(--paper-ink-dim);
 }
 .footer__name {
   font-family: var(--script);
   font-size: 1.35em;
   line-height: 1;
   word-spacing: 0.16em;
-  color: var(--cream-dim);
+  color: var(--paper-ink);
 }
 .footer__tagline { display: none; }
 
@@ -63,7 +57,7 @@
   position: relative;
   font-family: var(--serif);
   font-size: 0.9375rem;
-  color: rgba(237, 229, 214, 0.72);
+  color: var(--paper-ink-dim);
   transition: color 420ms var(--ease);
 }
 .footer__link::after {
@@ -78,7 +72,7 @@
   transform-origin: left;
   transition: transform 520ms var(--ease);
 }
-.footer__link:hover { color: var(--cream); }
+.footer__link:hover { color: var(--paper-ink); }
 .footer__link:hover::after,
 .footer__link:focus-visible::after { transform: scaleX(1); }
 
@@ -89,7 +83,7 @@
 }
 .footer__social-link {
   display: block;
-  color: var(--cream-faint);
+  color: var(--paper-ink-dim);
   transition: color 420ms var(--ease);
 }
 .footer__social-link:hover { color: var(--gold); }
