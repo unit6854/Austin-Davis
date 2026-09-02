@@ -33,12 +33,24 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(90% 120% at 30% 0%, rgba(188, 144, 87, 0.13), transparent 68%),
-    var(--noise);
-  background-size: auto, 180px 180px;
+  background: radial-gradient(90% 120% at 30% 0%, rgba(188, 144, 87, 0.13), transparent 68%);
   opacity: 0;
   transition: opacity 640ms var(--ease);
+}
+
+/* The grain rides on its own layer. It used to sit in the shorthand above,
+   which meant the hover took it to opacity 1 — and --noise is raw opaque
+   turbulence, so a grey rectangle of static appeared over the link. Every
+   other dark surface carries this same grain at 0.035; a background
+   shorthand cannot fade one layer on its own, hence the extra element. */
+.journey__glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--noise);
+  background-size: 180px 180px;
+  opacity: 0.05;
+  pointer-events: none;
 }
 
 .journey__icon {
