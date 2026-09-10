@@ -14,7 +14,7 @@
   z-index: 1;
   background: var(--ink);
   color: var(--cream);
-  padding-block: clamp(4rem, 9vw, 7.5rem);
+  padding-block: clamp(1.25rem, 2.6vw, 2.25rem);
   text-align: center;
 }
 
@@ -30,7 +30,7 @@
 .newsletter__plate {
   width: 100%;
   max-width: 40rem;
-  padding: 0 var(--plate-pad) clamp(2rem, 4.4vw, 3.25rem);
+  padding: 0 var(--plate-pad) clamp(1rem, 2vw, 1.5rem);
   border: 1px solid var(--gold-hair);
   border-top: 0;
 }
@@ -44,7 +44,7 @@
   gap: clamp(0.9rem, 2.4vw, 1.6rem);
   margin-inline: calc(var(--plate-pad) * -1);
   transform: translateY(-50%);
-  margin-bottom: calc(var(--plate-pad) - 0.5em);
+  margin-bottom: max(0.4rem, calc(var(--plate-pad) * 0.55 - 0.5em));
   font-family: var(--serif);
   font-weight: 400;
   font-size: clamp(1.625rem, 4.2vw, 2.625rem);
@@ -73,7 +73,7 @@
   display: flex;
   width: 100%;
   max-width: 30rem;
-  margin: clamp(1.5rem, 3vw, 2.25rem) auto 0;
+  margin: clamp(0.85rem, 1.6vw, 1.15rem) auto 0;
 }
 
 .newsletter__input {

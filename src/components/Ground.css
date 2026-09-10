@@ -11,12 +11,13 @@
    does not, the wall keeps generating new surface the whole way down instead
    of repeating a panel.
 
-   Performance: every layer here is a plain tiled image or a gradient on its
-   own compositor layer. There is deliberately no mix-blend-mode and no
-   background-attachment: fixed anywhere in this file — the first forces the
-   whole section to be painted as one group, the second repaints the visible
-   area of the page on every scrolled frame, and between them they were
-   costing the homepage most of its frame budget.
+   Performance: there is deliberately no background-attachment: fixed in this
+   file. It repaints the visible area of the page on every scrolled frame and
+   takes the scroll off the compositor, and it was costing the homepage most
+   of its frame budget. The light is a sticky sheet instead. The two cloud
+   layers do blend, which is not free, but they are static — painted once and
+   cached — and the alternative (a tile carrying its own alpha) seams where it
+   repeats and reads the wrong colour.
    ========================================================================== */
 
 .ground {
@@ -59,22 +60,34 @@
   inset: 0;
 }
 
-/* the slow cloudiness — warm smoke worked into the dark. The tint and the
-   alpha are baked into the texture itself, so this is one tile the browser
-   rasterises once and repeats. */
+/* the slow cloudiness — warm smoke worked into the dark, lifted where the
+   turbulence is bright and left alone where it is not.
+
+   This is a masked colour under a blend rather than a flat tinted tile, and
+   it has to stay that way: a tile carrying its own alpha shows its own edges
+   where it repeats, and the colour comes out wrong. The blend is affordable
+   because these layers never change — they are painted once and cached, and
+   nothing above them animates. */
 .ground__cloud {
-  background-image: var(--ground-cloud);
-  background-size: 900px 900px;
+  background-color: rgba(196, 158, 104, 0.5);
+  -webkit-mask-image: var(--paper-mottle);
+  mask-image: var(--paper-mottle);
+  -webkit-mask-size: 900px 900px;
+  mask-size: 900px 900px;
+  mix-blend-mode: soft-light;
   opacity: 0.5;
 }
 
-/* a second, darker pass at a different scale, so no two screens down the
+/* a second, slower pass at a different scale, so no two screens down the
    page carry the same shape */
 .ground__cloud--slow {
-  background-image: var(--ground-smoke);
-  background-size: 1200px 1200px;
-  background-position: 38% 12%;
-  opacity: 0.6;
+  background-color: rgba(124, 96, 58, 0.6);
+  -webkit-mask-size: 1700px 1700px;
+  mask-size: 1700px 1700px;
+  -webkit-mask-position: 38% 12%;
+  mask-position: 38% 12%;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
 }
 
 /* the tooth of the wall — the same grain every other dark surface carries */
