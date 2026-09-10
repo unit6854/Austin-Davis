@@ -125,6 +125,13 @@
   animation-delay: 0ms;
 }
 
+/* The band hands over to the torn paper of the footer, and the tear is
+   transparent above its ragged line. The photograph runs on underneath it,
+   or a strip of flat ink shows through the rip. */
+.newsletter--scene .page-bg--inline {
+  bottom: calc(var(--tear) * -1);
+}
+
 /* This band is short, so the grade is a single arc: dark at both edges, open
    through the middle where the plate stands. */
 .page-bg--inline .page-bg__veil {

@@ -27,9 +27,17 @@ export default function Hero() {
     let ticking = false;
     let active = false;
 
+    /* Measured here rather than inside update(): reading offsetHeight forces
+       the browser to lay the page out, and update() runs on every scrolled
+       frame. The hero is a viewport tall, so the only thing that changes it
+       is a resize. */
+    let height = hero.offsetHeight || 1;
+    const measure = () => {
+      height = hero.offsetHeight || 1;
+    };
+
     const update = () => {
       ticking = false;
-      const height = hero.offsetHeight || 1;
       const p = Math.min(Math.max(window.scrollY / height, 0), 1);
       hero.style.setProperty('--p', p.toFixed(4));
     };
@@ -45,8 +53,14 @@ export default function Hero() {
         if (entry.isIntersecting === active) return;
         active = entry.isIntersecting;
 
+        /* Nothing is looking at the road once the page has moved past it:
+           its two long animations, and the layer they keep alive, stop
+           until it comes back. */
+        hero.classList.toggle('is-away', !active);
+
         if (active) {
           window.addEventListener('scroll', onScroll, { passive: true });
+          measure();
           update();
         } else {
           window.removeEventListener('scroll', onScroll);
@@ -56,10 +70,12 @@ export default function Hero() {
     );
 
     io.observe(hero);
+    window.addEventListener('resize', measure, { passive: true });
 
     return () => {
       io.disconnect();
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', measure);
     };
   }, []);
 

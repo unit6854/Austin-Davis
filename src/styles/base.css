@@ -41,12 +41,24 @@
   --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* --- layout --- */
+  /* the height of the torn strip at the top of the footer. Whatever stands
+     above it has to run on underneath, because the tear is transparent. */
+  --tear: clamp(40px, 7.2vw, 108px);
+
   --shell: clamp(1.375rem, 5.6vw, 7rem);
   --max: 1280px;
   --rule: 1px;
 
   /* film grain shared by every dark surface */
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* The wall the homepage stands on. Both are pre-tinted in the filter
+     itself — the warm colour is baked into the feColorMatrix and the
+     turbulence drives the alpha — so the layers using them are plain tiled
+     images. Masking a solid colour and blending it instead cost a full
+     repaint of the whole section on every scrolled frame. */
+  --ground-cloud: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='gc'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='4' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.84 0 0 0 0 0.68 0 0 0 0 0.45 0.42 0 0 0 -0.14'/%3E%3C/filter%3E%3Crect width='900' height='900' filter='url(%23gc)'/%3E%3C/svg%3E");
+  --ground-smoke: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='1200'%3E%3Cfilter id='gs'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.009' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.06 0 0 0 0 0.05 0 0 0 0 0.03 0.5 0 0 0 -0.16'/%3E%3C/filter%3E%3Crect width='1200' height='1200' filter='url(%23gs)'/%3E%3C/svg%3E");
 
   /* paper: fine fibre, and the slow cloudiness of an old sheet */
   --paper-fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23f)'/%3E%3C/svg%3E");

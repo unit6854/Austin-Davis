@@ -34,8 +34,16 @@ export function initMomentumScroll() {
   let frameId = null;
   let lastTime = 0;
 
-  const limit = () =>
-    Math.max(0, root.scrollHeight - window.innerHeight);
+  /* Reading scrollHeight forces the browser to lay the page out, and a wheel
+     gesture fires many events a second. The document's height only changes on
+     a resize or a route change, so it is measured once and refreshed when
+     something could actually have moved it. */
+  let maxScroll = Math.max(0, root.scrollHeight - window.innerHeight);
+  const measure = () => {
+    maxScroll = Math.max(0, root.scrollHeight - window.innerHeight);
+    return maxScroll;
+  };
+  const limit = () => maxScroll;
 
   /* the mobile menu locks the body; leave the page alone while it is open */
   const locked = () => document.body.style.overflow === 'hidden';
@@ -65,12 +73,16 @@ export function initMomentumScroll() {
     frameId = requestAnimationFrame(frame);
   }
 
+  /* Between gestures the page is still, so re-measuring costs nothing; during
+     one the cached height is used and no layout is forced. */
   function push(delta) {
+    if (frameId === null) measure();
     target = clamp(target + delta, 0, limit());
     run();
   }
 
   function goTo(position) {
+    if (frameId === null) measure();
     target = clamp(position, 0, limit());
     run();
   }
@@ -100,7 +112,7 @@ export function initMomentumScroll() {
       case 'PageUp': push(-page); break;
       case ' ': push(event.shiftKey ? -page : page); break;
       case 'Home': goTo(0); break;
-      case 'End': goTo(limit()); break;
+      case 'End': goTo(measure()); break;
       default: return;
     }
 
@@ -135,7 +147,7 @@ export function initMomentumScroll() {
   }
 
   function onResize() {
-    target = clamp(target, 0, limit());
+    target = clamp(target, 0, measure());
     current = window.scrollY;
   }
 

@@ -5,7 +5,7 @@
    ========================================================================== */
 
 .footer {
-  --edge: clamp(40px, 7.2vw, 108px);
+  --edge: var(--tear);
   position: relative;
   z-index: 2;
   color: var(--paper-ink);

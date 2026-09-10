@@ -255,6 +255,17 @@ html[data-scene-light="true"] .hero {
   .hero__tear { display: none; }
 }
 
+/* Scrolled past. The breathing frame and the drifting light are both
+   infinite, and .hero__light blends with what is under it, so left running
+   they cost frames for the whole length of the page with nobody watching.
+   The parallax layer gives up its compositor hint at the same time.
+   Hero.jsx puts this class on as the hero leaves the viewport. */
+.hero.is-away .hero__frame,
+.hero.is-away .hero__light {
+  animation-play-state: paused;
+}
+.hero.is-away .hero__parallax { will-change: auto; }
+
 /* ==========================================================================
    Entrance — image, then eyebrow, headline, copy, cue.
    ========================================================================== */

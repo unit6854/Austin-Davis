@@ -12,7 +12,13 @@ function encode(data) {
     .join('&');
 }
 
-export default function Newsletter() {
+/**
+ * @param {object} props
+ * @param {string} [props.scene]  a PageBackground scene to stand the band on.
+ *   Only the homepage passes one — an interior page already has a photograph
+ *   of its own and does not want a second one at the foot of it.
+ */
+export default function Newsletter({ scene }) {
   const [email, setEmail] = useState('');
   const [botField, setBotField] = useState('');
   const [status, setStatus] = useState('idle'); // idle | sending | done | error
@@ -40,8 +46,11 @@ export default function Newsletter() {
   }
 
   return (
-    <section id="newsletter" className="newsletter">
-      <PageBackground scene="journey" inline />
+    <section
+      id="newsletter"
+      className={`newsletter${scene ? ' newsletter--scene' : ''}`}
+    >
+      {scene ? <PageBackground scene={scene} inline /> : null}
 
       <div className="shell newsletter__inner">
         <Reveal className="newsletter__plate">

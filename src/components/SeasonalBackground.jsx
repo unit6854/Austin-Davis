@@ -185,12 +185,19 @@ export default function SeasonalBackground({ onReady }) {
     }
 
     /* --- pause when nobody is looking ------------------------------------- */
+    /* Nobody is looking if the tab is in the background, and nobody is
+       looking if the page has been scrolled past the road either. Holding
+       the cycle in both cases stops the browser fetching the rest of the
+       year — several megabytes of frames — for a screen that is not on
+       show, and stops the crossfades running against an empty room. */
     let paused = false;
+    let onScreen = true;
+    const away = () => document.hidden || !onScreen;
 
-    const onVisibility = () => {
+    const updateActivity = () => {
       if (stopped || reduced.matches) return;
 
-      if (document.hidden) {
+      if (away()) {
         /* Only a hold is paused. A crossfade already in flight is left alone:
            CSS transitions run on wall-clock time regardless, and cutting one
            short would strand the two layers mid-swap. */
@@ -206,16 +213,28 @@ export default function SeasonalBackground({ onReady }) {
       scheduleHold(holdRemaining);
     };
 
+    const watcher =
+      typeof IntersectionObserver === 'undefined'
+        ? null
+        : new IntersectionObserver(
+            ([entry]) => {
+              onScreen = entry.isIntersecting;
+              updateActivity();
+            },
+            { threshold: 0 },
+          );
+    if (watcher && back.el.parentElement) watcher.observe(back.el.parentElement);
+
     const startCycling = () => {
       if (reduced.matches) return;
       preload(1);
       scheduleHold();
-      document.addEventListener('visibilitychange', onVisibility);
+      document.addEventListener('visibilitychange', updateActivity);
     };
 
     const stopCycling = () => {
       window.clearTimeout(timer);
-      document.removeEventListener('visibilitychange', onVisibility);
+      document.removeEventListener('visibilitychange', updateActivity);
     };
 
     const onMotionChange = () => {
@@ -228,6 +247,7 @@ export default function SeasonalBackground({ onReady }) {
 
     return () => {
       stopped = true;
+      watcher?.disconnect();
       stopCycling();
       reduced.removeEventListener('change', onMotionChange);
       if (preloader) preloader.src = '';

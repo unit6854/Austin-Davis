@@ -52,7 +52,9 @@ export default function App() {
         </PageTransition>
       </main>
 
-      <Newsletter />
+      {/* the field gate belongs to the homepage; every other page is
+          already standing on a photograph of its own */}
+      <Newsletter scene={location.pathname === '/' ? 'journey' : undefined} />
       <Footer />
     </>
   );

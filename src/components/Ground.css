@@ -3,12 +3,20 @@
    field gate at the foot of the page.
 
    Nothing here is downloaded. The wall is a warm near-black with a slow
-   cloudiness worked through it, a fine tooth over the top, and two
-   viewport-anchored layers: a soft lift through the middle of the screen, so
-   whatever you are reading is always standing in the light, and a vignette
-   that closes the edges around it. Because the cloud and the tooth scroll
-   with the page while the light does not, the wall keeps generating new
-   surface the whole way down instead of repeating a panel.
+   cloudiness worked through it, a fine tooth over the top, and a
+   viewport-height layer that holds still while the page moves past it: a
+   soft lift through the middle of the screen, so whatever you are reading is
+   always standing in the light, and a vignette that closes the edges around
+   it. Because the cloud and the tooth scroll with the page while the light
+   does not, the wall keeps generating new surface the whole way down instead
+   of repeating a panel.
+
+   Performance: every layer here is a plain tiled image or a gradient on its
+   own compositor layer. There is deliberately no mix-blend-mode and no
+   background-attachment: fixed anywhere in this file — the first forces the
+   whole section to be painted as one group, the second repaints the visible
+   area of the page on every scrolled frame, and between them they were
+   costing the homepage most of its frame budget.
    ========================================================================== */
 
 .ground {
@@ -51,28 +59,22 @@
   inset: 0;
 }
 
-/* the slow cloudiness — warm smoke worked into the dark, lifted where the
-   turbulence is bright and left alone where it is not */
+/* the slow cloudiness — warm smoke worked into the dark. The tint and the
+   alpha are baked into the texture itself, so this is one tile the browser
+   rasterises once and repeats. */
 .ground__cloud {
-  background-color: rgba(196, 158, 104, 0.5);
-  -webkit-mask-image: var(--paper-mottle);
-  mask-image: var(--paper-mottle);
-  -webkit-mask-size: 900px 900px;
-  mask-size: 900px 900px;
-  mix-blend-mode: soft-light;
+  background-image: var(--ground-cloud);
+  background-size: 900px 900px;
   opacity: 0.5;
 }
 
-/* a second, slower pass at a different scale, so no two screens down the
+/* a second, darker pass at a different scale, so no two screens down the
    page carry the same shape */
 .ground__cloud--slow {
-  background-color: rgba(124, 96, 58, 0.6);
-  -webkit-mask-size: 1700px 1700px;
-  mask-size: 1700px 1700px;
-  -webkit-mask-position: 38% 12%;
-  mask-position: 38% 12%;
-  mix-blend-mode: multiply;
-  opacity: 0.55;
+  background-image: var(--ground-smoke);
+  background-size: 1200px 1200px;
+  background-position: 38% 12%;
+  opacity: 0.6;
 }
 
 /* the tooth of the wall — the same grain every other dark surface carries */
@@ -82,54 +84,48 @@
   opacity: 0.055;
 }
 
-/* ---------- the light, and the frame around it ---------- */
+/* ---------- the light, and the frame around it ----------
 
-/* Anchored to the viewport rather than to the section, so the lift travels
-   with the reader: the middle of the screen is always a little warmer than
-   its edges, wherever you have scrolled to. */
-.ground__lift {
+   One viewport-tall sheet that sticks to the top of the screen and travels
+   the length of the ground. It is pulled back out of the flow by its own
+   height, so it takes up no room, and the browser can carry it on the
+   compositor: the page scrolls underneath it without either layer being
+   repainted. */
+.ground__light {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  /* the pull-back has to match the height in the same unit, or a browser
+     that understands svh but not the pair would shift the whole section up
+     by the difference */
+  height: 100vh;
+  margin-bottom: -100vh;
+  height: 100svh;
+  margin-bottom: -100svh;
+  pointer-events: none;
+}
+
+.ground__light > span {
   position: absolute;
   inset: 0;
-  z-index: -1;
-  pointer-events: none;
+}
+
+/* the middle of the screen, always a little warmer than its edges */
+.ground__lift {
   background-image: radial-gradient(
     58% 44% at 50% 44%,
     rgba(204, 166, 110, 0.13),
     rgba(188, 148, 94, 0.055) 46%,
     rgba(160, 124, 74, 0) 78%
   );
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 /* and the corners closing in around it */
 .ground__vignette {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
   background-image: radial-gradient(
     112% 78% at 50% 50%,
     rgba(8, 8, 6, 0) 42%,
     rgba(8, 8, 6, 0.34) 76%,
     rgba(8, 8, 6, 0.62) 100%
   );
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-/* On a phone a viewport-anchored background is repainted on every scroll
-   frame and some engines will not composite it at all, so the two layers
-   settle onto the section instead. The lift stays near the top, where the
-   writing on a phone actually is. */
-@media (max-width: 900px), (hover: none) {
-  .ground__lift,
-  .ground__vignette {
-    background-attachment: scroll;
-    background-size: 100% 100vh;
-    background-position: center top;
-    background-repeat: repeat-y;
-  }
 }
