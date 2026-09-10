@@ -4,14 +4,14 @@ import Reveal from '../components/Reveal.jsx';
 import Dateline from '../components/Dateline.jsx';
 import Sheet from '../components/Sheet.jsx';
 import NotFound from './NotFound.jsx';
-import { FIRST_STORY } from '../content/site.js';
+import { STORIES } from '../content/site.js';
 import './Page.css';
 
-const STORIES = { [FIRST_STORY.slug]: FIRST_STORY };
+const BY_SLUG = Object.fromEntries(STORIES.map((story) => [story.slug, story]));
 
 export default function Story() {
   const { slug } = useParams();
-  const story = STORIES[slug];
+  const story = BY_SLUG[slug];
 
   useEffect(() => {
     if (story) document.title = `${story.title} — Austin Davis`;

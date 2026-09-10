@@ -45,27 +45,49 @@ export const WELCOME = {
     'An archival photograph of Pop sitting in a rocking chair on the porch, looking out at the yard.',
 };
 
-import { STANZAS } from './writing/the-things-i-didnt-understand.js';
+import { STANZAS as THE_THINGS_I_DIDNT_UNDERSTAND } from './writing/the-things-i-didnt-understand.js';
+import { STANZAS as THE_PEOPLE_I_THOUGHT_WOULD_BE_HERE } from './writing/the-people-i-thought-would-be-here.js';
 
 /**
- * The first published story. The full text lives in ./writing/ — one file per
- * piece, transcribed verbatim, so the words stay separate from the layout.
+ * The published stories, newest first. The full text lives in ./writing/ —
+ * one file per piece, transcribed verbatim, so the words stay separate from
+ * the layout.
  */
-export const FIRST_STORY = {
-  eyebrow: 'First story',
-  title: 'The Things I Didn’t Understand',
-  slug: 'the-things-i-didnt-understand',
-  date: '2026-08-30',
-  description:
-    'A letter to my grandfather, and the lessons I was too young to recognize.',
-  excerpt: [
-    'My grandfather, Pop, used to sit outside all the time.',
-    'Watching.',
-    'Listening.',
-  ],
-  stanzas: STANZAS,
-  cta: 'Read the story',
-};
+export const STORIES = [
+  {
+    eyebrow: 'Second story',
+    title: 'The People I Thought Would Be Here',
+    slug: 'the-people-i-thought-would-be-here',
+    date: '2026-09-09',
+    description:
+      'The friends I lost, the ones who are still here, and how little time we actually had.',
+    excerpt: [
+      'I miss him.',
+      'Sometimes that’s all I can think to say.',
+      'I miss him.',
+    ],
+    stanzas: THE_PEOPLE_I_THOUGHT_WOULD_BE_HERE,
+    cta: 'Read the story',
+  },
+  {
+    eyebrow: 'First story',
+    title: 'The Things I Didn’t Understand',
+    slug: 'the-things-i-didnt-understand',
+    date: '2026-08-30',
+    description:
+      'A letter to my grandfather, and the lessons I was too young to recognize.',
+    excerpt: [
+      'My grandfather, Pop, used to sit outside all the time.',
+      'Watching.',
+      'Listening.',
+    ],
+    stanzas: THE_THINGS_I_DIDNT_UNDERSTAND,
+    cta: 'Read the story',
+  },
+];
+
+/** The one the homepage features. */
+export const FIRST_STORY = STORIES[STORIES.length - 1];
 
 /** 30 August 2026 → { day: '30', month: 'August', year: '2026' } */
 export function formatDate(iso) {

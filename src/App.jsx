@@ -40,7 +40,7 @@ export default function App() {
           {(shown) => (
             <Routes location={shown}>
               <Route path="/" element={<Home />} />
-              <Route path="/stories" element={<SectionPage {...PAGES.stories} showFirstStory />} />
+              <Route path="/stories" element={<SectionPage {...PAGES.stories} showStories />} />
               <Route path="/poems" element={<SectionPage {...PAGES.poems} />} />
               <Route path="/journal" element={<SectionPage {...PAGES.journal} />} />
               <Route path="/about" element={<SectionPage {...PAGES.about} />} />
