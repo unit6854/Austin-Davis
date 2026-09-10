@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
+import PageBackground from '../components/PageBackground.jsx';
 import { STORIES, formatDate } from '../content/site.js';
 import './Page.css';
 
 export default function SectionPage({
+  scene,
   eyebrow,
   title,
   intro,
@@ -16,7 +18,9 @@ export default function SectionPage({
   }, [eyebrow]);
 
   return (
-    <article className="page grain">
+    <article className={`page grain${scene ? ' page--scene' : ''}`}>
+      {scene ? <PageBackground scene={scene} /> : null}
+
       <div className="shell page__inner">
         <Reveal as="p" className="eyebrow">
           {eyebrow}

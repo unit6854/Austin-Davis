@@ -3,16 +3,48 @@
    ========================================================================== */
 
 .story {
+  position: relative;
   background: var(--ink);
   padding-block: clamp(1rem, 3vw, 3rem) clamp(4rem, 9vw, 7rem);
 }
 
+/* lamplight on the wall behind the sheet — it gives the paper somewhere to
+   stand, so the card reads as an object in a room rather than a rectangle */
+.story::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  width: min(96vw, 78rem);
+  height: 78%;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    56% 58% at 50% 46%,
+    rgba(188, 144, 87, 0.11),
+    rgba(188, 144, 87, 0.04) 52%,
+    rgba(188, 144, 87, 0) 76%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
 .story__card {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
-  align-items: center;
-  gap: clamp(1rem, 3vw, 3rem);
+  z-index: 1;
+}
+
+/* The generated sheet, told to fill the card rather than settle on its own
+   longest line the way a page of writing does. */
+.story__sheet {
+  /* Warmer and heavier than the sheet a story is written on — this is the
+     card the feature is printed on, not a page out of a notebook. */
+  --paper-sheet: #EDE4D1;
+  --paper-hi: #F4EDDE;
+  --paper-lo: #E1D6BF;
+
+  width: auto;
+  min-width: 0;
+  max-width: none;
   padding: clamp(2.75rem, 6vw, 5.5rem) clamp(2.5rem, 7vw, 6.5rem);
   /* The copy sits 60px further in from the left than the sheet’s own margin.
      It eases back to nothing by 1024px, where the grid has already narrowed
@@ -21,42 +53,30 @@
   padding-left: calc(
     clamp(2.5rem, 7vw, 6.5rem) + clamp(0px, (100vw - 64rem) * 0.24, 60px)
   );
-  /* The whole sheet, fitted — not cropped. Nothing may sit behind it: a
-     --paper colour and a rectangular border both used to fill the worn,
-     ragged edges the art is transparent through, which squared the sheet
-     off. For the same reason the shadow is a filter, which follows the
-     torn silhouette, rather than a box-shadow around the element’s box. */
-  background: url('/images/paper-full.webp') center / 100% 100% no-repeat;
-  color: var(--paper-ink);
-  filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.72));
+}
+
+/* a heavier weathering than a page of writing gets: the card has been
+   handled, and the tone falls away further towards its edges */
+.story__sheet .sheet__mottle { opacity: 0.34; }
+.story__sheet .sheet__wear { opacity: 1.15; }
+.story__sheet .sheet__surface {
+  box-shadow:
+    inset 0 0 5rem rgba(122, 96, 60, 0.2),
+    inset 0 0 0 1px rgba(122, 96, 60, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.45),
+    0 30px 56px -18px rgba(0, 0, 0, 0.74),
+    0 76px 110px -50px rgba(0, 0, 0, 0.66);
+}
+
+.story__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
 }
 
 .story__body { position: relative; z-index: 1; }
-
-/* The sheet is mottled, and the copy was being read off creases and stains:
-   measured against the paper actually beneath each block, the eyebrow came
-   in at 2.93:1 and the excerpt at 4.22:1, both under the 4.5 they need, with
-   individual pixels as dark as 16/255 under the type. This is light falling
-   on that part of the sheet — the paper’s own tone, measured off the file at
-   rgb(229,211,184) and lifted, fading out well inside its own box so it
-   never draws an edge of its own. */
-.story__body::before {
-  content: "";
-  position: absolute;
-  /* It has to stay on the sheet: the copy already sits about 100px in from
-     the card edge and the worn border runs about 50px, so the wash may
-     reach out roughly a rem and no further, or it lightens the dark
-     outside the paper and draws a halo there. */
-  inset: -2rem -1.5rem;
-  z-index: -1;
-  background: radial-gradient(
-    closest-side at 45% 50%,
-    rgba(243, 233, 215, 0.9),
-    rgba(243, 233, 215, 0.74) 58%,
-    rgba(243, 233, 215, 0) 100%
-  );
-  pointer-events: none;
-}
 
 .story__eyebrow {
   display: flex;
@@ -154,29 +174,33 @@
 
 @media (min-width: 1024px) {
   .story__excerpt { display: block; }
-  .story__card { grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr); }
+  .story__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr); }
   .story__description { max-width: 30ch; }
 }
 
 /* On a phone the plant lies behind the type instead of stealing a column,
    so the title still breaks the way it does in the wider composition. */
 @media (max-width: 700px) {
-  .story__card {
-    display: block;
-    padding-left: clamp(2.5rem, 7vw, 6.5rem);
+  .story__grid { display: block; }
+
+  .story__sheet {
+    padding: clamp(2.25rem, 8vw, 3.25rem) clamp(1.5rem, 6vw, 2.5rem)
+      clamp(2.5rem, 9vw, 3.5rem);
   }
 
   .story__body { max-width: 74%; }
 
   .story__plant {
     position: absolute;
-    right: -3%;
-    top: 8%;
-    width: 44%;
+    right: -7%;
+    top: 5%;
+    width: 41%;
     margin-right: 0;
     opacity: 0;
   }
-  .story__card.is-visible .story__plant { opacity: 0.6; }
+  /* it lies under the type here, so it has to stay quieter than it is on a
+     wide screen, where it has a column of its own */
+  .story__card.is-visible .story__plant { opacity: 0.48; }
 
   .story__cta {
     padding-inline: 1.35em;

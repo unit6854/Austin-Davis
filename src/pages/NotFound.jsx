@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
+import PageBackground from '../components/PageBackground.jsx';
 import './Page.css';
 
 export default function NotFound() {
@@ -9,7 +10,9 @@ export default function NotFound() {
   }, []);
 
   return (
-    <article className="page grain">
+    <article className="page grain page--scene">
+      <PageBackground scene="about" />
+
       <div className="shell page__inner">
         <Reveal as="p" className="eyebrow">
           Nothing here

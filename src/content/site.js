@@ -41,8 +41,19 @@ export const WELCOME = {
   note: 'The best things in life aren’t things at all.',
   noteAttribution: '— Pop',
   annotation: 'The things we understand later.',
-  photoAlt:
-    'An archival photograph of Pop sitting in a rocking chair on the porch, looking out at the yard.',
+  /* The two family photographs in the frame. They alternate on a ten second
+     hold — see components/Welcome. Add a third and it simply joins the
+     rotation. */
+  photos: [
+    {
+      src: '/images/family/grandparents',
+      alt: 'Pop and Granny in the back yard, standing behind one of the grandchildren on a swing set.',
+    },
+    {
+      src: '/images/family/pool',
+      alt: 'Two children sitting in a paddling pool in the yard on a summer afternoon, pouring water from a cup.',
+    },
+  ],
 };
 
 import { STANZAS as THE_THINGS_I_DIDNT_UNDERSTAND } from './writing/the-things-i-didnt-understand.js';
@@ -148,6 +159,7 @@ export const FOOTER = {
  */
 export const PAGES = {
   stories: {
+    scene: 'stories',
     eyebrow: 'Stories',
     title: 'The people and moments that shaped me.',
     intro:
@@ -155,6 +167,7 @@ export const PAGES = {
     empty: 'More stories are being written.',
   },
   poems: {
+    scene: 'poems',
     eyebrow: 'Poems',
     title: 'Words I’ve carried with me for years.',
     intro:
@@ -162,6 +175,7 @@ export const PAGES = {
     empty: 'These are being gathered.',
   },
   journal: {
+    scene: 'journal',
     eyebrow: 'Journal',
     title: 'Questions I’m still trying to answer.',
     intro:
@@ -169,6 +183,7 @@ export const PAGES = {
     empty: 'The first entries are coming.',
   },
   about: {
+    scene: 'about',
     eyebrow: 'About',
     title: 'I’m trying to understand this too.',
     intro:
@@ -176,6 +191,7 @@ export const PAGES = {
     empty: 'A fuller introduction is on its way.',
   },
   letters: {
+    scene: 'letters',
     eyebrow: 'Letters',
     title: 'Written to someone in particular.',
     intro:

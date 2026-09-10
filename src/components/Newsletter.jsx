@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Reveal from './Reveal.jsx';
+import PageBackground from './PageBackground.jsx';
 import { NEWSLETTER } from '../content/site.js';
 import './Newsletter.css';
 
@@ -40,6 +41,8 @@ export default function Newsletter() {
 
   return (
     <section id="newsletter" className="newsletter">
+      <PageBackground scene="journey" inline />
+
       <div className="shell newsletter__inner">
         <Reveal className="newsletter__plate">
           <h2 className="newsletter__title">

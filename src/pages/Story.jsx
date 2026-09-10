@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
 import Dateline from '../components/Dateline.jsx';
 import Sheet from '../components/Sheet.jsx';
+import PageBackground from '../components/PageBackground.jsx';
 import NotFound from './NotFound.jsx';
 import { STORIES } from '../content/site.js';
 import './Page.css';
@@ -20,7 +21,9 @@ export default function Story() {
   if (!story) return <NotFound />;
 
   return (
-    <article className="page grain">
+    <article className="page grain page--scene">
+      <PageBackground scene="stories" />
+
       <div className="shell page__inner">
         <Reveal as="p" className="story-page__meta">
           {story.eyebrow}

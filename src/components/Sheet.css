@@ -11,6 +11,8 @@
 
 .sheet {
   --paper-sheet: #F4F0E7;      /* soft ivory — warm, but a long way from yellow */
+  --paper-hi: #F8F5EE;         /* where the light falls across the top corner */
+  --paper-lo: #EDE7DA;         /* and where it runs out, bottom right */
   --ink: #201C17;
   --ink-soft: rgba(32, 28, 23, 0.7);
 
@@ -41,7 +43,7 @@
   background-color: var(--paper-sheet);
   background-image:
     var(--stains, none),
-    linear-gradient(166deg, #F8F5EE 0%, var(--paper-sheet) 44%, #EDE7DA 100%);
+    linear-gradient(166deg, var(--paper-hi) 0%, var(--paper-sheet) 44%, var(--paper-lo) 100%);
   background-blend-mode: multiply;
 
   /* aged edges, and the sheet lifting off the dark ground */

@@ -1,0 +1,135 @@
+/* ==========================================================================
+   Ground — the dark wall the homepage stands on between the road and the
+   field gate at the foot of the page.
+
+   Nothing here is downloaded. The wall is a warm near-black with a slow
+   cloudiness worked through it, a fine tooth over the top, and two
+   viewport-anchored layers: a soft lift through the middle of the screen, so
+   whatever you are reading is always standing in the light, and a vignette
+   that closes the edges around it. Because the cloud and the tooth scroll
+   with the page while the light does not, the wall keeps generating new
+   surface the whole way down instead of repeating a panel.
+   ========================================================================== */
+
+.ground {
+  position: relative;
+  isolation: isolate;
+  /* the deepest tone in the stack — everything else lightens it */
+  background-color: #0F0E0A;
+}
+
+/* the sections themselves give up their own ink so the wall runs unbroken
+   behind all of them */
+.ground > .section { background: transparent; }
+
+.ground > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- the wall: cloud, tooth, and a slow vertical grade ---------- */
+.ground__wall {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: #12110C;
+  background-image:
+    /* the long grade down the wall — warmest where the writing begins */
+    linear-gradient(
+      180deg,
+      #15130D 0%,
+      #16140E 22%,
+      #131109 58%,
+      #100F0A 100%
+    );
+}
+
+.ground__wall > span {
+  position: absolute;
+  inset: 0;
+}
+
+/* the slow cloudiness — warm smoke worked into the dark, lifted where the
+   turbulence is bright and left alone where it is not */
+.ground__cloud {
+  background-color: rgba(196, 158, 104, 0.5);
+  -webkit-mask-image: var(--paper-mottle);
+  mask-image: var(--paper-mottle);
+  -webkit-mask-size: 900px 900px;
+  mask-size: 900px 900px;
+  mix-blend-mode: soft-light;
+  opacity: 0.5;
+}
+
+/* a second, slower pass at a different scale, so no two screens down the
+   page carry the same shape */
+.ground__cloud--slow {
+  background-color: rgba(124, 96, 58, 0.6);
+  -webkit-mask-size: 1700px 1700px;
+  mask-size: 1700px 1700px;
+  -webkit-mask-position: 38% 12%;
+  mask-position: 38% 12%;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+/* the tooth of the wall — the same grain every other dark surface carries */
+.ground__tooth {
+  background-image: var(--noise);
+  background-size: 180px 180px;
+  opacity: 0.055;
+}
+
+/* ---------- the light, and the frame around it ---------- */
+
+/* Anchored to the viewport rather than to the section, so the lift travels
+   with the reader: the middle of the screen is always a little warmer than
+   its edges, wherever you have scrolled to. */
+.ground__lift {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    58% 44% at 50% 44%,
+    rgba(204, 166, 110, 0.13),
+    rgba(188, 148, 94, 0.055) 46%,
+    rgba(160, 124, 74, 0) 78%
+  );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* and the corners closing in around it */
+.ground__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    112% 78% at 50% 50%,
+    rgba(8, 8, 6, 0) 42%,
+    rgba(8, 8, 6, 0.34) 76%,
+    rgba(8, 8, 6, 0.62) 100%
+  );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* On a phone a viewport-anchored background is repainted on every scroll
+   frame and some engines will not composite it at all, so the two layers
+   settle onto the section instead. The lift stays near the top, where the
+   writing on a phone actually is. */
+@media (max-width: 900px), (hover: none) {
+  .ground__lift,
+  .ground__vignette {
+    background-attachment: scroll;
+    background-size: 100% 100vh;
+    background-position: center top;
+    background-repeat: repeat-y;
+  }
+}

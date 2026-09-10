@@ -119,6 +119,10 @@ button { cursor: pointer; }
   padding-block: clamp(5rem, 12vw, 10.5rem);
 }
 
+/* A page's background photograph is a fixed layer portalled into <body>, so
+   the page itself has to stand above it. See components/PageBackground. */
+#main { position: relative; z-index: 1; }
+
 /* keep the fixed navigation clear of anchored targets */
 [id] { scroll-margin-top: clamp(4.5rem, 9vw, 6.5rem); }
 

@@ -1,0 +1,206 @@
+/* ==========================================================================
+   Page background — a still photograph the page travels over.
+   ========================================================================== */
+
+.page-bg {
+  /* The grade, as five stops down the frame. Each scene can move them: the
+     photographs were not all taken in the same light, and one veil does not
+     suit a bright window and a dim room equally. */
+  --veil-top: 0.78;
+  --veil-upper: 0.56;
+  --veil-mid: 0.46;
+  --veil-lower: 0.58;
+  --veil-bottom: 0.8;
+  --scene-lift: 1;
+
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* a solid ground under the photograph, so nothing can flash through it
+     while the file is still arriving */
+  background: var(--ink-900);
+
+  opacity: 0;
+  animation: pageBgIn 1200ms var(--ease) 60ms forwards;
+}
+
+@keyframes pageBgIn {
+  to { opacity: 1; }
+}
+
+.page-bg__frame {
+  position: absolute;
+  inset: 0;
+  /* the scene breathes very slowly — light moving, nothing more */
+  animation: pageBgBreathe 44s var(--ease-soft) infinite alternate;
+}
+
+@keyframes pageBgBreathe {
+  from { transform: scale(1); }
+  to { transform: scale(1.045); }
+}
+
+.page-bg__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  filter: brightness(var(--scene-lift, 1));
+}
+
+/* The manuscript was photographed in a dim room, and the poems and letters
+   pages share it. It needs the light back and much less veil than a scene
+   shot into a window does. */
+.page-bg[data-scene="poems"],
+.page-bg[data-scene="letters"] {
+  --veil-top: 0.62;
+  --veil-upper: 0.34;
+  --veil-mid: 0.26;
+  --veil-lower: 0.36;
+  --veil-bottom: 0.66;
+  --scene-lift: 1.22;
+}
+
+/* The road is the brightest of them, and it is the ground the 404 stands on
+   as well as the About page. */
+.page-bg[data-scene="about"] {
+  --veil-top: 0.82;
+  --veil-upper: 0.62;
+  --veil-mid: 0.54;
+  --veil-lower: 0.64;
+  --veil-bottom: 0.84;
+}
+
+/* ---------- the grade ----------
+   Heaviest at the very top, where the navigation and the page title sit, and
+   heavy again at the foot, where the page hands over to Join the Journey.
+   The middle is left open so the photograph stays a photograph. */
+.page-bg__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(9, 9, 8, var(--veil-top)) 0%,
+    rgba(9, 9, 8, var(--veil-upper)) 20%,
+    rgba(9, 9, 8, var(--veil-mid)) 50%,
+    rgba(9, 9, 8, var(--veil-lower)) 80%,
+    rgba(9, 9, 8, var(--veil-bottom)) 100%
+  );
+}
+
+/* a moderate vignette — the corners close, the centre is left alone */
+.page-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    116% 86% at 50% 46%,
+    rgba(9, 9, 8, 0) 36%,
+    rgba(9, 9, 8, 0.26) 70%,
+    rgba(9, 9, 8, 0.56) 100%
+  );
+}
+
+/* the same grain every other dark surface carries, so the photograph belongs
+   to the same film as the rest of the site */
+.page-bg__grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--noise);
+  background-size: 180px 180px;
+  opacity: 0.05;
+}
+
+/* ==========================================================================
+   Inline variant — the photograph sits inside a section rather than behind
+   the whole viewport. Used by Join the Journey.
+   ========================================================================== */
+
+.page-bg--inline {
+  position: absolute;
+  z-index: 0;
+  animation-delay: 0ms;
+}
+
+/* This band is short, so the grade is a single arc: dark at both edges, open
+   through the middle where the plate stands. */
+.page-bg--inline .page-bg__veil {
+  background: linear-gradient(
+    180deg,
+    rgba(9, 9, 8, 0.9) 0%,
+    rgba(9, 9, 8, 0.6) 30%,
+    rgba(9, 9, 8, 0.58) 58%,
+    rgba(9, 9, 8, 0.86) 100%
+  );
+}
+
+.page-bg--inline .page-bg__frame {
+  animation-duration: 60s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-bg { animation: none; opacity: 1; }
+  .page-bg__frame { animation: none; }
+}
+
+/* ==========================================================================
+   A page standing on a photograph.
+
+   `.page--scene` turns off the page's own ink ground so the scene shows
+   through, and gives the type a soft dark halo so it never has to rely on
+   the veil alone. The paper a story is written on is opaque, so it needs
+   nothing — it simply lies on top of the scene.
+   ========================================================================== */
+
+/* doubled up so it beats `.page`'s own ground, whichever order the two
+   stylesheets happen to land in */
+.page.page--scene {
+  background: transparent;
+}
+
+/* A pool of shade under the reading column. The veil grades the whole frame,
+   but the copy sits in one place on it, and on a scene with a bright patch
+   there — the manuscript on the poems page — cream type needs the ground
+   taken down locally rather than everywhere. It reaches well past the type
+   and fades out inside its own box, so it never draws an edge. */
+.page--scene .page__inner {
+  position: relative;
+}
+
+.page--scene .page__inner::before {
+  content: "";
+  position: absolute;
+  inset: -4rem -3rem -3rem;
+  z-index: -1;
+  /* it has to reach zero well inside its own box, or the box shows as a
+     rectangle of shade on the photograph */
+  background: radial-gradient(
+    66% 54% at 40% 42%,
+    rgba(9, 9, 8, 0.6),
+    rgba(9, 9, 8, 0.28) 48%,
+    rgba(9, 9, 8, 0) 74%
+  );
+  pointer-events: none;
+}
+
+.page--scene .eyebrow,
+.page--scene .page__title,
+.page--scene .page__intro,
+.page--scene .page__empty,
+.page--scene .entry__eyebrow,
+.page--scene .entry__title,
+.page--scene .entry__description,
+.page--scene .entry__more,
+.page--scene .story-page__meta,
+.page--scene .story-page__title,
+.page--scene .story-page__standfirst,
+.page--scene .story-page__back,
+.page--scene .dateline {
+  text-shadow: 0 1px 18px rgba(9, 9, 8, 0.72), 0 1px 3px rgba(9, 9, 8, 0.5);
+}
+
+/* The entry hairlines are reading against a photograph now, not flat ink. */
+.page--scene .entry { border-bottom-color: rgba(237, 229, 214, 0.16); }

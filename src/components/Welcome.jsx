@@ -1,9 +1,31 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from './Reveal.jsx';
 import { WELCOME } from '../content/site.js';
 import './Welcome.css';
 
+/** how long each photograph is held before the next one fades up */
+const HOLD = 10000;
+
+const WIDTHS = [640, 960, 1280];
+const srcsetFor = (base) => WIDTHS.map((w) => `${base}-${w}.webp ${w}w`).join(', ');
+
 export default function Welcome() {
+  /* The frame holds more than one photograph, so they take turns in it. Two
+     stacked prints, only opacity ever animating, the same as the seasons on
+     the road above. */
+  const [shown, setShown] = useState(0);
+  const count = WELCOME.photos.length;
+
+  useEffect(() => {
+    if (count < 2) return undefined;
+    const timer = window.setInterval(
+      () => setShown((i) => (i + 1) % count),
+      HOLD,
+    );
+    return () => window.clearInterval(timer);
+  }, [count]);
+
   return (
     <section id="welcome" className="welcome section grain">
       <div className="shell welcome__grid">
@@ -64,14 +86,23 @@ export default function Welcome() {
               </div>
 
               <div className="collage__photo">
-                <img
-                  src="/images/pop.webp"
-                  width="820"
-                  height="985"
-                  alt={WELCOME.photoAlt}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <div className="collage__print">
+                  {WELCOME.photos.map((photo, i) => (
+                    <img
+                      key={photo.src}
+                      className={`collage__shot${i === shown ? ' is-shown' : ''}`}
+                      src={`${photo.src}-960.webp`}
+                      srcSet={srcsetFor(photo.src)}
+                      sizes="(max-width: 900px) 84vw, 25rem"
+                      width="1280"
+                      height="960"
+                      alt={photo.alt}
+                      aria-hidden={i === shown ? undefined : 'true'}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ))}
+                </div>
                 <span className="collage__aged" aria-hidden="true" />
               </div>
 
