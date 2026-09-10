@@ -21,9 +21,8 @@ const WIDTHS = [880, 1280, 1684];
  * The scenes. `base` is a path minus `-<width>.webp`, so every entry has to
  * exist at all three widths.
  *
- * Two of these are borrowed rather than their own photograph: `about` sits on
- * the same road as the homepage, and `letters` shares the poems manuscript —
- * a letter and a poem are both something written by hand.
+ * `about` is borrowed rather than its own photograph: it sits on the same road
+ * as the homepage.
  */
 const SCENES = {
   stories: {
@@ -33,14 +32,6 @@ const SCENES = {
   poems: {
     base: '/images/pages/poems',
     alt: 'A handwritten manuscript on a wooden desk, a pen beside it, late light across the boards.',
-  },
-  journal: {
-    base: '/images/pages/journal',
-    alt: 'A notebook and a mug of coffee on a porch table, the sun coming up over the hills.',
-  },
-  letters: {
-    base: '/images/pages/poems',
-    alt: 'A handwritten page on a wooden desk, a pen laid down beside it.',
   },
   about: {
     base: '/images/seasons/summer',

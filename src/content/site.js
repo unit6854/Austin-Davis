@@ -5,9 +5,7 @@
 export const NAV_LINKS = [
   { label: 'Stories', to: '/stories' },
   { label: 'Poems', to: '/poems' },
-  { label: 'Journal', to: '/journal' },
   { label: 'About', to: '/about' },
-  { label: 'Letters', to: '/letters' },
 ];
 
 /**
@@ -131,12 +129,6 @@ export const JOURNEY = [
     description: 'Words I’ve carried with me for years.',
     to: '/poems',
   },
-  {
-    icon: 'journal',
-    label: 'Journal',
-    description: 'Questions I’m still trying to answer.',
-    to: '/journal',
-  },
 ];
 
 export const NEWSLETTER = {
@@ -174,14 +166,6 @@ export const PAGES = {
       'Some of these were written in a notebook a long time ago and have been waiting since.',
     empty: 'These are being gathered.',
   },
-  journal: {
-    scene: 'journal',
-    eyebrow: 'Journal',
-    title: 'Questions I’m still trying to answer.',
-    intro:
-      'Not conclusions. Just the things I keep turning over — about time, work, family, and what any of it is for.',
-    empty: 'The first entries are coming.',
-  },
   about: {
     scene: 'about',
     eyebrow: 'About',
@@ -189,13 +173,5 @@ export const PAGES = {
     intro:
       'I write about family, childhood, ambition, time, freedom, loss, memory, and music — and the question underneath all of it: what does it actually mean to live?',
     empty: 'A fuller introduction is on its way.',
-  },
-  letters: {
-    scene: 'letters',
-    eyebrow: 'Letters',
-    title: 'Written to someone in particular.',
-    intro:
-      'Letters to the people who shaped me — some of whom will never read them.',
-    empty: 'The first letters are coming.',
   },
 };

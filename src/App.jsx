@@ -42,9 +42,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/stories" element={<SectionPage {...PAGES.stories} showStories />} />
               <Route path="/poems" element={<SectionPage {...PAGES.poems} />} />
-              <Route path="/journal" element={<SectionPage {...PAGES.journal} />} />
               <Route path="/about" element={<SectionPage {...PAGES.about} />} />
-              <Route path="/letters" element={<SectionPage {...PAGES.letters} />} />
               <Route path="/stories/:slug" element={<Story />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
