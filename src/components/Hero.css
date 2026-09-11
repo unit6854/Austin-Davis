@@ -267,6 +267,75 @@ html[data-scene-light="true"] .hero {
 .hero.is-away .hero__parallax { will-change: auto; }
 
 /* ==========================================================================
+   The same four moves, handed to the compositor.
+
+   Everything above drives the road, the veil, the copy and the cue from
+   --p, a custom property JavaScript writes on every scrolled frame. That
+   works, but a custom property change is a style change: the browser
+   recalculates the hero's styles and REPAINTS the copy — full-width text
+   carrying a shadow — sixty times a second, on the main thread, which is
+   what made the headline stutter while the road behind it stayed smooth.
+
+   Where the browser can drive an animation from scroll position instead,
+   these four keyframe sets say exactly the same thing and run off the main
+   thread: nothing is recalculated and nothing is repainted, the compositor
+   just reads the scroll offset. The hero carries a view timeline and the
+   range is its own exit — 0% when its top edge meets the top of the
+   viewport, 100% when its bottom edge does, which is precisely
+   scrollY / heroHeight, the formula --p uses. Hero.jsx stops writing --p at
+   all when this is supported.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+  .hero {
+    view-timeline-name: --hero-exit;
+    view-timeline-axis: block;
+  }
+
+  .hero__parallax,
+  .hero__veil::after,
+  .hero__content,
+  .hero__cue-slot {
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: --hero-exit;
+    animation-range: exit 0% exit 100%;
+  }
+
+  .hero__parallax    { animation-name: heroTravel; }
+  .hero__veil::after { animation-name: heroDeepen; }
+  .hero__content     { animation-name: heroCopyAway; }
+  .hero__cue-slot    { animation-name: heroCueAway; }
+}
+
+/* scale(1 + p * 0.08) and translateY(p * 5vh) */
+@keyframes heroTravel {
+  from { transform: scale(1)    translate3d(0, 0,   0); }
+  to   { transform: scale(1.08) translate3d(0, 5vh, 0); }
+}
+
+/* opacity p * 0.5 */
+@keyframes heroDeepen {
+  from { opacity: 0; }
+  to   { opacity: 0.5; }
+}
+
+/* opacity 1 - p * 1.55, which reaches nothing at p = 0.6452, and
+   translateY(p * 2.4vh), which keeps going to the end */
+@keyframes heroCopyAway {
+  0%      { opacity: 1; transform: translate3d(0, 0, 0); }
+  64.52%  { opacity: 0; transform: translate3d(0, 1.548vh, 0); }
+  100%    { opacity: 0; transform: translate3d(0, 2.4vh, 0); }
+}
+
+/* opacity 1 - p * 2.6, which reaches nothing at p = 0.3846 */
+@keyframes heroCueAway {
+  0%     { opacity: 1; }
+  38.46% { opacity: 0; }
+  100%   { opacity: 0; }
+}
+
+/* ==========================================================================
    Entrance — image, then eyebrow, headline, copy, cue.
    ========================================================================== */
 

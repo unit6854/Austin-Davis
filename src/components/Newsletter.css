@@ -10,6 +10,8 @@
 
 .newsletter {
   --plate-pad: clamp(1.6rem, 4vw, 3.25rem);
+  --band-pad: clamp(1.25rem, 2.6vw, 2.25rem);
+  --plate-drop: clamp(1rem, 2.8vw, 35px);
   position: relative;
   z-index: 1;
   /* Mostly transparent, so the photograph the page is standing on carries on
@@ -18,7 +20,12 @@
      here (see .newsletter--scene). */
   background: rgba(18, 17, 13, 0.6);
   color: var(--cream);
-  padding-block: clamp(1.25rem, 2.6vw, 2.25rem);
+  /* The plate sits low in the band rather than centred in it, so it reads as
+     standing on the torn edge below rather than floating between. The space
+     it gives up at the foot is added back at the head, so the band itself
+     barely changes height. */
+  padding-top: calc(var(--band-pad) + var(--plate-drop));
+  padding-bottom: max(0px, calc(var(--band-pad) - var(--plate-drop)));
   text-align: center;
 }
 

@@ -24,6 +24,14 @@ export default function Hero() {
     const hero = heroRef.current;
     if (!hero || prefersReducedMotion()) return;
 
+    /* Where the browser can drive the four scroll-linked moves itself, it
+       does — off the main thread, from CSS. Writing --p as well would put
+       the style recalculation and the repaint it costs straight back.
+       See the view-timeline block in Hero.css. */
+    const driveFromCss =
+      typeof CSS !== 'undefined' &&
+      CSS.supports?.('animation-timeline: view()');
+
     let ticking = false;
     let active = false;
 
@@ -42,6 +50,10 @@ export default function Hero() {
       hero.style.setProperty('--p', p.toFixed(4));
     };
 
+    /* The observer still runs either way: it is what stops the road breathing
+       and the light drifting once the hero has gone by. */
+    const watchScroll = !driveFromCss;
+
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
@@ -58,6 +70,8 @@ export default function Hero() {
            until it comes back. */
         hero.classList.toggle('is-away', !active);
 
+        if (!watchScroll) return;
+
         if (active) {
           window.addEventListener('scroll', onScroll, { passive: true });
           measure();
@@ -70,7 +84,7 @@ export default function Hero() {
     );
 
     io.observe(hero);
-    window.addEventListener('resize', measure, { passive: true });
+    if (watchScroll) window.addEventListener('resize', measure, { passive: true });
 
     return () => {
       io.disconnect();
