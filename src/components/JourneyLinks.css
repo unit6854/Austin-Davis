@@ -19,16 +19,24 @@
   border-left: 1px solid rgba(182, 154, 106, 0.2);
 }
 
+/* The icon and its text travel together as one group, centred in the cell.
+   The group keeps its own left alignment inside — the label, the line under
+   it and the rule at the foot all hang off the same edge. */
 .journey__link {
   position: relative;
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   gap: clamp(0.6rem, 1.8vw, 1.5rem);
   height: 100%;
   padding: clamp(1.25rem, 2.6vw, 2.25rem) clamp(0.75rem, 2.2vw, 2rem);
   isolation: isolate;
 }
-.journey__item:first-child .journey__link { padding-left: 0; }
+
+/* the text block stops growing with the cell, so the group stays a group */
+.journey__text {
+  max-width: 22rem;
+}
 
 /* the texture that surfaces underneath on hover */
 .journey__glow {

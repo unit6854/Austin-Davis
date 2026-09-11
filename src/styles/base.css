@@ -3,6 +3,16 @@
    Tokens, reset, typography scale, shared primitives.
    ========================================================================== */
 
+/* The hero's scroll progress, 0 to 1. Registering it means the browser keeps
+   it as a number instead of a token stream it has to re-substitute into every
+   calc() that depends on it — and four things in the hero depend on it, on
+   every scrolled frame. See components/Hero. */
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 :root {
   /* --- ink / dark ground --- */
   --ink-900: #090908;
