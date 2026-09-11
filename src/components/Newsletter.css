@@ -14,11 +14,10 @@
   --plate-drop: clamp(1rem, 2.8vw, 35px);
   position: relative;
   z-index: 1;
-  /* Mostly transparent, so the photograph the page is standing on carries on
-     through the band instead of stopping at a flat block of ink above the
-     footer. The homepage overrides this — it has a photograph of its own in
-     here (see .newsletter--scene). */
-  background: rgba(18, 17, 13, 0.6);
+  /* The shade is a layer of its own rather than this box's background — see
+     the rule below. The homepage overrides all of it; it has a photograph in
+     here instead (see .newsletter--scene). */
+  background: transparent;
   color: var(--cream);
   /* The plate sits low in the band rather than centred in it, so it reads as
      standing on the torn edge below rather than floating between. The space
@@ -27,6 +26,23 @@
   padding-top: calc(var(--band-pad) + var(--plate-drop));
   padding-bottom: max(0px, calc(var(--band-pad) - var(--plate-drop)));
   text-align: center;
+}
+
+/* Mostly transparent, so the photograph the page is standing on carries on
+   through the band instead of stopping at a flat block of ink above the
+   footer.
+
+   It has to be a layer rather than the section's own background so it can run
+   on under the footer's torn edge: the tear is transparent above its ragged
+   line, and a shade that stopped at the section's bottom would leave the
+   photograph brightening abruptly along that seam. */
+.newsletter:not(.newsletter--scene)::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 calc((var(--tear) + 2px) * -1);
+  z-index: 0;
+  background: rgba(18, 17, 13, 0.6);
+  pointer-events: none;
 }
 
 /* the homepage's band stands on the field gate, which is opaque already */
