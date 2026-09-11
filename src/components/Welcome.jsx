@@ -8,7 +8,10 @@ import './Welcome.css';
 const HOLD = 10000;
 
 const WIDTHS = [640, 960, 1280];
-const srcsetFor = (base) => WIDTHS.map((w) => `${base}-${w}.webp ${w}w`).join(', ');
+const srcsetFor = (base, widths = WIDTHS) =>
+  widths.map((w) => `${base}-${w}.webp ${w}w`).join(', ');
+/* the largest cut a photograph has, for the plain src */
+const largest = (widths = WIDTHS) => widths[widths.length - 1];
 
 export default function Welcome() {
   /* The frame holds more than one photograph, so they take turns in it. Two
@@ -91,8 +94,8 @@ export default function Welcome() {
                     <img
                       key={photo.src}
                       className={`collage__shot${i === shown ? ' is-shown' : ''}`}
-                      src={`${photo.src}-960.webp`}
-                      srcSet={srcsetFor(photo.src)}
+                      src={`${photo.src}-${Math.min(960, largest(photo.widths))}.webp`}
+                      srcSet={srcsetFor(photo.src, photo.widths)}
                       sizes="(max-width: 900px) 84vw, 25rem"
                       width="1280"
                       height="960"

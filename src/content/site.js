@@ -51,6 +51,13 @@ export const WELCOME = {
       src: '/images/family/pool',
       alt: 'Two children sitting in a paddling pool in the yard on a summer afternoon, pouring water from a cup.',
     },
+    {
+      src: '/images/family/cat',
+      /* the scan is only 600px across, so it is served at that one size —
+         upscaling it would only soften it */
+      widths: [600],
+      alt: 'A boy in a red shirt sitting on the kitchen floor by the window, holding a grey and white cat in his lap.',
+    },
   ],
 };
 
