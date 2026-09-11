@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import './PageBackground.css';
 
@@ -57,6 +58,13 @@ export { SCENES, WIDTHS, srcsetFor };
  *   wants the photograph inside it rather than behind the whole viewport.
  */
 export default function PageBackground({ scene, inline = false }) {
+  /* The portal needs a document, and the pages are prerendered to HTML at
+     build time where there is not one. It also has to match on the first
+     client render for hydration to line up, so it waits a beat either way —
+     the layer fades in regardless. */
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const found = SCENES[scene];
   if (!found) return null;
 
@@ -87,6 +95,7 @@ export default function PageBackground({ scene, inline = false }) {
   );
 
   if (inline) return layer;
+  if (!mounted) return null;
 
   return createPortal(layer, document.body);
 }
