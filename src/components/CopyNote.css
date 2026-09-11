@@ -1,0 +1,57 @@
+/* ==========================================================================
+   The note that appears when a passage is copied.
+
+   A pinned scrap at the foot of the window, in the same hand as the notes
+   around the photographs — not a system toast.
+   ========================================================================== */
+
+.copy-note {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  z-index: 150;
+
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.7rem 1.15rem 0.75rem;
+
+  font-family: var(--hand);
+  font-size: 1.0625rem;
+  line-height: 1;
+  color: #3B3025;
+  white-space: nowrap;
+
+  background:
+    url('/images/paper-texture.webp') center / cover,
+    #E4D6BC;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.34),
+    0 18px 34px -14px rgba(0, 0, 0, 0.7);
+  /* paper is never quite square */
+  border-radius: 2px 3px 2px 4px / 3px 2px 4px 2px;
+
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-50%, 14px, 0) rotate(-1.1deg);
+  transition:
+    opacity 420ms var(--ease),
+    transform 520ms var(--ease);
+}
+
+.copy-note.is-shown {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0) rotate(-1.1deg);
+}
+
+.copy-note__mark {
+  display: flex;
+  color: #6B5230;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-note { transition: opacity 200ms linear; }
+  .copy-note,
+  .copy-note.is-shown { transform: translate3d(-50%, 0, 0); }
+}

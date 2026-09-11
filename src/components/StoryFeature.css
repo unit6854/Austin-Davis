@@ -68,12 +68,27 @@
     0 76px 110px -50px rgba(0, 0, 0, 0.66);
 }
 
+/* Both stories occupy the same cell, so the paper is always as tall as the
+   longer of them and nothing moves underneath when one turns to the other. */
+.story__stack {
+  display: grid;
+}
+
 .story__grid {
+  grid-area: 1 / 1;
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
   align-items: center;
   gap: clamp(1rem, 3vw, 3rem);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1100ms var(--ease);
+}
+.story__grid.is-shown {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .story__body { position: relative; z-index: 1; }
@@ -215,6 +230,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* the stories still take their turns, they just cut rather than fade */
+  .story__grid { transition: none; }
+
   .story__plant {
     opacity: 0.82;
     transform: rotate(-3deg);

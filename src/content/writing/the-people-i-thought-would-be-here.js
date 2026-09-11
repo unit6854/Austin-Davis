@@ -3,8 +3,10 @@
  *
  * Transcribed verbatim from Writing/Memoir 2 - The People I Thought Would Be Here.docx.
  * Each inner array is one stanza; each string is one line, exactly as written.
- * The source has no blank lines anywhere in it, so the piece is one unbroken
- * stanza. The line breaks are the author's, so they are preserved.
+ * The line breaks are the author's, preserved exactly. The source has no blank
+ * lines in it, so the stanza breaks were added afterwards, at the points where
+ * the piece turns to a new subject — never inside a list and never mid-thought.
+ * The words and their order are untouched.
  */
 
 export const STANZAS = [
@@ -29,6 +31,8 @@ export const STANZAS = [
     'Will she ever know me like she did when she was little?',
     'Will she remember who I was to her?',
     'Will she remember how much I loved her dad?',
+  ],
+  [
     'Do you think about me where you are now?',
     'Do you remember the times we used to skateboard?',
     'Do you remember all the times you were there for me?',
@@ -41,6 +45,8 @@ export const STANZAS = [
     'You deserve that.',
     'But I almost can’t get through a day without remembering how much I need you down here.',
     'And that’s the part I don’t know how to explain.',
+  ],
+  [
     'Because it isn’t just you.',
     'It seems like the friends who are still here aren’t really here at all.',
     'Their voices have changed.',
@@ -55,6 +61,8 @@ export const STANZAS = [
     'Everything seems to have a place now.',
     'Except us.',
     'A friend is no longer a friend when life squeezes everything out of you.',
+  ],
+  [
     'I think about my two childhood friends.',
     'They were my heart and soul.',
     'We used to walk around at night while our parents slept.',
@@ -69,6 +77,8 @@ export const STANZAS = [
     'We didn’t know those moments would become memories.',
     'We didn’t know we were living through some of the best parts of our lives.',
     'We just lived them.',
+  ],
+  [
     'Then we moved to Murfreesboro.',
     'Life seemed out of control.',
     'But we stayed together.',
@@ -77,6 +87,8 @@ export const STANZAS = [
     'We cared about one another.',
     'We were there for each other.',
     'Life was hard, but having someone to experience it with made it memorable.',
+  ],
+  [
     'I thought that was what friendship was.',
     'I thought those people would always be there.',
     'I thought we’d grow up together.',
@@ -84,22 +96,30 @@ export const STANZAS = [
     'But somewhere along the way, life got busy.',
     'And busy turned into years.',
     'And years turned into silence.',
+  ],
+  [
     'They’re still alive.',
     'They’re still somewhere in this world.',
     'But sometimes that almost makes it harder.',
     'Because when someone dies, you understand why they aren’t calling.',
     'When someone is still alive, you can spend years wondering why they aren’t.',
+  ],
+  [
     'I’ve lost friends to drugs.',
     'Some I will never see again.',
     'Some are still alive, but I can’t reach them anymore.',
     'I’ve watched drugs take people I loved and turn them into people I barely recognize.',
     'I’ve watched friendships disappear without a funeral.',
     'I’ve watched people I cared about become strangers while they were still standing in front of me.',
+  ],
+  [
     'And I’ve lost friends to accidents.',
     'People who were supposed to grow old.',
     'People who were supposed to have more time.',
     'People I thought I’d still be talking to years from now.',
     'There are people I expected to grow old with who never got the chance to grow old at all.',
+  ],
+  [
     'I don’t think I understood what that meant when I was younger.',
     'I thought losing someone meant losing them.',
     'I didn’t understand that you could lose someone in pieces.',
@@ -108,12 +128,16 @@ export const STANZAS = [
     'A friendship that slowly becomes a memory.',
     'A person you can still find on social media but haven’t spoken to in years.',
     'Someone you would recognize immediately if you saw them, but wouldn’t know how to talk to anymore.',
+  ],
+  [
     'Maybe that’s what getting older is.',
     'Realizing that people don’t always leave your life in the same way.',
     'Some leave suddenly.',
     'Some leave slowly.',
     'Some leave while they’re still alive.',
     'And some stay in your heart long after they’re gone.',
+  ],
+  [
     'Sometimes I sit in my office and work until there isn’t any light left outside.',
     'I look at the clock and realize another day is gone.',
     'I didn’t feel the sun on my skin.',
@@ -121,12 +145,16 @@ export const STANZAS = [
     'I didn’t walk in the grass.',
     'I didn’t sit outside and look at the clouds.',
     'I just worked.',
+  ],
+  [
     'And I wonder what happened to us.',
     'What happened to really experiencing life?',
     'What happened to walking around at night because there was nowhere else we needed to be?',
     'What happened to skateboarding?',
     'What happened to sitting around talking about nothing?',
     'What happened to being young enough that time didn’t feel like something we could lose?',
+  ],
+  [
     'I would trade a day in this office for one of those nights in a heartbeat.',
     'Not because those nights were perfect.',
     'They weren’t.',
@@ -135,26 +163,36 @@ export const STANZAS = [
     'We grew up.',
     'But we were there.',
     'Together.',
+  ],
+  [
     'And maybe that’s what I miss the most.',
     'Not being young.',
     'Not having fewer responsibilities.',
     'Not having less to worry about.',
     'I miss having people to experience life with.',
+  ],
+  [
     'I’d give almost anything to spend one more day with the friends I’ve lost.',
     'One more night walking around under the street lights.',
     'One more skateboard ride.',
     'One more stupid conversation.',
     'One more chance to tell you what you meant to me.',
     'One more chance for you to understand what a treasure you were.',
+  ],
+  [
     'I hope you’re listening.',
     'I hope you’re somewhere peaceful.',
     'I hope you’re living the life you didn’t get to finish here.',
+  ],
+  [
     'And to the ones who are still here,',
     'I don’t know what happened.',
     'Maybe life happened.',
     'Maybe we changed.',
     'Maybe we just stopped making time.',
     'But sometimes I wish we could go back to those nights when nothing mattered except being together.',
+  ],
+  [
     'Because I can’t call these people my brothers anymore.',
     'And that hurts to say.',
     'Because they were.',
@@ -164,6 +202,8 @@ export const STANZAS = [
     'My freedom.',
     'My heart and soul.',
     'But the bond we had will never be again.',
+  ],
+  [
     'And maybe that’s the hardest part about growing older.',
     'You don’t just lose people.',
     'You lose versions of your life.',
@@ -173,6 +213,8 @@ export const STANZAS = [
     'People you can call, but don’t.',
     'People you love who don’t know how much you still think about them.',
     'And people who would give anything to answer your call, but can’t.',
+  ],
+  [
     'Maybe that’s why I’ve started thinking differently about time.',
     'Because I used to think there would always be another night.',
     'Another conversation.',
@@ -181,6 +223,8 @@ export const STANZAS = [
     'Another year.',
     'Now I know better.',
     'There isn’t always another one.',
+  ],
+  [
     'So if you’re reading this and you still have your people,',
     'call them.',
     'Go see them.',
@@ -195,10 +239,14 @@ export const STANZAS = [
     'I know I would.',
     'For you.',
     'For all of you.',
+  ],
+  [
     'I would give anything for one more day.',
     'Not to change anything.',
     'Not to fix anything.',
     'Just to be there.',
+  ],
+  [
     'Because I think I’m finally beginning to understand something.',
     'Life was never supposed to be lived alone.',
     'It was supposed to be experienced.',

@@ -309,21 +309,35 @@ button { cursor: pointer; }
 
 /* ==========================================================================
    Austin's writing.
-   Selection, copy, drag and the context menu are all closed off inside
-   `.writing`; the rest of the site behaves normally. See lib/protect.js.
-   ========================================================================== */
 
+   It used to be closed off — no selection, no copy, no context menu. It is
+   open now: writing like this travels by being quoted, and a passage someone
+   cannot lift is a passage they cannot pass on. Copying one takes the credit
+   and the link with it; see lib/quote.js.
+
+   The writing sits on paper, so it takes a highlight rather than the cream
+   selection the dark surfaces use — a warm wash, as if a pencil had been
+   drawn over the line, with the ink left where it is. */
 .writing,
 .writing * {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-user-drag: none;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .writing::selection,
-.writing *::selection { background: transparent; }
+.writing *::selection {
+  background: rgba(198, 156, 92, 0.34);
+  color: #17130E;
+  text-shadow: none;
+}
+
+/* On the dark pages the same passage is cream on ink, so the wash goes the
+   other way — light, not amber. */
+.page--scene .writing::selection,
+.page--scene .writing *::selection {
+  background: rgba(198, 156, 92, 0.34);
+  color: var(--cream);
+}
 
 /* ==========================================================================
    Momentum scrolling — the class is added by lib/momentum.js only when the

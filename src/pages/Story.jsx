@@ -45,8 +45,12 @@ export default function Story() {
 
       <div className="shell story-page__paper">
         <Sheet seed={story.slug}>
-          {/* Austin's writing — not selectable, not copyable. See lib/protect.js */}
-          <div className="writing sheet-prose story-page__body">
+          {/* data-piece names the source on anything copied out of it —
+              see lib/quote.js */}
+          <div
+            className="writing sheet-prose story-page__body"
+            data-piece={story.title}
+          >
             {story.stanzas.map((stanza, index) => (
               <Reveal
                 as="p"

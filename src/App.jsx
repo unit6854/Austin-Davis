@@ -4,6 +4,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation.jsx';
 import Newsletter from './components/Newsletter.jsx';
 import Footer from './components/Footer.jsx';
+import CopyNote from './components/CopyNote.jsx';
 import PageTransition from './components/PageTransition.jsx';
 
 import Home from './pages/Home.jsx';
@@ -13,7 +14,7 @@ import NotFound from './pages/NotFound.jsx';
 
 import { markEntered } from './lib/entrance.js';
 import { initMomentumScroll } from './lib/momentum.js';
-import { initTextProtection } from './lib/protect.js';
+import { initQuoting } from './lib/quote.js';
 import { PAGES } from './content/site.js';
 
 export default function App() {
@@ -25,7 +26,7 @@ export default function App() {
   }, [location.pathname]);
 
   useEffect(() => initMomentumScroll(), []);
-  useEffect(() => initTextProtection(), []);
+  useEffect(() => initQuoting(), []);
 
   return (
     <>
@@ -54,6 +55,8 @@ export default function App() {
           already standing on a photograph of its own */}
       <Newsletter scene={location.pathname === '/' ? 'journey' : undefined} />
       <Footer />
+
+      <CopyNote />
     </>
   );
 }

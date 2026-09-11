@@ -77,6 +77,8 @@ export const STORIES = [
     ],
     stanzas: THE_PEOPLE_I_THOUGHT_WOULD_BE_HERE,
     cta: 'Read the story',
+    /* the engraving that stands beside it on the homepage */
+    art: { src: '/images/skateboard.webp', width: 940, height: 1000 },
   },
   {
     eyebrow: 'First story',
@@ -92,11 +94,15 @@ export const STORIES = [
     ],
     stanzas: THE_THINGS_I_DIDNT_UNDERSTAND,
     cta: 'Read the story',
+    art: { src: '/images/tomato.webp', width: 940, height: 1234 },
   },
 ];
 
-/** The one the homepage features. */
+/** The oldest — still the one the story pages and the dateline read from. */
 export const FIRST_STORY = STORIES[STORIES.length - 1];
+
+/** how long the homepage feature holds on one story before turning to the next */
+export const FEATURE_HOLD = 20000;
 
 /** 30 August 2026 → { day: '30', month: 'August', year: '2026' } */
 export function formatDate(iso) {
