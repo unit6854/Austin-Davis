@@ -16,7 +16,7 @@
      through the band instead of stopping at a flat block of ink above the
      footer. The homepage overrides this — it has a photograph of its own in
      here (see .newsletter--scene). */
-  background: rgba(18, 17, 13, 0.3);
+  background: rgba(18, 17, 13, 0.6);
   color: var(--cream);
   padding-block: clamp(1.25rem, 2.6vw, 2.25rem);
   text-align: center;
