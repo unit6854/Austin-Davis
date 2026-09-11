@@ -1,0 +1,76 @@
+/* ==========================================================================
+   The poems page — a desk with the leaves laid out on it.
+   ========================================================================== */
+
+.poems__desk {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  /* the manuscript photograph is bright here; the leaves need a little more
+     of the page's shade than the heading did */
+  position: relative;
+}
+
+/* Each leaf takes the width of its own longest line up to the sheet's cap,
+   and is set a little off centre — left, then right, then left — so the
+   column reads as sheets put down by hand rather than a stack. */
+.poems__leaf {
+  display: flex;
+  width: 100%;
+}
+.poems__leaf .poem-sheet {
+  margin-inline: 0;
+}
+
+.poems__leaf--left {
+  justify-content: center;
+  padding-right: clamp(0px, 8vw, 7rem);
+}
+.poems__leaf--right {
+  justify-content: center;
+  padding-left: clamp(0px, 8vw, 7rem);
+}
+
+.poems__closing {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+}
+
+/* On a phone the offset would only steal width from the words */
+@media (max-width: 760px) {
+  .poems__leaf--left,
+  .poems__leaf--right {
+    padding-inline: 0;
+  }
+}
+
+/* ==========================================================================
+   A single poem's page — the way on to the next one and back to the last.
+   ========================================================================== */
+
+.poems__leaf--single {
+  justify-content: center;
+}
+
+.poem-page__nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1.5rem;
+}
+.poem-page__nav .story-page__back { margin-top: clamp(2rem, 4vw, 3rem); }
+.poem-page__all { justify-self: center; }
+.poem-page__next { justify-self: end; text-align: right; }
+.poem-page__next:hover .arrow { transform: translateX(6px); }
+
+@media (max-width: 620px) {
+  .poem-page__nav {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .poem-page__all,
+  .poem-page__next { justify-self: start; text-align: left; }
+  .poem-page__nav .story-page__back { margin-top: 1.25rem; }
+  .poem-page__nav .story-page__back:first-child { margin-top: clamp(2rem, 4vw, 3rem); }
+}

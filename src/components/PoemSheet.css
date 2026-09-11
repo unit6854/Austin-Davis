@@ -1,0 +1,111 @@
+/* ==========================================================================
+   A poem on a sheet of its own.
+   ========================================================================== */
+
+.poem-sheet {
+  /* a poem's lines are short; a story's page would strand them */
+  max-width: min(100%, 40rem);
+  padding:
+    clamp(2rem, 4.6vw, 3.25rem)
+    clamp(1.6rem, 4.6vw, 3.5rem)
+    clamp(1.6rem, 3.6vw, 2.5rem);
+}
+
+/* ---------- the title ---------- */
+.poem-sheet__head {
+  margin-bottom: clamp(1.5rem, 3.2vw, 2.25rem);
+}
+
+.poem-sheet__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.625rem, 3.6vw, 2.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.poem-sheet__link {
+  color: inherit;
+  text-decoration: none;
+  /* a rule that draws in from the left on hover, in the paper's own brown */
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 620ms var(--ease);
+}
+.poem-sheet__link:hover,
+.poem-sheet__link:focus-visible {
+  background-size: 100% 1px;
+  outline: none;
+}
+
+/* ---------- the poem ----------
+   Cormorant, a shade larger and looser than the memoirs: a poem is read a
+   line at a time, and the air between lines is part of it. Each line the
+   author wrote is its own block, so one long enough to wrap hangs under
+   itself instead of reading as a new line. */
+.poem-prose {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(1.0625rem, 1.55vw, 1.1875rem);
+  line-height: 1.66;
+  color: var(--ink);
+  text-shadow: 0 0 0.35px rgba(32, 28, 23, 0.3);
+}
+
+.poem-prose__stanza { margin: 0; }
+.poem-prose__stanza + .poem-prose__stanza {
+  margin-top: clamp(1.15rem, 2.4vw, 1.7rem);
+}
+
+.poem-prose .line {
+  display: block;
+  padding-left: 1.6em;
+  text-indent: -1.6em;
+}
+
+/* ---------- the date, written on the back ---------- */
+.poem-sheet__foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: clamp(1.75rem, 3.6vw, 2.5rem);
+}
+
+.poem-sheet__date {
+  font-size: 1.125rem;
+  line-height: 1;
+  color: rgba(59, 48, 37, 0.78);
+  /* the slight lean a hand has */
+  transform: rotate(-1.6deg);
+  transform-origin: right bottom;
+}
+.poem-sheet__date::before {
+  content: "— ";
+}
+
+.poem-sheet__date--none {
+  color: rgba(59, 48, 37, 0.42);
+}
+
+@media (max-width: 620px) {
+  .poem-sheet {
+    padding-inline: clamp(1.25rem, 5.5vw, 2rem);
+  }
+  .poem-prose {
+    font-size: clamp(1rem, 4.2vw, 1.0625rem);
+    line-height: 1.62;
+  }
+  .poem-prose .line {
+    padding-left: 1em;
+    text-indent: -1em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poem-sheet__link { transition: none; }
+}

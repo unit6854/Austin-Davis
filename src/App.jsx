@@ -10,6 +10,8 @@ import PageTransition from './components/PageTransition.jsx';
 import Home from './pages/Home.jsx';
 import SectionPage from './pages/SectionPage.jsx';
 import Story from './pages/Story.jsx';
+import Poems from './pages/Poems.jsx';
+import Poem from './pages/Poem.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 import { markEntered } from './lib/entrance.js';
@@ -42,7 +44,8 @@ export default function App() {
             <Routes location={shown}>
               <Route path="/" element={<Home />} />
               <Route path="/stories" element={<SectionPage {...PAGES.stories} showStories />} />
-              <Route path="/poems" element={<SectionPage {...PAGES.poems} />} />
+              <Route path="/poems" element={<Poems />} />
+              <Route path="/poems/:slug" element={<Poem />} />
               <Route path="/about" element={<SectionPage {...PAGES.about} />} />
               <Route path="/stories/:slug" element={<Story />} />
               <Route path="*" element={<NotFound />} />

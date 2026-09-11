@@ -104,6 +104,62 @@ export const FIRST_STORY = STORIES[STORIES.length - 1];
 /** how long the homepage feature holds on one story before turning to the next */
 export const FEATURE_HOLD = 20000;
 
+import { STANZAS as STREETLIGHT_SOLILOQUY } from './writing/poems/streetlight-soliloquy.js';
+import { STANZAS as THE_BATTLEFIELD_OF_US } from './writing/poems/the-battlefield-of-us.js';
+import { STANZAS as THE_EDGE_OF_A_CLIFF } from './writing/poems/the-edge-of-a-cliff-or-the-bottom-of-the-sea.js';
+import { STANZAS as A_RECOLLECTION_OF_MY_HEART } from './writing/poems/a-recollection-of-my-heart.js';
+import { STANZAS as THOUGHTS_OF_THE_NIGHT } from './writing/poems/thoughts-of-the-night.js';
+import { STANZAS as MUSIC_INTERTWINED_WITH_LOVE } from './writing/poems/music-intertwined-with-love.js';
+
+/**
+ * The poems, oldest first — they read as a life that way, and Austin has said
+ * they were written in order.
+ *
+ * `date` is the day each was first posted to his WritersCafe page
+ * (writerscafe.org/lamaz1928), where most of them appeared under earlier
+ * titles. The words here are the versions in Writing/, not the ones there.
+ * A poem with no date has not been found on that page; it stays at the end,
+ * with the newest, until Austin says when it was written.
+ */
+export const POEMS = [
+  {
+    title: 'Music Intertwined with Love',
+    slug: 'music-intertwined-with-love',
+    date: '2008-11-29',
+    stanzas: MUSIC_INTERTWINED_WITH_LOVE,
+  },
+  {
+    title: 'Thoughts of the Night',
+    slug: 'thoughts-of-the-night',
+    date: '2010-01-21',
+    stanzas: THOUGHTS_OF_THE_NIGHT,
+  },
+  {
+    title: 'A Recollection of My Heart',
+    slug: 'a-recollection-of-my-heart',
+    date: '2011-03-10',
+    stanzas: A_RECOLLECTION_OF_MY_HEART,
+  },
+  {
+    title: 'The Edge of a Cliff or the Bottom of The Sea',
+    slug: 'the-edge-of-a-cliff-or-the-bottom-of-the-sea',
+    date: '2011-07-20',
+    stanzas: THE_EDGE_OF_A_CLIFF,
+  },
+  {
+    title: 'The Battlefield of Us',
+    slug: 'the-battlefield-of-us',
+    date: null,
+    stanzas: THE_BATTLEFIELD_OF_US,
+  },
+  {
+    title: 'Streetlight Soliloquy',
+    slug: 'streetlight-soliloquy',
+    date: null,
+    stanzas: STREETLIGHT_SOLILOQUY,
+  },
+];
+
 /** 30 August 2026 → { day: '30', month: 'August', year: '2026' } */
 export function formatDate(iso) {
   const [y, m, d] = iso.split('-').map(Number);
@@ -170,7 +226,8 @@ export const PAGES = {
     title: 'Words I’ve carried with me for years.',
     intro:
       'Some of these were written in a notebook a long time ago and have been waiting since.',
-    empty: 'These are being gathered.',
+    /* the line under the last sheet */
+    closing: 'More are still in the notebook.',
   },
   about: {
     scene: 'about',

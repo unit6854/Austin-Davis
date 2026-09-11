@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import App from './App.jsx';
-import { PAGES, STORIES } from './content/site.js';
+import { PAGES, STORIES, POEMS } from './content/site.js';
 import { SCENES, WIDTHS } from './components/PageBackground.jsx';
 
 /**
@@ -28,6 +28,15 @@ export const ROUTES = [
       ? `${SCENES[page.scene].base}-1280.webp`
       : '/images/seasons/summer-1280.webp',
     preload: SCENES[page.scene]?.base,
+  })),
+  ...POEMS.map((poem) => ({
+    path: `/poems/${poem.slug}`,
+    title: `${poem.title} — Austin Davis`,
+    /* the opening line stands in for a description, with the comma or full
+       stop that ends it taken off so the credit reads on from it */
+    description: `“${poem.stanzas[0][0].replace(/[,.;:—–-]+$/, '')}” — a poem by Austin Davis.`,
+    image: `${SCENES.poems.base}-1280.webp`,
+    preload: SCENES.poems.base,
   })),
   ...STORIES.map((story) => ({
     path: `/stories/${story.slug}`,
