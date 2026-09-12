@@ -233,15 +233,110 @@ export const PAGES = {
     title: 'Words I’ve carried with me for years.',
     intro:
       'Some of these were written in a notebook a long time ago and have been waiting since.',
-    /* the line under the last sheet */
+    /* the hand-written line under the six leaves, before one is picked up */
+    hint: 'Pick one up.',
+    /* the way back up to the leaves from under an open poem */
+    back: 'The other leaves',
+    /* the line under everything */
     closing: 'More are still in the notebook.',
   },
   about: {
-    scene: 'about',
     eyebrow: 'About',
-    title: 'I’m trying to understand this too.',
+    /* the head, for the title bar and the address's description */
+    title: 'Whatever this is, you’re not alone in it.',
     intro:
-      'I write about family, childhood, ambition, time, freedom, loss, memory, and music — and the question underneath all of it: what does it actually mean to live?',
-    empty: 'A fuller introduction is on its way.',
+      'I don’t have this figured out. I write because I’m trying to — and because I don’t think any of us were meant to do it alone.',
+  },
+};
+
+/**
+ * The About page. Its own page rather than one of PAGES: it is not a room
+ * with writing in it but the reason the rest of the house exists, and it
+ * says so in more parts than a title and an intro.
+ *
+ * The lines about Austin himself are kept deliberately short and are all
+ * things he has said. The hard years are not itemised — that is his to
+ * tell, and the stories tell it.
+ */
+export const ABOUT = {
+  hero: {
+    eyebrow: 'About',
+    titleTop: 'Whatever this is,',
+    titleItalic: 'you’re not alone in it.',
+    supporting: PAGES.about.intro,
+    cue: 'Walk in',
+  },
+
+  start: {
+    eyebrow: 'Where this started',
+    title: 'I’ve been writing since I was eight years old.',
+    paragraphs: [
+      'Stories first, then poems, in whatever notebook was nearest. I grew up in Memphis, Tennessee, moved to Franklin, and live in Nashville now. Some of those years were harder than I knew how to say out loud, and the writing is where it went.',
+      'I’ve lost people I thought would be here. I’ve understood things twenty years after they happened. Most of what is on this site is me trying to make sense of that, and trying to hold on to the people and the moments that made me.',
+      'This year I finish a degree in data analytics; after it, a master’s in AI systems and IT management. I build websites for small local businesses. I mention it only so you know I am an ordinary person with an ordinary life. None of it is why you’re here.',
+    ],
+    /* the photograph beside it, and what is written on it by hand */
+    photo: {
+      src: '/images/family/cat',
+      widths: [600],
+      alt: 'A boy in a red shirt sitting on the kitchen floor by the window, holding a grey and white cat in his lap.',
+      /* the date stamped on the print itself */
+      note: '1999',
+    },
+  },
+
+  reason: {
+    eyebrow: 'Why this exists',
+    statement:
+      'We spend so much of our lives learning how to survive, achieve, produce, and move forward that sometimes we forget to actually live.',
+    follow:
+      'I’m not writing this because I’ve got it right. I’m writing it because I’ve got it wrong enough times to be sure of a few things, and I would rather say them to you than keep them.',
+  },
+
+  /* the few things — each a line, and the words under it */
+  lines: [
+    {
+      line: 'You’re not alone in this.',
+      words: 'Even on the days it feels exactly like that. Especially then.',
+    },
+    {
+      line: 'We need each other.',
+      words:
+        'More than any of us let on. Nobody gets through this by themselves, and nobody was meant to.',
+    },
+    {
+      line: 'We need to wake up to each other.',
+      words:
+        'Talk. Really talk. Put the phone face down, ask how someone is, and wait for the real answer.',
+    },
+    {
+      line: 'Do something you love.',
+      words:
+        'Not because it leads anywhere. Because it’s yours, and because a life is made of afternoons like that.',
+    },
+    {
+      line: 'Tell someone what they mean to you.',
+      words:
+        'Today, if you can. We don’t get as long as we think we do. I learned that the hard way.',
+    },
+    {
+      line: 'Follow your dreams.',
+      words:
+        'The real one — the one you’re a little embarrassed to say out loud. That is usually the one.',
+    },
+  ],
+
+  close: {
+    lines: [
+      'That’s all this is. Not advice — I would be the last person to give it.',
+      'A hand, held out.',
+      'If something here reaches you, I hope you’ll reach back. Read a story. Pick up a poem. Then go and tell someone.',
+    ],
+    signature: 'Austin Davis',
+    ways: [
+      { label: 'Read the stories', to: '/stories' },
+      { label: 'Pick up a poem', to: '/poems' },
+      { label: 'Join the journey', to: '#newsletter' },
+    ],
   },
 };

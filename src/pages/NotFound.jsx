@@ -11,7 +11,7 @@ export default function NotFound() {
 
   return (
     <article className="page grain page--scene">
-      <PageBackground scene="about" />
+      <PageBackground scene="road" />
 
       <div className="shell page__inner">
         <Reveal as="p" className="eyebrow">

@@ -3,6 +3,7 @@ import { StaticRouter } from 'react-router-dom';
 import App from './App.jsx';
 import { PAGES, STORIES, POEMS } from './content/site.js';
 import { SCENES, WIDTHS } from './components/PageBackground.jsx';
+import { ABOUT_SCENE } from './pages/About.jsx';
 
 /**
  * The build renders every route to real HTML — see scripts/prerender.js.
@@ -26,8 +27,9 @@ export const ROUTES = [
     description: page.intro,
     image: SCENES[page.scene]?.base
       ? `${SCENES[page.scene].base}-1280.webp`
-      : '/images/seasons/summer-1280.webp',
-    preload: SCENES[page.scene]?.base,
+      : ABOUT_SCENE.src,
+    /* a scene cut at the three widths, or — the wood on About — one file */
+    preload: SCENES[page.scene]?.base ?? { href: ABOUT_SCENE.src },
   })),
   ...POEMS.map((poem) => ({
     path: `/poems/${poem.slug}`,
@@ -45,6 +47,17 @@ export const ROUTES = [
     image: '/images/pages/stories-1280.webp',
     preload: SCENES.stories.base,
   })),
+  /* The page for an address that does not exist. Netlify serves 404.html
+     for any path that is not a file, with a real 404 — see netlify.toml —
+     and because the markup is the page the app would render, it hydrates
+     cleanly instead of swapping the homepage out for it. */
+  {
+    path: '/404',
+    title: 'Not here — Austin Davis',
+    description: 'There is nothing at this address. The way back to the road is on the page.',
+    image: `${SCENES.road.base}-1280.webp`,
+    preload: SCENES.road.base,
+  },
 ];
 
 /** the widths every scene is cut at, for the preload's srcset */

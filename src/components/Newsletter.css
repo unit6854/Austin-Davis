@@ -48,6 +48,13 @@
 /* the homepage's band stands on the field gate, which is opaque already */
 .newsletter--scene { background: var(--ink); }
 
+/* On a drawn wall (About renders the band inside its Ground) the band
+   paints nothing of its own: the wall, its cloud and its light run on
+   through it. The wall itself runs under the footer's tear — see About.css. */
+.newsletter.newsletter--ground { background: transparent; }
+/* doubled up to beat the :not() shade rule above */
+.newsletter.newsletter--ground::before { display: none; }
+
 .newsletter__inner {
   /* the band now stands on a photograph — lift the plate clear of it */
   position: relative;

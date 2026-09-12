@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
 import Dateline from '../components/Dateline.jsx';
 import Sheet from '../components/Sheet.jsx';
 import PageBackground from '../components/PageBackground.jsx';
+import ReturnNote from '../components/ReturnNote.jsx';
 import NotFound from './NotFound.jsx';
 import { STORIES } from '../content/site.js';
 import './Page.css';
@@ -13,6 +14,7 @@ const BY_SLUG = Object.fromEntries(STORIES.map((story) => [story.slug, story]));
 export default function Story() {
   const { slug } = useParams();
   const story = BY_SLUG[slug];
+  const paperRef = useRef(null);
 
   useEffect(() => {
     if (story) document.title = `${story.title} — Austin Davis`;
@@ -43,7 +45,7 @@ export default function Story() {
 
       </div>
 
-      <div className="shell story-page__paper">
+      <div className="shell story-page__paper" ref={paperRef}>
         <Sheet seed={story.slug}>
           {/* data-piece names the source on anything copied out of it —
               see lib/quote.js */}
@@ -88,6 +90,9 @@ export default function Story() {
           </Reveal>
         </Sheet>
       </div>
+
+      {/* halfway down, the way back up */}
+      <ReturnNote of={paperRef} resetKey={story.slug} />
 
       <div className="shell page__inner">
         <Link to="/stories" className="story-page__back">

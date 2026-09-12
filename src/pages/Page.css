@@ -65,6 +65,8 @@
   font-size: clamp(1.625rem, 4vw, 2.5rem);
   line-height: 1.14;
   color: var(--cream);
+  /* so a title never leaves one word on a line of its own */
+  text-wrap: balance;
   transition: transform 620ms var(--ease);
 }
 

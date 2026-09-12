@@ -17,8 +17,11 @@ function encode(data) {
  * @param {string} [props.scene]  a PageBackground scene to stand the band on.
  *   Only the homepage passes one — an interior page already has a photograph
  *   of its own and does not want a second one at the foot of it.
+ * @param {boolean} [props.ground]  the band lies on a drawn wall
+ *   (components/Ground) — About renders it inside its own — so it paints no
+ *   ground of its own and the wall shows through.
  */
-export default function Newsletter({ scene }) {
+export default function Newsletter({ scene, ground = false }) {
   const [email, setEmail] = useState('');
   const [botField, setBotField] = useState('');
   const [status, setStatus] = useState('idle'); // idle | sending | done | error
@@ -48,7 +51,7 @@ export default function Newsletter({ scene }) {
   return (
     <section
       id="newsletter"
-      className={`newsletter${scene ? ' newsletter--scene' : ''}`}
+      className={`newsletter${scene ? ' newsletter--scene' : ''}${ground ? ' newsletter--ground' : ''}`}
     >
       {scene ? <PageBackground scene={scene} inline /> : null}
 

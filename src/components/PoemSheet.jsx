@@ -1,6 +1,8 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Sheet from './Sheet.jsx';
 import { formatDate } from '../content/site.js';
+import { observeLines } from '../lib/reveal.js';
 import './PoemSheet.css';
 
 /**
@@ -14,11 +16,25 @@ import './PoemSheet.css';
  * so six of them laid down together never look like six copies.
  *
  * `linked` makes the title a link to the poem's own page — on the poems page,
- * where they are all laid out together.
+ * where it is one of several.
+ *
+ * `written` has the lines arrive one at a time as the reader scrolls to
+ * them — see observeLines — instead of all together with the sheet.
  */
-export default function PoemSheet({ poem, linked = false, headingLevel = 2 }) {
+export default function PoemSheet({
+  poem,
+  linked = false,
+  written = false,
+  headingLevel = 2,
+}) {
   const Heading = `h${headingLevel}`;
   const when = poem.date ? formatDate(poem.date) : null;
+  const bodyRef = useRef(null);
+
+  useEffect(() => {
+    if (!written) return undefined;
+    return observeLines(bodyRef.current);
+  }, [written, poem.slug]);
 
   return (
     <Sheet seed={poem.slug} className="poem-sheet">
@@ -35,11 +51,15 @@ export default function PoemSheet({ poem, linked = false, headingLevel = 2 }) {
       </header>
 
       {/* data-piece names the source on anything copied out of it — lib/quote.js */}
-      <div className="writing poem-prose" data-piece={poem.title}>
+      <div className="writing poem-prose" data-piece={poem.title} ref={bodyRef}>
         {poem.stanzas.map((stanza, index) => (
           <p className="poem-prose__stanza" key={stanza[0] + index}>
             {stanza.map((line, i) => (
-              <span className="line" key={line + i}>
+              <span
+                className="line"
+                key={line + i}
+                data-line={written ? '' : undefined}
+              >
                 {line}
               </span>
             ))}

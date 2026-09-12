@@ -11,13 +11,15 @@ export default function Reveal({
   className = '',
   children,
   asChild = false,
+  style: own,
   ...rest
 }) {
   const ref = useRef(null);
 
   useEffect(() => observeReveal(ref.current), []);
 
-  const style = delay ? { transitionDelay: `${delay}ms` } : undefined;
+  /* a caller's own inline style rides along with the stagger */
+  const style = delay || own ? { ...own, ...(delay ? { transitionDelay: `${delay}ms` } : null) } : undefined;
 
   if (asChild) {
     return cloneElement(children, { ref, 'data-reveal': '', style });

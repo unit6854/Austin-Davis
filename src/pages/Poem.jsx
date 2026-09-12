@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
 import Dateline from '../components/Dateline.jsx';
 import PageBackground from '../components/PageBackground.jsx';
 import PoemSheet from '../components/PoemSheet.jsx';
+import ReturnNote from '../components/ReturnNote.jsx';
 import NotFound from './NotFound.jsx';
 import { POEMS } from '../content/site.js';
 import './Page.css';
@@ -19,6 +20,7 @@ const BY_SLUG = Object.fromEntries(POEMS.map((poem) => [poem.slug, poem]));
 export default function Poem() {
   const { slug } = useParams();
   const poem = BY_SLUG[slug];
+  const deskRef = useRef(null);
 
   useEffect(() => {
     if (poem) document.title = `${poem.title} — Austin Davis`;
@@ -50,11 +52,13 @@ export default function Poem() {
         ) : null}
       </div>
 
-      <div className="shell poems__desk">
+      <div className="shell poems__desk" ref={deskRef}>
         <Reveal className="poems__leaf poems__leaf--single" delay={260}>
-          <PoemSheet poem={poem} headingLevel={2} />
+          <PoemSheet poem={poem} headingLevel={2} written />
         </Reveal>
       </div>
+
+      <ReturnNote of={deskRef} resetKey={poem.slug} />
 
       <nav className="shell page__inner poem-page__nav" aria-label="Other poems">
         {previous ? (

@@ -297,6 +297,22 @@ button { cursor: pointer; }
   transform: none;
 }
 
+/* A line of writing, arriving as it is scrolled to. Set by lib/reveal.js's
+   observeLines; lines that cross into view together are staggered from
+   there. Shorter and lower than a section's reveal — it is one line, not
+   a block. */
+[data-line] {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition:
+    opacity 760ms var(--ease),
+    transform 760ms var(--ease);
+}
+[data-line].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 /* a hairline that draws itself across the page */
 .rule-draw {
   height: 1px;
@@ -390,6 +406,7 @@ button { cursor: pointer; }
     scroll-behavior: auto !important;
   }
 
-  [data-reveal] { opacity: 1; transform: none; }
+  [data-reveal],
+  [data-line] { opacity: 1; transform: none; }
   .rule-draw { transform: scaleX(1); }
 }

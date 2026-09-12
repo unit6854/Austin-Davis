@@ -60,20 +60,29 @@ function headFor({ path, title, description, image }) {
    a third of a megabyte of road it never puts on screen. */
 const PRELOAD_BLOCK = /\n\s*<link\s+rel="preload"\s+as="image"[\s\S]*?\/>/;
 
-function preloadFor(base) {
-  if (!base) return '';
-  const srcset = IMAGE_WIDTHS.map((w) => `${base}-${w}.webp ${w}w`).join(', ');
+/* `preload` is a base path cut at every width, or `{ href }` for a picture
+   that is served at one size only — the wood on About. */
+function preloadFor(preload) {
+  if (!preload) return '';
+
+  const single = typeof preload === 'object';
+  const srcset = single
+    ? ''
+    : IMAGE_WIDTHS.map((w) => `${preload}-${w}.webp ${w}w`).join(', ');
+
   return [
     '',
     '    <link',
     '      rel="preload"',
     '      as="image"',
-    `      href="${base}-1280.webp"`,
-    `      imagesrcset="${srcset}"`,
-    '      imagesizes="100vw"',
+    `      href="${single ? preload.href : `${preload}-1280.webp`}"`,
+    single ? '' : `      imagesrcset="${srcset}"`,
+    single ? '' : '      imagesizes="100vw"',
     '      fetchpriority="high"',
     '    />',
-  ].join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
 
 /* The shell's own head carries the homepage's tags; each page swaps in its

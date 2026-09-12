@@ -3,8 +3,10 @@
    ========================================================================== */
 
 .poem-sheet {
-  /* a poem's lines are short; a story's page would strand them */
-  max-width: min(100%, 40rem);
+  /* A poem's lines are short and a story's page would strand them — but
+     the sheet only grows to its longest line, and the cap is set so that
+     the longest line in the notebook (79 characters) still sits on one. */
+  max-width: min(100%, 46rem);
   padding:
     clamp(2rem, 4.6vw, 3.25rem)
     clamp(1.6rem, 4.6vw, 3.5rem)

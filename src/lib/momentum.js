@@ -19,6 +19,27 @@ const clamp = (v, min, max) => (v < min ? min : v > max ? max : v);
 
 const TYPING = /^(INPUT|TEXTAREA|SELECT)$/;
 
+/* The running instance's goTo, so anything that wants to move the page —
+   the halfway note, the poems page opening a sheet — glides on the same
+   weight as the wheel instead of cutting across it. Null when the momentum
+   is off (touch, reduced motion), and glideTo falls back to the browser. */
+let glide = null;
+
+/**
+ * Move the page to a position the way the wheel would. Where the momentum
+ * is not running the browser's own smooth scroll does it, and reduced
+ * motion goes straight there.
+ */
+export function glideTo(position) {
+  if (typeof window === 'undefined') return;
+  if (glide) {
+    glide(position);
+    return;
+  }
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({ top: position, left: 0, behavior: reduced ? 'auto' : 'smooth' });
+}
+
 export function initMomentumScroll() {
   if (typeof window === 'undefined') return () => {};
 
@@ -156,9 +177,11 @@ export function initMomentumScroll() {
   document.addEventListener('click', onClick);
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
+  glide = goTo;
 
   return () => {
     if (frameId !== null) cancelAnimationFrame(frameId);
+    glide = null;
     root.classList.remove('has-momentum');
     window.removeEventListener('wheel', onWheel);
     window.removeEventListener('keydown', onKeyDown);

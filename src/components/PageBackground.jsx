@@ -22,8 +22,7 @@ const WIDTHS = [880, 1280, 1684];
  * The scenes. `base` is a path minus `-<width>.webp`, so every entry has to
  * exist at all three widths.
  *
- * `about` is borrowed rather than its own photograph: it sits on the same road
- * as the homepage.
+ * `road` is the homepage's summer frame — the ground the 404 stands on.
  */
 const SCENES = {
   stories: {
@@ -34,7 +33,7 @@ const SCENES = {
     base: '/images/pages/poems',
     alt: 'A handwritten manuscript on a wooden desk, a pen beside it, late light across the boards.',
   },
-  about: {
+  road: {
     base: '/images/seasons/summer',
     alt: 'The road in summer, at sunrise, past an open cotton field.',
   },

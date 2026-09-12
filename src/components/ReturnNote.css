@@ -1,0 +1,95 @@
+/* ==========================================================================
+   The note that asks, halfway down a piece, whether to go back to the top.
+
+   The same scrap of paper the copy note is written on, pinned in the
+   bottom right corner rather than the middle, so a passage copied while it
+   is up does not put one note on top of the other.
+   ========================================================================== */
+
+/* the lower half of the piece, and a window's height past it — the marker
+   the observer looks for in the top half of the window */
+.return-note__mark {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  bottom: -100vh;
+  width: 1px;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.return-note {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2.5rem);
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  z-index: 150;
+
+  display: flex;
+  align-items: stretch;
+
+  color: #3B3025;
+  background:
+    url('/images/paper-texture.webp') center / cover,
+    #E4D6BC;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.34),
+    0 18px 34px -14px rgba(0, 0, 0, 0.7);
+  border-radius: 3px 2px 4px 2px / 2px 4px 2px 3px;
+
+  opacity: 0;
+  transform: translate3d(0, 14px, 0) rotate(1.4deg);
+  transition:
+    opacity 480ms var(--ease),
+    transform 560ms var(--ease);
+  pointer-events: none;
+}
+
+.return-note.is-shown {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(1.4deg);
+  pointer-events: auto;
+}
+
+.return-note__up {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.9rem 0.75rem 1.15rem;
+  font-family: var(--hand);
+  font-size: 1.0625rem;
+  line-height: 1;
+  color: inherit;
+  white-space: nowrap;
+  transition: color 320ms var(--ease);
+}
+.return-note__up svg {
+  color: #6B5230;
+  transition: transform 460ms var(--ease);
+}
+.return-note__up:hover,
+.return-note__up:focus-visible { color: #17130E; }
+.return-note__up:hover svg,
+.return-note__up:focus-visible svg { transform: translateY(-3px); }
+
+/* the way to say no — a small cross past a hairline, in the same pencil */
+.return-note__stay {
+  display: flex;
+  align-items: center;
+  padding: 0 0.8rem 0 0.7rem;
+  border-left: 1px solid rgba(59, 48, 37, 0.18);
+  color: rgba(59, 48, 37, 0.55);
+  transition: color 320ms var(--ease);
+}
+.return-note__stay:hover,
+.return-note__stay:focus-visible { color: #17130E; }
+
+.return-note :focus-visible {
+  outline-color: #6B5230;
+  outline-offset: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .return-note { transition: opacity 200ms linear; }
+  .return-note,
+  .return-note.is-shown { transform: none; }
+}

@@ -1,0 +1,629 @@
+/* ==========================================================================
+   About — the wood, and what the site is for.
+   ========================================================================== */
+
+.about {
+  position: relative;
+  background: var(--ink-900);
+}
+
+/* The footer's tear is transparent above its ragged line, so the wall has
+   to run on underneath it: the ground is given the tear's height and pulled
+   back by the same amount, so the page is no taller for it. */
+.about .ground {
+  padding-bottom: calc(var(--tear) + 2px);
+  margin-bottom: calc((var(--tear) + 2px) * -1);
+}
+
+/* ==========================================================================
+   The wood. The same shape as the road: a full-window photograph that
+   breathes, drifts with the light, and darkens as the reader walks on. The
+   copy stands to one side of it, in the clearing to the right of the big
+   tree, rather than in the middle of the frame.
+   ========================================================================== */
+
+.about-hero {
+  --wood-fg: var(--cream);
+  --wood-fg-dim: rgba(237, 229, 214, 0.84);
+  --wood-halo-strong: 0 2px 30px rgba(9, 9, 8, 0.6);
+  --wood-halo: 0 1px 16px rgba(9, 9, 8, 0.7);
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--ink-900);
+}
+
+/* ---------- the picture ---------- */
+.about-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1400ms var(--ease);
+}
+.about-hero.is-ready .about-hero__media { opacity: 1; }
+
+.about-hero__frame {
+  position: absolute;
+  inset: 0;
+  transform: scale(1);
+}
+.about-hero.is-ready .about-hero__frame {
+  animation: woodBreathe 30s var(--ease-soft) 1600ms infinite alternate;
+}
+
+/* travels and scales as the reader walks on — a layer of its own, so the
+   frame's breathing and the travel never fight over one transform */
+.about-hero__parallax {
+  position: absolute;
+  inset: 0;
+}
+
+/* The frames are wider than any ordinary window, so they are scaled to its
+   height and cropped at the sides. Anchored to the left edge: the big tree
+   is the one thing the composition needs, and the copy stands beside it.
+   (On a phone the tree would be all there was, so the crop moves to the
+   clearing — see the breakpoint below.) */
+.about-hero__seasons .seasons__layer {
+  object-position: 0% 50%;
+}
+
+/* the grade — the road's own, stop for stop: heavy at the top under the
+   navigation, open through the middle so the wood stays a wood, and
+   closing again at the foot */
+.about-hero__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(9, 9, 8, 0.66) 0%,
+    rgba(9, 9, 8, 0.20) 24%,
+    rgba(9, 9, 8, 0.08) 46%,
+    rgba(9, 9, 8, 0.34) 78%,
+    rgba(9, 9, 8, 0.70) 100%
+  );
+}
+/* deepens as the reader walks away from it */
+.about-hero__veil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ink-900);
+  opacity: 0;
+}
+
+/* the road's vignette, unchanged */
+.about-hero__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    118% 88% at 50% 46%,
+    transparent 42%,
+    rgba(9, 9, 8, 0.46) 100%
+  );
+}
+
+/* warm light drifting through the trees */
+.about-hero__light {
+  position: absolute;
+  inset: -14%;
+  background: radial-gradient(
+    44% 40% at 66% 30%,
+    rgba(232, 176, 92, 0.22),
+    rgba(232, 176, 92, 0) 68%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+}
+.about-hero.is-ready .about-hero__light {
+  animation: woodLight 46s var(--ease-soft) 1800ms infinite alternate;
+}
+
+.about-hero__grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--noise);
+  background-size: 180px 180px;
+  opacity: 0.045;
+}
+
+/* the light runs out at the foot of the frame, into the wall below */
+.about-hero__dusk {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  z-index: 1;
+  height: 30%;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 14, 10, 0) 0%,
+    rgba(15, 14, 10, 0.38) 42%,
+    rgba(15, 14, 10, 0.82) 76%,
+    #0F0E0A 100%
+  );
+  pointer-events: none;
+}
+
+/* ---------- the copy, in the clearing ----------
+   The frame is scaled to the window's height, so everything in it is a
+   fraction of that height — which is why the copy's left edge is set in vh.
+   The big tree's right edge lands at about 27vh from the left of the
+   window; the clearing runs from there to roughly 100vh across. On a very
+   wide window the frame is scaled to width instead and the tree edge sits
+   at 12vw, so the copy never comes left of 14vw. */
+.about-hero__content {
+  position: absolute;
+  z-index: 2;
+  left: max(29vh, 14vw);
+  top: 20vh;
+  width: min(72vh, 44rem);
+  max-width: calc(100vw - var(--shell) * 2);
+  text-align: left;
+}
+
+/* The shade the copy stands in, so it reads on the mist. Far wider than
+   the copy and shallow, so it is the light falling off rather than a shape
+   with a boundary: the box is nearly three times the copy's size in each
+   direction, the shade is strongest only at its centre and is all but gone
+   by two-thirds of the way out. Every stop lands inside the element — a
+   gradient that still carries alpha at its edge draws the edge. */
+.about-hero__pool {
+  position: absolute;
+  inset: -70% -60% -65%;
+  z-index: -1;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(9, 9, 8, 0.58) 0%,
+    rgba(9, 9, 8, 0.44) 18%,
+    rgba(9, 9, 8, 0.24) 40%,
+    rgba(9, 9, 8, 0.09) 64%,
+    rgba(9, 9, 8, 0.02) 86%,
+    rgba(9, 9, 8, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.about-hero__eyebrow {
+  color: var(--wood-fg);
+  opacity: 0.86;
+  margin-bottom: clamp(1.25rem, 2.6vw, 1.75rem);
+  text-shadow: var(--wood-halo);
+}
+
+.about-hero__title {
+  font-size: clamp(2.125rem, 4.4vw, 4rem);
+  color: var(--wood-fg);
+  text-shadow: var(--wood-halo-strong);
+  text-wrap: balance;
+}
+.about-hero__line { display: block; }
+.about-hero__line--2 {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.about-hero__supporting {
+  margin-top: clamp(1.25rem, 2.6vw, 1.75rem);
+  max-width: 30rem;
+  font-size: clamp(1rem, 1.35vw, 1.1875rem);
+  line-height: 1.62;
+  color: var(--wood-fg-dim);
+  text-shadow: var(--wood-halo);
+  text-wrap: pretty;
+}
+
+/* the way on — a label and a thin arrow, the way the road's is */
+.about-hero__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  color: var(--wood-fg);
+}
+.about-hero__cue-label {
+  font-family: var(--sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0.78;
+  text-shadow: var(--wood-halo);
+  transition: opacity 420ms var(--ease);
+}
+.about-hero__cue svg {
+  opacity: 0.62;
+  transition: opacity 420ms var(--ease), transform 620ms var(--ease);
+}
+.about-hero__cue:hover .about-hero__cue-label,
+.about-hero__cue:focus-visible .about-hero__cue-label { opacity: 1; }
+.about-hero__cue:hover svg,
+.about-hero__cue:focus-visible svg {
+  opacity: 1;
+  transform: translateY(5px);
+}
+
+/* ---------- entrance — picture, then eyebrow, headline, copy, cue ---------- */
+.about-hero__eyebrow,
+.about-hero__line,
+.about-hero__supporting,
+.about-hero__cue {
+  opacity: 0;
+}
+.about-hero.is-ready .about-hero__eyebrow    { animation: woodRise 1000ms var(--ease)  560ms both; }
+.about-hero.is-ready .about-hero__line--1    { animation: woodRise 1150ms var(--ease)  700ms both; }
+.about-hero.is-ready .about-hero__line--2    { animation: woodRise 1150ms var(--ease)  830ms both; }
+.about-hero.is-ready .about-hero__supporting { animation: woodRise 1150ms var(--ease) 1010ms both; }
+.about-hero.is-ready .about-hero__cue        { animation: woodRise 1150ms var(--ease) 1280ms both; }
+
+@keyframes woodRise {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes woodBreathe {
+  from { transform: scale(1)     translate3d(0, 0, 0); }
+  to   { transform: scale(1.022) translate3d(0.4%, 0, 0); }
+}
+
+@keyframes woodLight {
+  0%   { opacity: 0.4;  transform: translate3d(-3%, 2%, 0) scale(1); }
+  50%  { opacity: 0.86; transform: translate3d(2%, -2%, 0) scale(1.08); }
+  100% { opacity: 0.5;  transform: translate3d(5%, 1%, 0) scale(1.03); }
+}
+
+/* scrolled past — the breathing and the drifting light stop until the wood
+   is back in the window */
+.about-hero.is-away .about-hero__frame,
+.about-hero.is-away .about-hero__light {
+  animation-play-state: paused;
+}
+
+/* ---------- the walk away, on the compositor ----------
+   The same four moves the road makes as it is scrolled past — the frame
+   travelling, the veil deepening, the copy and the cue going — driven from
+   the hero's own exit through the window, so nothing is recalculated or
+   repainted on a scrolled frame. */
+@supports (animation-timeline: view()) {
+  .about-hero {
+    view-timeline-name: --wood-exit;
+    view-timeline-axis: block;
+  }
+
+  .about-hero__parallax,
+  .about-hero__veil::after,
+  .about-hero__content {
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: --wood-exit;
+    animation-range: exit 0% exit 100%;
+  }
+
+  .about-hero__parallax    { animation-name: woodTravel; }
+  .about-hero__veil::after { animation-name: woodDeepen; }
+  .about-hero__content     { animation-name: woodCopyAway; }
+}
+
+@keyframes woodTravel {
+  from { transform: scale(1)    translate3d(0, 0,   0); }
+  to   { transform: scale(1.08) translate3d(0, 5vh, 0); }
+}
+@keyframes woodDeepen {
+  from { opacity: 0; }
+  to   { opacity: 0.5; }
+}
+@keyframes woodCopyAway {
+  0%     { opacity: 1; transform: translate3d(0, 0, 0); }
+  64.52% { opacity: 0; transform: translate3d(0, 1.548vh, 0); }
+  100%   { opacity: 0; transform: translate3d(0, 2.4vh, 0); }
+}
+
+/* ==========================================================================
+   Where this started — a photograph and a few short paragraphs.
+   ========================================================================== */
+
+.about-start {
+  padding-block: clamp(3.5rem, 9vw, 7.5rem) clamp(4rem, 9vw, 7.5rem);
+}
+
+.about-start__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.12fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+}
+
+.about-start__title {
+  margin-top: clamp(1.25rem, 2.6vw, 2rem);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4.2vw, 3rem);
+  line-height: 1.14;
+  letter-spacing: -0.012em;
+  color: var(--cream);
+  text-wrap: balance;
+}
+
+.about-start__para {
+  margin-top: clamp(1.1rem, 2.2vw, 1.5rem);
+  max-width: 34rem;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.76;
+  color: var(--cream-dim);
+  text-wrap: pretty;
+}
+.about-start__title + .about-start__para { margin-top: clamp(1.5rem, 3vw, 2.25rem); }
+
+/* ---------- the print ----------
+   The same archival treatment the frame on the homepage gives its
+   photographs: a textured mount, a slight tilt, aged at the edges, and the
+   year written on it by hand. */
+.print {
+  position: relative;
+  margin: 0;
+  max-width: 25rem;
+  margin-inline: auto;
+}
+
+.print__frame {
+  position: relative;
+  padding: 6.5%;
+  background:
+    linear-gradient(148deg, rgba(64, 52, 38, 0.16), rgba(255, 250, 240, 0.12) 62%),
+    url('/images/frame-texture.webp') center / cover,
+    #DCD4C6;
+  transform: rotate(-2deg);
+  box-shadow:
+    0 34px 60px -22px rgba(0, 0, 0, 0.82),
+    0 8px 22px rgba(0, 0, 0, 0.42),
+    inset 0 0 26px rgba(74, 50, 26, 0.26);
+  transition: transform 720ms var(--ease), box-shadow 720ms var(--ease);
+}
+
+.print__paper {
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.4);
+}
+.print__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.print__aged {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 100% at 12% 6%, rgba(92, 64, 34, 0.24), transparent 46%),
+    radial-gradient(120% 100% at 92% 96%, rgba(72, 48, 24, 0.26), transparent 48%);
+  mix-blend-mode: multiply;
+}
+
+/* the year, written under the corner */
+.print__note {
+  position: absolute;
+  right: -2%;
+  bottom: -2.4rem;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  color: var(--gold);
+  transform: rotate(-3deg);
+  transform-origin: right top;
+  letter-spacing: 0.04em;
+}
+
+@media (hover: hover) and (min-width: 901px) {
+  .print:hover .print__frame {
+    transform: rotate(-2.5deg) translate3d(0, -4px, 0);
+    box-shadow:
+      0 44px 76px -22px rgba(0, 0, 0, 0.88),
+      0 10px 26px rgba(0, 0, 0, 0.48),
+      inset 0 0 26px rgba(74, 50, 26, 0.26);
+  }
+}
+
+/* ==========================================================================
+   Why this exists — one quiet statement, and a word after it.
+   ========================================================================== */
+
+.about-reason {
+  padding-block: clamp(3rem, 8vw, 6.5rem);
+  text-align: center;
+  border-top: 1px solid rgba(237, 229, 214, 0.055);
+}
+
+.about-reason__inner {
+  max-width: 50rem;
+  margin-inline: auto;
+}
+
+.about-reason__statement {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.625rem, 3.7vw, 2.875rem);
+  line-height: 1.26;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  text-wrap: balance;
+}
+
+.about-reason__follow {
+  margin: clamp(1.75rem, 3.4vw, 2.5rem) auto 0;
+  max-width: 36rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  line-height: 1.64;
+  color: var(--cream-dim);
+  text-wrap: pretty;
+}
+
+/* ==========================================================================
+   The few things — each a line, and the words under it, one at a time.
+   ========================================================================== */
+
+.about-lines {
+  padding-block: clamp(1rem, 3vw, 2.5rem) clamp(3rem, 7vw, 5.5rem);
+}
+
+.about-lines__inner {
+  max-width: 64rem;
+  margin-inline: auto;
+}
+
+.about-lines__item {
+  /* the space between the rule at the top of an item and its line */
+  --below-rule: clamp(2rem, 4.2vw, 3.25rem);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  column-gap: clamp(1.5rem, 5vw, 5rem);
+  align-items: start;
+  padding: 0 0 clamp(2.25rem, 4.6vw, 3.5rem);
+}
+
+/* the rule lives at the top of each item; the margin is the space below it */
+.about-lines__rule {
+  grid-column: 1 / -1;
+  margin: 0 0 var(--below-rule);
+}
+
+.about-lines__line {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.6vw, 2.875rem);
+  line-height: 1.12;
+  letter-spacing: -0.012em;
+  color: var(--cream);
+  text-wrap: balance;
+}
+
+.about-lines__words {
+  /* sit the first line of the words on the big line's first baseline */
+  padding-top: 0.55em;
+  max-width: 30rem;
+  font-size: clamp(1rem, 1.5vw, 1.1875rem);
+  line-height: 1.72;
+  color: var(--cream-dim);
+  text-wrap: pretty;
+}
+
+/* a number in the margin, by hand, level with the top of its line */
+.about-lines__count {
+  position: absolute;
+  left: -2.75rem;
+  top: calc(var(--below-rule) + 0.45em);
+  font-size: 1.125rem;
+  color: rgba(188, 144, 87, 0.7);
+  transform: rotate(-4deg);
+}
+
+/* ==========================================================================
+   In closing — the hand held out.
+   ========================================================================== */
+
+.about-close {
+  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(4.5rem, 10vw, 8rem);
+  text-align: center;
+}
+
+.about-close__inner {
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+.about-close__line {
+  max-width: 40rem;
+  margin-inline: auto;
+  margin-top: 0.9rem;
+  font-family: var(--serif);
+  font-size: clamp(1.125rem, 1.9vw, 1.4375rem);
+  line-height: 1.6;
+  color: var(--cream-dim);
+  text-wrap: balance;
+}
+.about-close__line:first-child { margin-top: 0; }
+
+.about-close__line--held {
+  margin-block: clamp(1.25rem, 2.6vw, 2rem);
+  font-style: italic;
+  font-size: clamp(1.875rem, 4.4vw, 3.25rem);
+  line-height: 1.1;
+  color: var(--cream);
+}
+
+.about-close__sign {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 5.4vw, 3.75rem);
+}
+
+.about-close__ways {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  margin-top: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+/* ==========================================================================
+   Breakpoints
+   ========================================================================== */
+
+/* the copy comes down to the foot of the frame and the crop moves to the
+   clearing, the way the road's does on a phone */
+@media (max-width: 900px) {
+  .about-hero__seasons .seasons__layer { object-position: 28% 50%; }
+
+  .about-hero__content {
+    left: var(--shell);
+    right: var(--shell);
+    top: auto;
+    bottom: clamp(3.5rem, 12vh, 7rem);
+    width: auto;
+    max-width: none;
+    text-align: center;
+  }
+  .about-hero__pool { inset: -60% -30% -50%; }
+  .about-hero__title { font-size: clamp(2.125rem, 9vw, 3.25rem); }
+  .about-hero__supporting { margin-inline: auto; }
+
+  .about-start__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3.5rem;
+  }
+  .about-start__aside { order: 2; }
+  .print { max-width: 19rem; margin-inline: 0 auto; }
+  .print__note { bottom: -2.2rem; }
+
+  .about-lines__item {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.9rem;
+  }
+  .about-lines__words { padding-top: 0; }
+  .about-lines__count { display: none; }
+}
+
+@media (max-width: 480px) {
+  .about-hero__content { bottom: clamp(3rem, 10vh, 5rem); }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .about-hero__media { opacity: 1; }
+  .about-hero__frame,
+  .about-hero__parallax,
+  .about-hero__light { animation: none !important; }
+  .about-hero__light { opacity: 0.5; }
+  .about-hero__content { opacity: 1; transform: none; animation: none; }
+  .about-hero__eyebrow,
+  .about-hero__line,
+  .about-hero__supporting,
+  .about-hero__cue { opacity: 1; animation: none; }
+  .print__frame { transition: none; }
+}

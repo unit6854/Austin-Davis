@@ -1,5 +1,211 @@
 /* ==========================================================================
-   The poems page — a desk with the leaves laid out on it.
+   The poems page — six leaves on the desk, and the one picked up.
+   ========================================================================== */
+
+.poems__leaves {
+  position: relative;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Two loose rows of three. Each slot lies at its own angle and its own
+   small drop (set inline from the page, so the numbers live in one place),
+   which is what stops the grid reading as a grid. */
+.poems__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem) clamp(1rem, 2.6vw, 2.25rem);
+  align-items: start;
+}
+
+/* the reveal's rise is kept, on top of the slot's own drop */
+.poems__slot {
+  transform: translate3d(0, calc(var(--drop, 0rem) + 20px), 0);
+}
+.poems__slot.is-visible {
+  transform: translateY(var(--drop, 0rem));
+}
+
+/* ---------- a leaf ---------- */
+.leaf {
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  color: inherit;
+  transform: rotate(var(--lean, 0deg));
+  transition: transform 620ms var(--ease);
+}
+
+/* The leaf is a real sheet — the same paper, weathered from the same seed
+   as the poem's page — cut down to a slip. The sheet's own tilt is kept
+   underneath the lean; the two together are still under two degrees. */
+.leaf__paper {
+  --leaf-shade: 0;
+
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  padding: clamp(1.25rem, 2.4vw, 1.75rem) clamp(1.1rem, 2.2vw, 1.6rem) clamp(1rem, 2vw, 1.35rem);
+  /* the sheet is what lifts, so the shadow can deepen with it */
+  transition: transform 620ms var(--ease);
+}
+.leaf__paper .sheet__surface {
+  transition: box-shadow 620ms var(--ease);
+}
+
+/* the light coming off it: a wash of the room's ink over the whole slip,
+   taken up only when some other leaf has been chosen. It lives on the paper
+   itself, under the writing, and is clipped to the paper's edge with it. */
+.leaf__paper .sheet__surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 12, 9, var(--leaf-shade));
+  pointer-events: none;
+  transition: background-color 720ms var(--ease);
+}
+/* and the writing on it dims with the paper */
+.leaf__paper .sheet__content {
+  transition: opacity 720ms var(--ease);
+}
+.poems__leaves.has-choice .leaf:not(.is-chosen) .sheet__content {
+  opacity: 0.72;
+}
+
+.leaf__head {
+  position: relative;
+  display: block;
+  /* room for the ring to sit round the title rather than on it */
+  padding: 0.35rem 0.55rem;
+  margin: -0.35rem -0.55rem;
+}
+
+.leaf__title {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  line-height: 1.16;
+  letter-spacing: -0.006em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* the first line, so a title is not all there is to go on */
+.leaf__first {
+  margin-top: 0.85rem;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(0.9375rem, 1.3vw, 1rem);
+  line-height: 1.5;
+  color: rgba(32, 28, 23, 0.62);
+  /* one line, however long the author's was */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.leaf__date {
+  display: block;
+  margin-top: 0.9rem;
+  text-align: right;
+  font-size: 1rem;
+  line-height: 1;
+  color: rgba(59, 48, 37, 0.7);
+  transform: rotate(-1.2deg);
+  transform-origin: right bottom;
+}
+.leaf__date::before { content: "— "; }
+
+/* ---------- the pencil ring ----------
+   Drawn once, round the title, when the leaf is chosen: a loop that closes
+   past where it began, the way a hand circles a word. pathLength="1" so the
+   dash is the whole path whatever the box is stretched to. */
+.leaf__ring {
+  position: absolute;
+  inset: -6% -3%;
+  width: 106%;
+  height: 112%;
+  overflow: visible;
+  pointer-events: none;
+}
+.leaf__ring path {
+  fill: none;
+  stroke: rgba(92, 70, 42, 0.78);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  transition:
+    stroke-dashoffset 1100ms var(--ease) 120ms,
+    opacity 200ms linear 120ms;
+}
+.leaf.is-chosen .leaf__ring path {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+/* ---------- hover and choice ---------- */
+@media (hover: hover) {
+  .leaf:hover { transform: rotate(calc(var(--lean, 0deg) * 0.35)); }
+  .leaf:hover .leaf__paper { transform: translateY(-5px) rotate(var(--tilt, 0deg)); }
+  .leaf:hover .leaf__paper .sheet__surface {
+    box-shadow:
+      inset 0 0 3rem rgba(122, 96, 60, 0.13),
+      inset 0 0 0 1px rgba(122, 96, 60, 0.09),
+      0 3px 4px rgba(0, 0, 0, 0.42),
+      0 30px 52px -16px rgba(0, 0, 0, 0.74),
+      0 70px 96px -44px rgba(0, 0, 0, 0.62);
+  }
+}
+.leaf:focus-visible {
+  outline: none;
+}
+.leaf:focus-visible .leaf__paper .sheet__surface {
+  box-shadow:
+    0 0 0 1px var(--gold),
+    0 2px 3px rgba(0, 0, 0, 0.4),
+    0 24px 46px -16px rgba(0, 0, 0, 0.7);
+}
+
+/* the chosen one lies flat and lifted; the rest go into shade */
+.leaf.is-chosen { transform: rotate(calc(var(--lean, 0deg) * 0.2)); }
+.leaf.is-chosen .leaf__paper { transform: translateY(-4px) rotate(var(--tilt, 0deg)); }
+.poems__leaves.has-choice .leaf:not(.is-chosen) .leaf__paper {
+  --leaf-shade: 0.16;
+}
+.poems__leaves.has-choice .leaf:not(.is-chosen) .leaf__paper .sheet__surface {
+  box-shadow:
+    inset 0 0 3rem rgba(122, 96, 60, 0.13),
+    inset 0 0 0 1px rgba(122, 96, 60, 0.09),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 14px 26px -14px rgba(0, 0, 0, 0.6);
+}
+
+/* the hand-written hint under the leaves, taken away once one is picked up */
+.poems__hint {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  text-align: center;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  /* cream, not gold: it lies over the manuscript, which is the gold's own
+     colour, and gold on it simply vanished */
+  color: var(--cream);
+  text-shadow: 0 1px 18px rgba(9, 9, 8, 0.8), 0 1px 3px rgba(9, 9, 8, 0.6);
+  transition: opacity 620ms var(--ease), transform 620ms var(--ease);
+}
+.poems__hint.is-away {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   The desk — where the chosen poem, or a poem on its own page, lies.
    ========================================================================== */
 
 .poems__desk {
@@ -7,14 +213,16 @@
   flex-direction: column;
   gap: clamp(2.5rem, 6vw, 4.5rem);
   margin-top: clamp(2.5rem, 5vw, 4rem);
-  /* the manuscript photograph is bright here; the leaves need a little more
-     of the page's shade than the heading did */
   position: relative;
 }
 
-/* Each leaf takes the width of its own longest line up to the sheet's cap,
-   and is set a little off centre — left, then right, then left — so the
-   column reads as sheets put down by hand rather than a stack. */
+/* the reading opens a little further down than the desk on its own, and
+   comes to rest under the navigation when the page glides to it */
+.poems__reading {
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+  scroll-margin-top: clamp(5.5rem, 10vw, 7.5rem);
+}
+
 .poems__leaf {
   display: flex;
   width: 100%;
@@ -22,14 +230,8 @@
 .poems__leaf .poem-sheet {
   margin-inline: 0;
 }
-
-.poems__leaf--left {
+.poems__leaf--single {
   justify-content: center;
-  padding-right: clamp(0px, 8vw, 7rem);
-}
-.poems__leaf--right {
-  justify-content: center;
-  padding-left: clamp(0px, 8vw, 7rem);
 }
 
 .poems__closing {
@@ -37,22 +239,7 @@
   text-align: center;
 }
 
-/* On a phone the offset would only steal width from the words */
-@media (max-width: 760px) {
-  .poems__leaf--left,
-  .poems__leaf--right {
-    padding-inline: 0;
-  }
-}
-
-/* ==========================================================================
-   A single poem's page — the way on to the next one and back to the last.
-   ========================================================================== */
-
-.poems__leaf--single {
-  justify-content: center;
-}
-
+/* ---------- the way on to the next one and back to the last ---------- */
 .poem-page__nav {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -64,6 +251,20 @@
 .poem-page__next { justify-self: end; text-align: right; }
 .poem-page__next:hover .arrow { transform: translateX(6px); }
 
+/* on the poems page these are buttons, not links — same type, no chrome */
+.poem-page__nav button.story-page__back {
+  padding: 0;
+  text-align: inherit;
+}
+
+/* ==========================================================================
+   Breakpoints
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .poems__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (max-width: 620px) {
   .poem-page__nav {
     grid-template-columns: 1fr;
@@ -73,4 +274,20 @@
   .poem-page__next { justify-self: start; text-align: left; }
   .poem-page__nav .story-page__back { margin-top: 1.25rem; }
   .poem-page__nav .story-page__back:first-child { margin-top: clamp(2rem, 4vw, 3rem); }
+}
+
+@media (max-width: 440px) {
+  .poems__row { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; }
+  .poems__slot { transform: none; }
+  .poems__slot.is-visible { transform: none; }
+  .leaf__paper { padding: 1.15rem 1.1rem 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poems__slot { transform: translateY(var(--drop, 0rem)); }
+  .leaf,
+  .leaf__paper,
+  .leaf__ring path,
+  .poems__hint { transition: none; }
+  .leaf.is-chosen .leaf__ring path { stroke-dashoffset: 0; opacity: 1; }
 }

@@ -4,7 +4,9 @@ import './SeasonalBackground.css';
 /* ==========================================================================
    Seasonal background — one camera, left in place while the year goes past.
 
-   Everything you would want to tune lives in the block below.
+   Everything you would want to tune for the road lives in the block below.
+   Another page can run its own year through the same camera by passing a
+   `cycle` and `scenes` of its own — the About page does, through the wood.
    ========================================================================== */
 
 /**
@@ -27,6 +29,16 @@ const CYCLE = [
 /** Slow in, a little acceleration, a long settle. */
 const EASE = 'cubic-bezier(0.45, 0.02, 0.25, 1)';
 
+const WIDTHS = [880, 1280, 1684];
+
+/** the road's frames, each cut at three widths */
+const road = (file) => ({
+  src: `/images/seasons/${file}-1280.webp`,
+  srcset: WIDTHS.map((w) => `/images/seasons/${file}-${w}.webp ${w}w`).join(', '),
+  width: 1684,
+  height: 934,
+});
+
 /**
  * The scenes themselves.
  *
@@ -34,28 +46,47 @@ const EASE = 'cubic-bezier(0.45, 0.02, 0.25, 1)';
  * the hero's copy crosses to ink over those. To add a scene: convert the
  * source to `public/images/seasons/<file>-{880,1280,1684}.webp`, add it here,
  * and put a frame in CYCLE where it belongs in the year.
+ *
+ * A scene is `{ src, srcset?, width, height, light, alt }`; a page bringing
+ * its own scenes can leave srcset out and serve one file.
  */
 const SEASONS = {
-  summer: { file: 'summer', light: false, alt: 'The road in summer, at sunrise, past an open cotton field.' },
-  'summer-night': { file: 'summer-night', light: false, alt: 'The same road at night under a full moon, the farmhouse windows lit.' },
-  autumn: { file: 'autumn', light: false, alt: 'The same road in autumn, the trees turned red and the road covered in leaves.' },
-  winter: { file: 'winter', light: true, alt: 'The same road in winter, snow over the field, the road and the bare trees.' },
-  spring: { file: 'spring', light: true, alt: 'The same road in spring, the trees in new leaf and wildflowers along the verge.' },
+  summer: { ...road('summer'), light: false, alt: 'The road in summer, at sunrise, past an open cotton field.' },
+  'summer-night': { ...road('summer-night'), light: false, alt: 'The same road at night under a full moon, the farmhouse windows lit.' },
+  autumn: { ...road('autumn'), light: false, alt: 'The same road in autumn, the trees turned red and the road covered in leaves.' },
+  winter: { ...road('winter'), light: true, alt: 'The same road in winter, snow over the field, the road and the bare trees.' },
+  spring: { ...road('spring'), light: true, alt: 'The same road in spring, the trees in new leaf and wildflowers along the verge.' },
 };
 
-const WIDTHS = [880, 1280, 1684];
-
-const srcsetFor = (file) =>
-  WIDTHS.map((w) => `/images/seasons/${file}-${w}.webp ${w}w`).join(', ');
-
-const srcFor = (file) => `/images/seasons/${file}-1280.webp`;
-
 export const FIRST_SEASON = SEASONS[CYCLE[0].season];
-export { srcsetFor, srcFor };
+
+/** point an image layer at a scene — with its srcset where it has one */
+function show(el, scene) {
+  if (scene.srcset) {
+    el.sizes = '100vw';
+    el.srcset = scene.srcset;
+  } else {
+    el.removeAttribute('sizes');
+    el.removeAttribute('srcset');
+  }
+  el.src = scene.src;
+}
 
 /* ========================================================================== */
 
-export default function SeasonalBackground({ onReady }) {
+/**
+ * @param {object} props
+ * @param {() => void} [props.onReady]  called once the first frame is painted
+ * @param {Array}  [props.cycle]   the frames in order — defaults to the road's year
+ * @param {object} [props.scenes]  the scenes the cycle names — defaults to the road's
+ * @param {string} [props.className]
+ */
+export default function SeasonalBackground({
+  onReady,
+  cycle = CYCLE,
+  scenes = SEASONS,
+  className = '',
+}) {
   /* Two layers, created once and reused for the whole life of the page. The
      back layer holds what you are looking at; the front layer fades the next
      scene in over the top of it, so there is never a moment when the two are
@@ -74,18 +105,19 @@ export default function SeasonalBackground({ onReady }) {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     let timer = null;
+    let warmup = null;
     let preloader = null;
     let stopped = false;
 
     const applySceneAttributes = (season) => {
       root.dataset.scene = season;
-      root.dataset.sceneLight = String(SEASONS[season].light);
+      root.dataset.sceneLight = String(scenes[season].light);
     };
 
     /* --- first frame ------------------------------------------------------ */
-    const first = CYCLE[0].season;
+    const first = cycle[0].season;
     applySceneAttributes(first);
-    root.style.setProperty('--scene-fade', `${CYCLE[1]?.fade ?? 10000}ms`);
+    root.style.setProperty('--scene-fade', `${cycle[1]?.fade ?? 10000}ms`);
 
     const announceReady = () => readyRef.current?.();
     if (back.el.complete) announceReady();
@@ -93,11 +125,8 @@ export default function SeasonalBackground({ onReady }) {
 
     /* --- warm the image after next, so a fade never waits on the network --- */
     const preload = (index) => {
-      const { file } = SEASONS[CYCLE[index % CYCLE.length].season];
       preloader = new Image();
-      preloader.sizes = '100vw';
-      preloader.srcset = srcsetFor(file);
-      preloader.src = srcFor(file);
+      show(preloader, scenes[cycle[index % cycle.length].season]);
     };
 
     /* --- the cycle -------------------------------------------------------- */
@@ -110,7 +139,7 @@ export default function SeasonalBackground({ onReady }) {
 
     const scheduleHold = (ms) => {
       if (stopped) return;
-      holdRemaining = ms ?? CYCLE[back.index].hold;
+      holdRemaining = ms ?? cycle[back.index].hold;
       holdStartedAt = Date.now();
       timer = window.setTimeout(beginTransition, holdRemaining);
     };
@@ -119,14 +148,11 @@ export default function SeasonalBackground({ onReady }) {
       if (stopped) return;
       midTransition = true;
 
-      const nextIndex = (back.index + 1) % CYCLE.length;
-      const { season, fade } = CYCLE[nextIndex];
-      const { file } = SEASONS[season];
+      const nextIndex = (back.index + 1) % cycle.length;
+      const { season, fade } = cycle[nextIndex];
 
       front.index = nextIndex;
-      front.el.sizes = '100vw';
-      front.el.srcset = srcsetFor(file);
-      front.el.src = srcFor(file);
+      show(front.el, scenes[season]);
 
       const start = () => {
         if (stopped) return;
@@ -227,13 +253,17 @@ export default function SeasonalBackground({ onReady }) {
 
     const startCycling = () => {
       if (reduced.matches) return;
-      preload(1);
+      /* The second frame is fetched a moment after the first, not with it:
+         the first hold is seconds long, and the frame after it should not
+         be competing with the first paint for the connection. */
+      warmup = window.setTimeout(() => preload(1), 1500);
       scheduleHold();
       document.addEventListener('visibilitychange', updateActivity);
     };
 
     const stopCycling = () => {
       window.clearTimeout(timer);
+      window.clearTimeout(warmup);
       document.removeEventListener('visibilitychange', updateActivity);
     };
 
@@ -255,21 +285,21 @@ export default function SeasonalBackground({ onReady }) {
       delete root.dataset.sceneLight;
       root.style.removeProperty('--scene-fade');
     };
-  }, []);
+  }, [cycle, scenes]);
 
-  const first = SEASONS[CYCLE[0].season];
+  const first = scenes[cycle[0].season];
 
   return (
-    <div className="seasons">
+    <div className={`seasons${className ? ` ${className}` : ''}`}>
       <img
         ref={layerA}
         className="seasons__layer"
         style={{ opacity: 1, zIndex: 1 }}
-        src={srcFor(first.file)}
-        srcSet={srcsetFor(first.file)}
-        sizes="100vw"
-        width="1684"
-        height="934"
+        src={first.src}
+        srcSet={first.srcset || undefined}
+        sizes={first.srcset ? '100vw' : undefined}
+        width={first.width}
+        height={first.height}
         alt={first.alt}
         fetchPriority="high"
         decoding="async"
@@ -280,8 +310,8 @@ export default function SeasonalBackground({ onReady }) {
         style={{ opacity: 0, zIndex: 2 }}
         alt=""
         aria-hidden="true"
-        width="1684"
-        height="934"
+        width={first.width}
+        height={first.height}
         decoding="async"
       />
     </div>
