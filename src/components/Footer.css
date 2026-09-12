@@ -9,20 +9,35 @@
   position: relative;
   z-index: 2;
   color: var(--paper-ink);
-  /* The scrap: the torn strip across the top, and flat paper below it. The
-     colour is the strip's own solid rows measured off the file
-     (rgb(227,210,190)), so the two meet without a seam. It has to be a
-     gradient layer rather than background-color — a colour would fill the
-     ragged transparency at the top and there would be no tear at all. */
+  /* The scrap: the torn strip across the top (the image below, an element
+     of its own so it can load lazily — a background would be fetched with
+     the page, and it is 180 KB at the very foot of every page), and flat
+     paper under it. The colour is the strip's own solid rows measured off
+     the file (rgb(227,210,190)), so the two meet without a seam. It has to
+     be a gradient layer rather than background-color — a colour would fill
+     the ragged transparency at the top and there would be no tear at all. */
   background:
-    url("/images/paper-edge-up.webp") center top / 100% var(--edge) no-repeat,
     linear-gradient(#E3D2BE, #E3D2BE) center bottom / 100%
       calc(100% - var(--edge) * 0.75) no-repeat;
   padding-block: calc(clamp(1.1rem, 2.2vw, 1.6rem) + var(--edge) * 0.8)
     clamp(1.1rem, 2.2vw, 1.6rem);
 }
 
+/* the torn strip, stretched across the full width exactly as the
+   background it replaced was */
+.footer__edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--edge);
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
 .footer__inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;

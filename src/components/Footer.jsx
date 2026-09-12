@@ -29,6 +29,18 @@ export default function Footer() {
 
   return (
     <footer className="footer">
+      {/* the paper's torn top edge — see Footer.css */}
+      <img
+        className="footer__edge"
+        src="/images/paper-edge-up.webp"
+        width="1827"
+        height="285"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+      />
+
       <div className="shell footer__inner">
         <p className="footer__copyright">
           © {year} <span className="footer__name">{FOOTER.name}</span>

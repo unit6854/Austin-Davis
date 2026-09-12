@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import './Sheet.css';
 
 /**
@@ -56,8 +57,12 @@ function weathering(seed) {
 }
 
 export default function Sheet({ seed = 'sheet', children, className = '' }) {
+  /* the weathering is a pure function of the seed — worked out once per
+     sheet, not on every render of the page it lies on */
+  const style = useMemo(() => weathering(seed), [seed]);
+
   return (
-    <div className={`sheet ${className}`.trim()} style={weathering(seed)}>
+    <div className={`sheet ${className}`.trim()} style={style}>
       <div className="sheet__surface" aria-hidden="true">
         <span className="sheet__mottle" />
         <span className="sheet__weave" />

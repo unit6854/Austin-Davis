@@ -18,11 +18,14 @@ src/
   content/site.js      ← all copy, nav, social links. Change words here.
   content/writing/     ← the pieces themselves, one file per piece
   components/          Hero, Navigation, Welcome, StoryFeature, QuoteSection,
-                       JourneyLinks, Newsletter, Footer, Dateline
-  pages/               Home, SectionPage, Story, NotFound
+                       JourneyLinks, Newsletter, Footer, Dateline, Sheet,
+                       PoemSheet, PageBackground, Ground, SeasonalBackground,
+                       ReturnNote, CopyNote
+  pages/               Home, SectionPage (stories), Story, Poems, Poem,
+                       About, NotFound
   styles/base.css      design tokens: colour, type, spacing, motion
-  lib/                 reveal, entrance, momentum scrolling, text protection
-public/images/         hero, photograph, leaf, paper textures, torn edges
+  lib/                 reveal, entrance, momentum scrolling, quoting
+public/images/         the road, the page scenes, photographs, paper, tears
 ```
 
 **All copy is in `src/content/site.js`.** Nothing is hard-coded in components.
@@ -38,8 +41,20 @@ public/images/         hero, photograph, leaf, paper textures, torn edges
 - **Dates** — `date` is a plain ISO string (`'2026-08-30'`). The story page
   renders it through `<Dateline>`; the card and the stories list show the
   month and year.
-- **Poems / Journal / About / Letters** — `PAGES` in `site.js`. Each page
-  shows its heading, intro and an `empty` line until there is writing to list.
+- **A new poem** — a file in `src/content/writing/poems/` exporting `STANZAS`,
+  and an entry in `POEMS` in `site.js` (`title`, `slug`, `date` or `null`,
+  `stanzas`). It appears as a leaf on `/poems` and gets `/poems/<slug>`.
+- **The poems page** lays the poems out as six leaves on the desk — title,
+  first line, date. Picking one up draws a pencil ring round it and opens the
+  whole poem underneath, its lines arriving as they are scrolled to; the
+  address becomes `/poems#<slug>`, so an open poem can be passed on.
+- **About** — `ABOUT` in `site.js`: the hero copy, the short account of
+  where the writing started, the reason the site exists, and the six lines.
+  The page itself is `src/pages/About.jsx`; its hero runs the wood through
+  the year with the same `SeasonalBackground` the road uses.
+- **Halfway down a story or a poem** a note asks whether to go back to the
+  top (`components/ReturnNote`). It watches the lower half of the piece
+  cross the middle of the window, so nothing runs on scroll.
 - **Social icons** — `SOCIAL_LINKS` in `site.js` is empty on purpose; no URLs
   were invented. Add `{ platform: 'instagram', label: 'Instagram', href: '…' }`
   and the icon appears in the footer. `instagram`, `youtube` and `email` icons
@@ -49,9 +64,11 @@ public/images/         hero, photograph, leaf, paper textures, torn edges
 
 Self-hosted from `public/fonts/`, not fetched from Google — no third-party
 request stands between the visitor and the first paint, and the two faces the
-hero needs are preloaded from the document head. Only the weights actually
-used are shipped: Cormorant Garamond 400/500 and 400 italic, Inter
-400/500/600, Caveat 500, Sacramento 400. About 368 KB, cached for a year.
+hero needs are preloaded from the document head. Cormorant Garamond, Inter
+and Caveat are variable fonts, so each family is one file declared once with
+the range of weights the site uses (Cormorant 400–500 plus the 400 italic,
+Inter 400–600, Caveat 500); Ephesis is the signature. About 230 KB, cached
+for a year.
 
 `src/styles/fonts.css` also declares **metric-matched fallbacks**. Cormorant's
 x-height is 0.391em against Georgia's 0.484em, so before this the headline
@@ -64,18 +81,22 @@ throughout and **CLS is 0.000**.
 The numbers came from measuring the actual font files in the browser. If you
 change a family, re-measure rather than guessing.
 
-## The writing is protected
+## The writing travels with its credit
 
-Anything inside a `.writing` element cannot be selected, copied, cut, dragged
-or right-clicked — `user-select: none` in `base.css` plus the event guards in
-`src/lib/protect.js`, which also catch a selection dragged in from outside and
-a keyboard select-all. Currently applied to the story body and the excerpt on
-the home page. Add the class to any new writing block; the rest of the site
-stays selectable so links and the newsletter behave normally.
+Anything inside a `.writing` element can be selected and copied. Copying a
+passage of forty characters or more rewrites the clipboard to carry the
+passage, the author, the piece (`data-piece` on the block) and the page's
+address — `src/lib/quote.js` — and a pinned note says so (`CopyNote`).
 
-This deters casual copying. It cannot stop someone reading the page source,
-and search engines still index the text — that is deliberate, since the piece
-needs to be findable.
+## Every address is a real page
+
+`npm run build` renders every route to HTML (`scripts/prerender.js`), with
+its own title, description, preview image and preload, and writes a
+`404.html` for everything else. Netlify serves the files directly and sends
+any other path to the 404 page with a real 404 status — see `netlify.toml`,
+which also sets the site's security headers (a Content-Security-Policy
+allowing only this origin's scripts, fonts and images, inline style
+attributes and the generated SVG textures; no framing).
 
 ## Newsletter
 
@@ -153,7 +174,8 @@ Generated from the supplied source art with ImageMagick:
 | `pop.webp` | `images/Mock.png` | de-rotated, regrained archival photograph |
 | `leaf.webp` | `images/Mock.png` | cut out on the HSV saturation channel |
 | `torn-down.webp` | `images/Paper.png` | torn edge under the hero on phones |
-| `paper-edge-up.webp` | `images/Paper edge 2.png` | quality **95** — the footer scrap’s ragged top |
+| `paper-edge-up.webp` | `images/Paper edge 2.png` | quality **95** — the footer scrap’s ragged top, loaded lazily |
+| `pages/about-{summer,autumn,winter,spring}-1867.webp` | `images/About page change/*.png` | quality **95** at the source size — the wood on About, through the year |
 
 | `paper-full.webp` | `images/Full paper.png` | quality **100** — the whole sheet, behind the newsletter and the first-story card |
 | `tomato.webp` | `images/Tomato.png` | quality 95 at 940px — twice the widest size it renders at |
