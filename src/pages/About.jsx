@@ -126,9 +126,6 @@ export default function About() {
         </div>
 
         <div className="about-hero__content">
-          {/* the shade the copy stands in, so it reads on the mist */}
-          <div className="about-hero__pool" aria-hidden="true" />
-
           <p className="eyebrow about-hero__eyebrow">{hero.eyebrow}</p>
 
           <h1 className="about-hero__title display">
