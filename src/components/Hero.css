@@ -50,14 +50,15 @@
 }
 .is-entered .hero__media { opacity: 1; }
 
-/* the frame breathes very slowly — light and air moving, nothing more */
+/* the slow pull down the road — the same drift the wood on About has, so
+   the picture is felt to be moving around you rather than only breathing */
 .hero__frame {
   position: absolute;
   inset: 0;
   transform: scale(1);
 }
 .is-entered .hero__frame {
-  animation: heroBreathe 30s var(--ease-soft) 1600ms infinite alternate;
+  animation: heroBreathe 38s var(--ease-soft) 1200ms infinite alternate;
 }
 
 /* scales gently and lags the scroll, so the road stays present. The transform
@@ -381,7 +382,7 @@ html[data-scene-light="true"] .hero {
 
 @keyframes heroBreathe {
   from { transform: scale(1)     translate3d(0, 0, 0); }
-  to   { transform: scale(1.022) translate3d(-0.5%, 0, 0); }
+  to   { transform: scale(1.075) translate3d(-1.2%, 0.8%, 0); }
 }
 
 @keyframes heroLight {
