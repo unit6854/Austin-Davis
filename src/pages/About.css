@@ -584,7 +584,7 @@
     left: var(--shell);
     right: var(--shell);
     top: auto;
-    bottom: clamp(3.5rem, 12vh, 7rem);
+    bottom: clamp(6rem, 19vh, 11rem);
     width: auto;
     max-width: none;
     text-align: center;
@@ -609,7 +609,7 @@
 }
 
 @media (max-width: 480px) {
-  .about-hero__content { bottom: clamp(3rem, 10vh, 5rem); }
+  .about-hero__content { bottom: clamp(5rem, 17vh, 9rem); }
 }
 
 /* ---------- reduced motion ---------- */

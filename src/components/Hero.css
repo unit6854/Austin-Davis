@@ -384,8 +384,17 @@ html[data-scene-light="true"] .hero {
   .hero__cue { opacity: 1; animation: none; }
 }
 
+/* On a phone the copy sits a little above the middle of the road rather
+   than on it — the eye lands higher on a tall frame, and the cue below
+   gets its own room. The lift is a margin, so it never touches the
+   transform the scroll-linked fade drives. */
+@media (max-width: 900px) {
+  .hero__content { margin-top: -7vh; }
+}
+
 /* ---------- short landscape phones: keep the copy breathing room ---------- */
 @media (max-height: 600px) and (max-width: 900px) {
+  .hero__content { margin-top: 0; }
   .hero__cue-slot { bottom: 1.75rem; }
   .hero__title { font-size: clamp(2rem, 7vw, 3rem); }
 }
