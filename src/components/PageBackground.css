@@ -175,50 +175,17 @@
   background: transparent;
 }
 
-/* A pool of shade under the reading column. The veil grades the whole frame,
-   but the copy sits in one place on it, and on a scene with a bright patch
-   there — the manuscript on the poems page — cream type needs the ground
-   taken down locally rather than everywhere.
-
-   It is deliberately far wider and taller than the column it sits under, and
-   its peak is low: a small, strong pool reads as a dark blob with a boundary,
-   a big shallow one reads as the light simply falling off. Every stop has to
-   land inside the box — a radial gradient's radii are percentages of the box
-   measured from its centre point, so centre ± radius must stay within 0–100%
-   on both axes (here 50 ± 48 and 44 ± 42) or the box's own edge cuts the
-   gradient and draws itself as a rectangle on the photograph.
-
-   Being that wide, it runs past the viewport on a narrow screen, which is
-   what the clip on .page--scene is for. */
+/* No pool of shade under the head any more — it was tried at three
+   strengths and always read as a dark blot laid on the paper. The copy
+   carries its own dark instead: the stacked halo below, out of each letter.
+   The page is still clipped sideways because the seasons' pull overhangs a
+   narrow window. */
 .page--scene {
   overflow-x: clip;
 }
 
 .page--scene .page__inner {
   position: relative;
-}
-
-/* only the head of the page — the column the title stands in — carries
-   the pool; a page's other columns (a poem's way on, a story's way back)
-   would otherwise each draw a dark blot of their own on the photograph */
-/* Lighter than it was now that the letters carry their own shade, and it
-   reaches less far to the left: the copy is set to the left of its column,
-   so a pool centred on the column put most of its dark on the paper beside
-   the words rather than under them. */
-.page--scene > .page__inner:first-child::before {
-  content: "";
-  position: absolute;
-  inset: -9rem -16rem -6rem -9rem;
-  z-index: -1;
-  background: radial-gradient(
-    48% 44% at 46% 42%,
-    rgba(9, 9, 8, 0.5),
-    rgba(9, 9, 8, 0.36) 34%,
-    rgba(9, 9, 8, 0.16) 66%,
-    rgba(9, 9, 8, 0.04) 88%,
-    rgba(9, 9, 8, 0) 100%
-  );
-  pointer-events: none;
 }
 
 .page--scene .eyebrow,
