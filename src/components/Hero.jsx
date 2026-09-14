@@ -4,6 +4,7 @@ import { prefersReducedMotion } from '../lib/reveal.js';
 import { markEntered } from '../lib/entrance.js';
 import SeasonalBackground from './SeasonalBackground.jsx';
 import './Hero.css';
+import '../styles/hero-tear.css';
 
 export default function Hero() {
   const heroRef = useRef(null);
@@ -138,8 +139,6 @@ export default function Hero() {
           </svg>
         </a>
       </div>
-
-      <div className="hero__tear" aria-hidden="true" />
     </section>
   );
 }

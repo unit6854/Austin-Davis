@@ -7,6 +7,7 @@ import Newsletter from '../components/Newsletter.jsx';
 import { ABOUT, PAGES } from '../content/site.js';
 import { observeLines } from '../lib/reveal.js';
 import './About.css';
+import '../styles/hero-tear.css';
 
 /**
  * The wood, through the year. The same camera as the road on the homepage,

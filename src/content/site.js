@@ -18,10 +18,10 @@ export const SOCIAL_LINKS = [
 
 export const HERO = {
   eyebrow: 'Writer · Poet · Storyteller',
-  titleTop: 'Stories about',
-  titleItalic: 'remembering how to live.',
+  titleTop: 'The moments',
+  titleItalic: 'that changed everything.',
   supporting:
-    'Reflections on life, family, time, and the things we don’t understand until much later.',
+    'Stories, poems, and reflections about the moments we remember, the things we carry, and the people we become.',
   cue: 'Begin the journey',
 };
 
@@ -269,7 +269,7 @@ export const ABOUT = {
 
   start: {
     eyebrow: 'Where this started',
-    title: 'I’ve been writing since I was eight years old.',
+    title: 'I’ve been writing since I was ten years old.',
     paragraphs: [
       'Stories first, then poems, in whatever notebook was nearest. I grew up in Memphis, Tennessee, moved to Franklin, and live in Nashville now. Some of those years were harder than I knew how to say out loud, and the writing is where it went.',
       'I’ve lost people I thought would be here. I’ve understood things twenty years after they happened. Most of what is on this site is me trying to make sense of that, and trying to hold on to the people and the moments that made me.',

@@ -21,8 +21,11 @@
   border-bottom: 1px solid transparent;
 }
 
+/* Opaque, not 94% — at 94% anything bright passing under the bar ghosted
+   through it as a dim band with the bar's hard bottom edge under it; the
+   torn paper on the phone made that plain. */
 .nav--stuck {
-  background: rgba(12, 11, 9, 0.94);
+  background: rgb(12, 11, 9);
   border-bottom-color: var(--cream-hair);
 }
 .nav--open { background: transparent; border-bottom-color: transparent; }

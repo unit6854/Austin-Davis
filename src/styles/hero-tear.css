@@ -1,0 +1,93 @@
+/* ==========================================================================
+   The torn edge at the foot of a hero on a phone — the road on the homepage
+   and the wood on About, which both hand over to the drawn wall.
+   ==========================================================================
+
+   The photograph is torn along its bottom edge, the way the phone mock has
+   it: the road runs down to a ragged line, the cream paper it is printed on
+   shows below that, and the paper tears off in its own ragged line into the
+   dark wall. It used to be the paper strip alone, laid over the bottom of
+   the photograph with a straight top edge, which read as a band pasted on.
+
+   Two pieces. torn-mask.webp is the shape of the rip — solid above the
+   ragged line, nothing below — cut from the paper art with its alpha
+   hardened (the art carries a soft shadow under its edge, and a mask that
+   faint let a ghost of the road through onto the wall). It masks the whole
+   hero, so the photograph ends on the ragged line, and the wall is pulled
+   up under the hero by the same height so it is what shows through.
+
+   torn-down.webp is the paper itself, drawn on the wall beneath the hero
+   and set a little lower and a little taller than the mask, so its ragged
+   bottom runs under the photograph's edge at a distance that varies across
+   the width the way a real tear does. The same shape masks the paper's top
+   so it begins exactly where the photograph ends; its baked shadow falls on
+   the wall. Nothing here runs on desktop, where a hero has a hard cut. */
+@media (max-width: 900px) {
+  /* on the root, because the wall below the hero needs the same number */
+  :root { --tear-h: clamp(26px, 9vw, 44px); }
+
+  .hero,
+  .about-hero {
+    /* above the wall pulled up beneath it */
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(#000, #000), url('/images/torn-mask.webp');
+    mask-image: linear-gradient(#000, #000), url('/images/torn-mask.webp');
+    -webkit-mask-size: 100% calc(100% - var(--tear-h) + 1px), 100% var(--tear-h);
+    mask-size: 100% calc(100% - var(--tear-h) + 1px), 100% var(--tear-h);
+    -webkit-mask-position: top, bottom;
+    mask-position: top, bottom;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* The wood's dusk — the light running out at the foot of the frame, to
+     solid ink at the very bottom — was drawn for the hard cut on desktop.
+     Above a rip it read as a flat black band with a straight top, laid
+     between the trees and the paper; the tear is the handover now, and the
+     wood runs down to it the way the road does. */
+  .about-hero__dusk { display: none; }
+
+  /* the wall runs up under the torn edge, so it is what shows through */
+  .hero + .ground,
+  .about-hero + .ground {
+    margin-top: calc(var(--tear-h) * -1);
+    padding-top: var(--tear-h);
+  }
+
+  /* and so does its light — the sticky sheet would otherwise begin where
+     the padding ends, and the lift and vignette starting at the hero's foot
+     drew a straight line across the wall just under the rip */
+  .hero + .ground > .ground__light,
+  .about-hero + .ground > .ground__light {
+    margin-top: calc(var(--tear-h) * -1);
+    margin-bottom: calc(-100vh + var(--tear-h));
+    margin-bottom: calc(-100svh + var(--tear-h));
+  }
+
+  /* the paper under the photograph. Its box starts where the hero's mask
+     does; the art sits 30% of the tear lower and is drawn 30% taller, so
+     the cream between the two ragged lines runs from about a third of the
+     tear's height to a little over half of it. */
+  .hero + .ground::before,
+  .about-hero + .ground::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    height: calc(var(--tear-h) * 1.6);
+    background: url('/images/torn-down.webp') 0 calc(var(--tear-h) * 0.3) / 100% calc(var(--tear-h) * 1.3) no-repeat;
+    -webkit-mask-image: linear-gradient(#000, #000), url('/images/torn-mask.webp');
+    mask-image: linear-gradient(#000, #000), url('/images/torn-mask.webp');
+    -webkit-mask-size: 100% 100%, 100% var(--tear-h);
+    mask-size: 100% 100%, 100% var(--tear-h);
+    -webkit-mask-position: 0 0, 0 0;
+    mask-position: 0 0, 0 0;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}

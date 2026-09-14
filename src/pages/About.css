@@ -580,11 +580,15 @@
 @media (max-width: 900px) {
   .about-hero__seasons .seasons__layer { object-position: 28% 50%; }
 
+  /* The copy stands in the middle of the frame on a phone, the same
+     little way above centre the road's copy does. It is placed with the
+     separate translate property, not transform, because transform is what
+     the scroll-linked fade-away animates. */
   .about-hero__content {
     left: var(--shell);
     right: var(--shell);
-    top: auto;
-    bottom: clamp(6rem, 19vh, 11rem);
+    top: calc(50% - 7vh);
+    translate: 0 -50%;
     width: auto;
     max-width: none;
     text-align: center;
@@ -608,9 +612,6 @@
   .about-lines__count { display: none; }
 }
 
-@media (max-width: 480px) {
-  .about-hero__content { bottom: clamp(5rem, 17vh, 9rem); }
-}
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
