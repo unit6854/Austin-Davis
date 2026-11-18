@@ -10,12 +10,14 @@
  * anyone who asked for reduced motion.
  */
 
-/* Smaller = heavier. The settle time runs roughly as 1/LERP: this lands the
-   page in about an eighth of a second, where the weight it started at took a
-   full second. What is left is barely a glide — just enough to take the hard
-   edge off a wheel step, and short enough that the page is never anywhere
-   the hand did not put it. Set it to 1 and the momentum is gone entirely. */
-const LERP = 0.48;
+/* Smaller = heavier. The settle time runs roughly as 1/LERP, so this is the
+   0.48 that was here with 40% of its weight handed back: the page settles in
+   something under a fifth of a second. It has been walked down from 0.062 (a
+   full second of drift, which read as lag) and then back up a little, which
+   is where it wants to live — enough glide to feel like paper moving, not
+   enough to arrive anywhere the hand did not send it.
+   Set it to 1 and the momentum is gone entirely. */
+const LERP = 0.34;
 
 /* How far ahead of the page a flick may aim, in screens. Without a limit a
    hard scroll queues up thousands of pixels of easing that the page then has

@@ -154,17 +154,32 @@
 }
 .newsletter__button:disabled { opacity: 0.6; cursor: default; }
 
+/* This used to be a thank-you nobody had to read. It now carries the one
+   instruction left — go and finish on Substack — so it is set to be read:
+   the dim cream rather than the faint, and a little room for two lines. */
 .newsletter__message {
   min-height: 1.6em;
   margin-top: 1rem;
   font-family: var(--serif);
   font-style: italic;
   font-size: 1rem;
-  color: var(--cream-faint);
+  line-height: 1.5;
+  text-wrap: pretty;
+  color: var(--cream-dim);
   opacity: 0;
   transition: opacity 620ms var(--ease);
 }
 .newsletter__message.is-shown { opacity: 1; }
+
+.newsletter__link {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--gold-hair);
+  transition: text-decoration-color 420ms var(--ease);
+}
+.newsletter__link:hover { text-decoration-color: var(--gold); }
 
 /* ---------- phones: the title wraps to two lines, the button drops ---------- */
 @media (max-width: 560px) {

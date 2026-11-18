@@ -226,7 +226,12 @@ export const NEWSLETTER = {
   supporting: 'Stories, letters, and reflections – sent occasionally.',
   placeholder: 'your email address',
   button: 'Subscribe',
-  success: 'Check your inbox to confirm your subscription.',
+  /* Subscribing finishes on Substack, in a tab that opens on submit — it is
+     the only place the confirmation mail can be sent from. See
+     components/Newsletter.jsx for why it cannot be done here. */
+  success: 'Almost there — finish in the tab that just opened, and Substack will send you a confirmation email.',
+  blocked: 'Your browser blocked the new tab.',
+  blockedLink: 'Finish subscribing on Substack',
   error: 'Something went wrong. Please try again in a moment.',
 };
 

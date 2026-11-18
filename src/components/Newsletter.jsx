@@ -7,16 +7,21 @@ import './Newsletter.css';
 const FORM_NAME = 'newsletter';
 
 /**
- * Substack's own free-subscribe endpoint, on Austin's publication.
+ * Where a reader finishes subscribing.
  *
- * It sends no CORS headers, so the request goes out `no-cors`: the browser
- * will deliver it and hand back an opaque response that cannot be read. We
- * therefore cannot tell a subscription from a rejection — which is why the
- * address is also posted to Netlify Forms below. Substack is where the list
- * lives; Netlify is the copy that can actually be confirmed, so nobody who
- * signs up is lost if Substack ever turns the endpoint off.
+ * NOT `/api/v1/free`. That endpoint was tried first and it answers **403 to
+ * any scripted request**, form-encoded or JSON, with or without an Origin —
+ * Substack blocks it outright. Worse, the request had to go out `no-cors` to
+ * reach it at all, and an opaque response cannot be read: the site said
+ * "check your inbox" every time while Substack threw the address away. That
+ * is exactly what happened to Austin's own test signup. Do not go back to it.
+ *
+ * Substack's hosted subscribe page accepts the address as `?email=` and
+ * prefills its field, so the reader arrives with one button left to press and
+ * the confirmation mail comes from Substack itself, which is the only way it
+ * can come. The list stays on Substack; the form here keeps its own face.
  */
-const SUBSTACK = 'https://austinrdavis.substack.com/api/v1/free';
+const SUBSTACK_SUBSCRIBE = 'https://austinrdavis.substack.com/subscribe';
 
 function encode(data) {
   return Object.entries(data)
@@ -51,32 +56,28 @@ export default function Newsletter({ scene, ground = false }) {
 
     setStatus('sending');
 
-    /* Substack first — the list itself. Opaque by nature, so the only thing
-       that can fail here is the network. */
-    const toSubstack = fetch(SUBSTACK, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ email, source: 'cover_page' }),
-    });
-
-    /* and the same address to Netlify Forms, so there is a record of it that
-       can be read back. Best effort: in development there is no Netlify to
-       answer, and a signup must not look broken because of that. */
-    const toNetlify = fetch('/', {
+    /* The address goes to Netlify Forms too, so Austin has it even if the
+       reader never finishes on Substack — somebody who types their address
+       in has asked to hear from him, and that should not be lost in a tab
+       they closed. Best effort: there is no Netlify to answer in
+       development, and a signup must not look broken because of that. */
+    fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: encode({ 'form-name': FORM_NAME, email, 'bot-field': botField }),
     }).catch(() => null);
 
-    try {
-      await toSubstack;
-      await toNetlify;
-      setStatus('done');
-      setEmail('');
-    } catch {
-      setStatus('error');
-    }
+    /* Opened from inside the click, so it counts as a user gesture and is not
+       taken for a popup. If the browser blocks it anyway, `open` returns null
+       and the message below gives the reader the link to follow by hand. */
+    const opened = window.open(
+      `${SUBSTACK_SUBSCRIBE}?email=${encodeURIComponent(email)}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
+
+    setStatus(opened ? 'done' : 'blocked');
+    if (opened) setEmail('');
   }
 
   return (
@@ -142,12 +143,26 @@ export default function Newsletter({ scene, ground = false }) {
           </form>
 
           <p
-            className={`newsletter__message${status === 'done' || status === 'error' ? ' is-shown' : ''}`}
+            className={`newsletter__message${status !== 'idle' && status !== 'sending' ? ' is-shown' : ''}`}
             role="status"
             aria-live="polite"
           >
             {status === 'done' ? NEWSLETTER.success : null}
             {status === 'error' ? NEWSLETTER.error : null}
+            {/* the browser refused the new tab — hand over the link itself */}
+            {status === 'blocked' ? (
+              <>
+                {NEWSLETTER.blocked}{' '}
+                <a
+                  className="newsletter__link"
+                  href={`${SUBSTACK_SUBSCRIBE}?email=${encodeURIComponent(email)}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {NEWSLETTER.blockedLink}
+                </a>
+              </>
+            ) : null}
           </p>
         </Reveal>
       </div>
