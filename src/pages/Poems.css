@@ -20,6 +20,15 @@
 /* the reveal's rise is kept, on top of the slot's own drop */
 .poems__slot {
   transform: translate3d(0, calc(var(--drop, 0rem) + 20px), 0);
+
+  /* No `content-visibility: auto` here, though it is the obvious thing to
+     reach for with a grid that grows. It skips drawing a leaf until it is on
+     screen — which means a hard scroll arrives at a row that has never been
+     drawn and has to draw it right then, several at a time, in the middle of
+     the gesture. That is worse than the thing it saves, at least until there
+     are many more poems than there are now: the leaves are cheap to paint
+     (see Sheet's `detail`), and painting them all once beats painting them
+     late. Revisit if the notebook ever runs to dozens. */
 }
 .poems__slot.is-visible {
   transform: translateY(var(--drop, 0rem));
@@ -50,8 +59,32 @@
   /* the sheet is what lifts, so the shadow can deepen with it */
   transition: transform 620ms var(--ease);
 }
+/* The leaf rests on a shallow shadow of its own. The deep one it throws when
+   it lifts is a layer over the top, faded in rather than transitioned as a
+   box-shadow: a shadow cannot be composited, so animating one repaints the
+   whole slip every frame for the length of the hover — once per leaf the
+   pointer crosses, and there is a leaf for every poem. Opacity is free. */
 .leaf__paper .sheet__surface {
-  transition: box-shadow 620ms var(--ease);
+  box-shadow:
+    inset 0 0 3rem rgba(122, 96, 60, 0.13),
+    inset 0 0 0 1px rgba(122, 96, 60, 0.09),
+    0 2px 3px rgba(0, 0, 0, 0.4),
+    0 14px 26px -14px rgba(0, 0, 0, 0.6);
+}
+/* The lift shadow hangs outside the paper, so it cannot live on the surface —
+   that clips its overflow. It goes on the sheet itself, under everything. */
+.leaf__paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: 2px 3px 2px 4px / 3px 2px 4px 2px;
+  box-shadow:
+    0 24px 46px -16px rgba(0, 0, 0, 0.7),
+    0 64px 90px -44px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 620ms var(--ease);
 }
 
 /* the light coming off it: a wash of the room's ink over the whole slip,
@@ -154,14 +187,7 @@
 @media (hover: hover) {
   .leaf:hover { transform: rotate(calc(var(--lean, 0deg) * 0.35)); }
   .leaf:hover .leaf__paper { transform: translateY(-5px) rotate(var(--tilt, 0deg)); }
-  .leaf:hover .leaf__paper .sheet__surface {
-    box-shadow:
-      inset 0 0 3rem rgba(122, 96, 60, 0.13),
-      inset 0 0 0 1px rgba(122, 96, 60, 0.09),
-      0 3px 4px rgba(0, 0, 0, 0.42),
-      0 30px 52px -16px rgba(0, 0, 0, 0.74),
-      0 70px 96px -44px rgba(0, 0, 0, 0.62);
-  }
+  .leaf:hover .leaf__paper::before { opacity: 1; }
 }
 .leaf:focus-visible {
   outline: none;
@@ -179,13 +205,11 @@
 .poems__leaves.has-choice .leaf:not(.is-chosen) .leaf__paper {
   --leaf-shade: 0.16;
 }
-.poems__leaves.has-choice .leaf:not(.is-chosen) .leaf__paper .sheet__surface {
-  box-shadow:
-    inset 0 0 3rem rgba(122, 96, 60, 0.13),
-    inset 0 0 0 1px rgba(122, 96, 60, 0.09),
-    0 1px 2px rgba(0, 0, 0, 0.4),
-    0 14px 26px -14px rgba(0, 0, 0, 0.6);
-}
+/* the ones left lying stay flat — their lift shadow is already down */
+.poems__leaves.has-choice .leaf:not(.is-chosen) .leaf__paper::before { opacity: 0; }
+
+/* and the chosen one keeps hold of its lift */
+.leaf.is-chosen .leaf__paper::before { opacity: 1; }
 
 /* the hand-written hint under the leaves, taken away once one is picked up */
 .poems__hint {

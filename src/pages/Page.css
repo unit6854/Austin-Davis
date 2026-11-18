@@ -186,7 +186,12 @@
   font-weight: 500;
   letter-spacing: 0.19em;
   text-transform: uppercase;
-  color: var(--cream-faint);
+  /* These sit on a photograph, at eleven pixels and widely tracked. At the
+     faint cream they used to carry they were all but invisible against the
+     lighter parts of a scene — so they take the readable cream and the same
+     shade the other small copy over a photograph carries. */
+  color: var(--cream-dim);
+  text-shadow: 0 1px 18px rgba(9, 9, 8, 0.8), 0 1px 3px rgba(9, 9, 8, 0.6);
   transition: color 420ms var(--ease);
 }
 .story-page__back .arrow { transition: transform 460ms var(--ease); }

@@ -64,6 +64,17 @@ export default function Footer() {
               {link.label}
             </Link>
           ))}
+
+          {/* the same writing, for anyone who would rather read it in the
+              Substack app than wait for it to arrive by post */}
+          <a
+            className="footer__link"
+            href={FOOTER.substack.href}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {FOOTER.substack.label}
+          </a>
         </nav>
 
         {SOCIAL_LINKS.length > 0 ? (

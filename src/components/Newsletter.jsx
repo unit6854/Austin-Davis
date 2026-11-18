@@ -6,6 +6,18 @@ import './Newsletter.css';
 
 const FORM_NAME = 'newsletter';
 
+/**
+ * Substack's own free-subscribe endpoint, on Austin's publication.
+ *
+ * It sends no CORS headers, so the request goes out `no-cors`: the browser
+ * will deliver it and hand back an opaque response that cannot be read. We
+ * therefore cannot tell a subscription from a rejection — which is why the
+ * address is also posted to Netlify Forms below. Substack is where the list
+ * lives; Netlify is the copy that can actually be confirmed, so nobody who
+ * signs up is lost if Substack ever turns the endpoint off.
+ */
+const SUBSTACK = 'https://austinrdavis.substack.com/api/v1/free';
+
 function encode(data) {
   return Object.entries(data)
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
@@ -30,17 +42,36 @@ export default function Newsletter({ scene, ground = false }) {
     event.preventDefault();
     if (status === 'sending' || !email) return;
 
+    /* the honeypot: a bot filled a field no person can see */
+    if (botField) {
+      setStatus('done');
+      setEmail('');
+      return;
+    }
+
     setStatus('sending');
 
+    /* Substack first — the list itself. Opaque by nature, so the only thing
+       that can fail here is the network. */
+    const toSubstack = fetch(SUBSTACK, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ email, source: 'cover_page' }),
+    });
+
+    /* and the same address to Netlify Forms, so there is a record of it that
+       can be read back. Best effort: in development there is no Netlify to
+       answer, and a signup must not look broken because of that. */
+    const toNetlify = fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encode({ 'form-name': FORM_NAME, email, 'bot-field': botField }),
+    }).catch(() => null);
+
     try {
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': FORM_NAME, email, 'bot-field': botField }),
-      });
-
-      if (!response.ok) throw new Error(String(response.status));
-
+      await toSubstack;
+      await toNetlify;
       setStatus('done');
       setEmail('');
     } catch {

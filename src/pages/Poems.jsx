@@ -141,7 +141,7 @@ export default function Poems() {
                   aria-pressed={isChosen}
                   onClick={() => choose(entry.slug)}
                 >
-                  <Sheet seed={entry.slug} className="leaf__paper">
+                  <Sheet seed={entry.slug} className="leaf__paper" detail="light">
                     <span className="leaf__head">
                       <span className="leaf__title">{entry.title}</span>
                       {/* the pencil ring, drawn round the title once it is chosen */}

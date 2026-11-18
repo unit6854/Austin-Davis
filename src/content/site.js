@@ -117,6 +117,9 @@ import { STANZAS as THE_EDGE_OF_A_CLIFF } from './writing/poems/the-edge-of-a-cl
 import { STANZAS as A_RECOLLECTION_OF_MY_HEART } from './writing/poems/a-recollection-of-my-heart.js';
 import { STANZAS as THOUGHTS_OF_THE_NIGHT } from './writing/poems/thoughts-of-the-night.js';
 import { STANZAS as MUSIC_INTERTWINED_WITH_LOVE } from './writing/poems/music-intertwined-with-love.js';
+import { STANZAS as SPECKS_OF_DUST } from './writing/poems/specks-of-dust.js';
+import { STANZAS as FROM_THE_DEPTHS } from './writing/poems/from-the-depths.js';
+import { STANZAS as LOST_IN_WONDERLAND } from './writing/poems/lost-in-wonderland.js';
 
 /**
  * The poems, oldest first — they read as a life that way, and Austin has said
@@ -165,6 +168,24 @@ export const POEMS = [
     date: null,
     stanzas: STREETLIGHT_SOLILOQUY,
   },
+  {
+    title: 'Specks of Dust',
+    slug: 'specks-of-dust',
+    date: null,
+    stanzas: SPECKS_OF_DUST,
+  },
+  {
+    title: 'From the Depths',
+    slug: 'from-the-depths',
+    date: null,
+    stanzas: FROM_THE_DEPTHS,
+  },
+  {
+    title: 'Lost in Wonderland',
+    slug: 'lost-in-wonderland',
+    date: null,
+    stanzas: LOST_IN_WONDERLAND,
+  },
 ];
 
 /** 30 August 2026 → { day: '30', month: 'August', year: '2026' } */
@@ -181,8 +202,8 @@ export function formatDate(iso) {
 }
 
 export const QUOTE = {
-  text: 'We don’t always understand the most important lessons until much later.',
-  attribution: 'Austin Davis',
+  text: 'Sometimes you will never know the value of a moment until it becomes a memory.',
+  attribution: 'Dr. Seuss',
 };
 
 export const JOURNEY = [
@@ -205,13 +226,18 @@ export const NEWSLETTER = {
   supporting: 'Stories, letters, and reflections – sent occasionally.',
   placeholder: 'your email address',
   button: 'Subscribe',
-  success: 'Thank you. Something will find its way to you soon.',
+  success: 'Check your inbox to confirm your subscription.',
   error: 'Something went wrong. Please try again in a moment.',
 };
 
 export const FOOTER = {
   name: 'Austin Davis',
   tagline: 'Writer · Poet · Storyteller',
+  /* for readers who would rather follow in the Substack app */
+  substack: {
+    label: 'Substack',
+    href: 'https://austinrdavis.substack.com/',
+  },
 };
 
 /**

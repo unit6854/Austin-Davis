@@ -10,8 +10,18 @@
  * anyone who asked for reduced motion.
  */
 
-/* smaller = heavier. 0.062 settles in roughly a second. */
-const LERP = 0.062;
+/* Smaller = heavier. The settle time runs roughly as 1/LERP: this lands the
+   page in about an eighth of a second, where the weight it started at took a
+   full second. What is left is barely a glide — just enough to take the hard
+   edge off a wheel step, and short enough that the page is never anywhere
+   the hand did not put it. Set it to 1 and the momentum is gone entirely. */
+const LERP = 0.48;
+
+/* How far ahead of the page a flick may aim, in screens. Without a limit a
+   hard scroll queues up thousands of pixels of easing that the page then has
+   to draw its way through, which is most of what made a fast scroll feel
+   broken. */
+const LEAD = 1.5;
 const WHEEL = 1;
 const KEY_STEP = 96;
 
@@ -98,7 +108,22 @@ export function initMomentumScroll() {
      one the cached height is used and no layout is forced. */
   function push(delta) {
     if (frameId === null) measure();
-    target = clamp(target + delta, 0, limit());
+
+    /* A fast flick fires a great many wheel events in a moment, and each one
+       used to add its whole distance to the target. The page then had to
+       travel every pixel of it, easing all the way — thousands of pixels of
+       scrolling, drawn frame by frame, long after the hand had stopped. That
+       is what a hard scroll down the poems page felt like.
+
+       The target is held to a screen and a half beyond where the page
+       actually is. Flick as hard as you like: the page moves at once, and
+       nothing queues up behind it. */
+    const reach = window.innerHeight * LEAD;
+    target = clamp(
+      clamp(target + delta, current - reach, current + reach),
+      0,
+      limit(),
+    );
     run();
   }
 

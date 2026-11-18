@@ -56,16 +56,33 @@ function weathering(seed) {
   };
 }
 
-export default function Sheet({ seed = 'sheet', children, className = '' }) {
+/**
+ * `detail`:
+ *   'full'  — the whole paper. For a sheet you read a poem off.
+ *   'light' — fibre and corner wear only, dropping the mottle and the laid
+ *             lines. Those two are the costly pair: each is a blended layer
+ *             over its own tile of generated noise, and the mottle carries a
+ *             640px mask positioned per sheet. At the size of a leaf on the
+ *             poems page neither is visible, and there is one of every layer
+ *             for every poem — so the page's paint cost grows with the
+ *             notebook unless the small sheets stay cheap.
+ */
+export default function Sheet({
+  seed = 'sheet',
+  children,
+  className = '',
+  detail = 'full',
+}) {
   /* the weathering is a pure function of the seed — worked out once per
      sheet, not on every render of the page it lies on */
   const style = useMemo(() => weathering(seed), [seed]);
+  const full = detail === 'full';
 
   return (
     <div className={`sheet ${className}`.trim()} style={style}>
       <div className="sheet__surface" aria-hidden="true">
-        <span className="sheet__mottle" />
-        <span className="sheet__weave" />
+        {full && <span className="sheet__mottle" />}
+        {full && <span className="sheet__weave" />}
         <span className="sheet__fibre" />
         <span className="sheet__wear" />
       </div>

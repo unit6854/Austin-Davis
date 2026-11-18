@@ -12,10 +12,17 @@ import '../styles/hero-tear.css';
 /**
  * The wood, through the year. The same camera as the road on the homepage,
  * and the year goes round in the same order; there is no night frame here,
- * so dusk is left out. Each frame is served at the one size it was made at.
+ * so dusk is left out.
+ *
+ * Each frame is cut at the same three widths as the road, so a phone fetches
+ * about a quarter of what it used to: the cycle pulls all four frames, and at
+ * the single 1867px size that was most of three megabytes for a background.
  */
+const WOOD_WIDTHS = [880, 1280, 1684];
+
 const wood = (file, alt) => ({
-  src: `/images/pages/about-${file}-1867.webp`,
+  src: `/images/pages/about-${file}-1280.webp`,
+  srcset: WOOD_WIDTHS.map((w) => `/images/pages/about-${file}-${w}.webp ${w}w`).join(', '),
   width: 1867,
   height: 842,
   light: false,
